@@ -2,16 +2,44 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://dijia478.cn/blog/2016/09/04/2016-09-04-Redis%E7%9A%84%E4%BA%94%E7%A7%8D%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%96%B9%E6%B3%95/</loc>
+    <loc>http://dijia478.cn/blog/2015/10/03/2015-10-03-Git%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E5%92%8C%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</loc>
     
-    <lastmod>2017-12-31T17:18:29.134Z</lastmod>
+    <lastmod>2018-01-01T03:43:22.848Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://dijia478.cn/blog/2015/10/03/2015-10-03-Git%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E5%92%8C%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</loc>
+    <loc>http://dijia478.cn/blog/2016/07/05/2016-07-05-Tomcat%E5%9C%A8Linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84BIO%E3%80%81NIO%E3%80%81APR%E6%A8%A1%E5%BC%8F%E8%AE%BE%E7%BD%AE/</loc>
     
-    <lastmod>2017-12-31T13:39:48.827Z</lastmod>
+    <lastmod>2018-01-01T03:32:29.509Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://dijia478.cn/about/index.html</loc>
+    
+    <lastmod>2018-01-01T03:26:29.899Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://dijia478.cn/categories/index.html</loc>
+    
+    <lastmod>2018-01-01T03:26:29.414Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://dijia478.cn/tags/index.html</loc>
+    
+    <lastmod>2018-01-01T03:26:28.956Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://dijia478.cn/blog/2016/09/04/2016-09-04-Redis%E7%9A%84%E4%BA%94%E7%A7%8D%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%96%B9%E6%B3%95/</loc>
+    
+    <lastmod>2017-12-31T17:18:29.134Z</lastmod>
     
   </url>
   
@@ -61,20 +89,6 @@
     <loc>http://dijia478.cn/blog/2017/12/30/2017-12-30-%E5%A4%9A%E7%BA%BF%E7%A8%8B/</loc>
     
     <lastmod>2017-12-31T12:36:21.955Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://dijia478.cn/categories/index.html</loc>
-    
-    <lastmod>2017-12-31T12:32:53.392Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://dijia478.cn/tags/index.html</loc>
-    
-    <lastmod>2017-12-31T12:32:22.742Z</lastmod>
     
   </url>
   
