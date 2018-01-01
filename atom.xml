@@ -63,6 +63,31 @@
   </entry>
   
   <entry>
+    <title>Linux服务器上安装JDK小白教程</title>
+    <link href="http://dijia478.cn//blog/2017/06/07/2017-06-07-Linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E5%AE%89%E8%A3%85JDK%E5%B0%8F%E7%99%BD%E6%95%99%E7%A8%8B/"/>
+    <id>http://dijia478.cn//blog/2017/06/07/2017-06-07-Linux服务器上安装JDK小白教程/</id>
+    <published>2017-06-07T06:55:37.000Z</published>
+    <updated>2018-01-01T07:07:14.463Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="一、环境"><a href="#一、环境" class="headerlink" title="一、环境"></a>一、环境</h2><p>VMware12 Pro</p><p>CentOS-6.7-i386-bin-DVD1</p><p>jdk-8u151-linux-i586</p><h2 id="二、详细安装步骤"><a href="#二、详细安装步骤" class="headerlink" title="二、详细安装步骤"></a>二、详细安装步骤</h2><h3 id="前提：需要卸载已经装过的jdk"><a href="#前提：需要卸载已经装过的jdk" class="headerlink" title="前提：需要卸载已经装过的jdk"></a>前提：需要卸载已经装过的jdk</h3><a id="more"></a><p>rpm -qa | grep jdk        会显示你所有包含jdk这个字符串的安装包</p><p>rpm -e –nodeps 对应的每个包名        会卸载对应的包</p><p>之后如果输入<code>java -version</code>命令后显示<code>command not found</code>，就是卸载完了。我之前是装过jdk1.7的，所以我需要卸载 ，从来没装过jdk的直接从下面开始</p><h3 id="1-去官网下载JDK"><a href="#1-去官网下载JDK" class="headerlink" title="1. 去官网下载JDK"></a>1. 去官网下载JDK</h3><p> <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank" rel="noopener">http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html</a></p><p>需要选中那个图中红色框起来的小圆点，才能下在，意思就是你接收许可协议</p><p>因为我的虚拟系统是32位的，所以我下32位JDK，根据你的情况具体看。x86代表32位系统，x64代表64位系统。</p><p>不知道服务器是多少位系统的，直接用这个命令：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getconf LONG_BIT</span><br></pre></td></tr></table></figure><p><img src="jdk01.png" alt=""></p><h3 id="2-上传，解压JDK"><a href="#2-上传，解压JDK" class="headerlink" title="2. 上传，解压JDK"></a>2. 上传，解压JDK</h3><p>有人可能不知到怎么上传文件到服务器上，这里我推荐个软件，叫<code>lrzsz</code></p><p>这是一个简单的linux服务器上传下载工具，如果你没装过的话，可以装一下，挺好用的</p><p>安装前先检查有没有安装lrzsz：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm –q lrzsz</span><br></pre></td></tr></table></figure><p>没安装可以使用下列命令进行安装：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install lrzsz</span><br></pre></td></tr></table></figure><p>之后你就可以用rz命令上传本地文件到服务器的当前目录下了，sz命令后面跟上指定文件目录，可以将其从服务器上下载到本地</p><p>好了，用rz命令上传好jdk的tar包后，需要解压，执行如下命令，可能你用的版本和我不一样，注意后面是你自己上传的jdk的包名：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar zxf jdk<span class="number">-8</span>u151-linux-i586.tar.gz</span><br></pre></td></tr></table></figure><h3 id="3-移动下位置"><a href="#3-移动下位置" class="headerlink" title="3. 移动下位置"></a>3. 移动下位置</h3><p>为了以后方便管理，我把jdk的目录换个位置，重命名一下</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv jdk1.8.0_151 /usr/share/jdk1.8</span><br></pre></td></tr></table></figure><h3 id="4-配置环境变量"><a href="#4-配置环境变量" class="headerlink" title="4. 配置环境变量"></a>4. 配置环境变量</h3><p>用vim打开<code>/etc/profile</code>文件</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/profile</span><br></pre></td></tr></table></figure><p>在文件最下面添加下面的语句，保存退出（按ESC，然后输入，英文冒号wq英文感叹号（:wq!），按回车）</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">JAVA_HOME=/usr/share/jdk1<span class="number">.8</span></span><br><span class="line">CLASSPATH=$JAVA_HOME/lib/</span><br><span class="line">PATH=$PATH:$JAVA_HOME/bin</span><br><span class="line">export PATH JAVA_HOME CLASSPATH</span><br></pre></td></tr></table></figure><p>执行下面的命令让配置立即生效</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure><p>现在输入<code>java -version</code>命令，如果显示<code>java version &quot;1.8.0_151&quot;</code>，就是ok了</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;一、环境&quot;&gt;&lt;a href=&quot;#一、环境&quot; class=&quot;headerlink&quot; title=&quot;一、环境&quot;&gt;&lt;/a&gt;一、环境&lt;/h2&gt;&lt;p&gt;VMware12 Pro&lt;/p&gt;
+&lt;p&gt;CentOS-6.7-i386-bin-DVD1&lt;/p&gt;
+&lt;p&gt;jdk-8u151-linux-i586&lt;/p&gt;
+&lt;h2 id=&quot;二、详细安装步骤&quot;&gt;&lt;a href=&quot;#二、详细安装步骤&quot; class=&quot;headerlink&quot; title=&quot;二、详细安装步骤&quot;&gt;&lt;/a&gt;二、详细安装步骤&lt;/h2&gt;&lt;h3 id=&quot;前提：需要卸载已经装过的jdk&quot;&gt;&lt;a href=&quot;#前提：需要卸载已经装过的jdk&quot; class=&quot;headerlink&quot; title=&quot;前提：需要卸载已经装过的jdk&quot;&gt;&lt;/a&gt;前提：需要卸载已经装过的jdk&lt;/h3&gt;
+    
+    </summary>
+    
+      <category term="Linux" scheme="http://dijia478.cn/categories/Linux/"/>
+    
+    
+      <category term="JDK" scheme="http://dijia478.cn/tags/JDK/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Redis的五种数据类型及Jedis方法</title>
     <link href="http://dijia478.cn//blog/2016/09/04/2016-09-04-Redis%E7%9A%84%E4%BA%94%E7%A7%8D%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%96%B9%E6%B3%95/"/>
     <id>http://dijia478.cn//blog/2016/09/04/2016-09-04-Redis的五种数据类型及方法/</id>
