@@ -92,7 +92,7 @@
 <meta property="og:image" content="http://dijia478.cn/blog/2017/12/26/2017-12-26-Tomcat在Linux服务器上的BIO、NIO、APR模式设置/tomcat01.png">
 <meta property="og:image" content="http://dijia478.cn/blog/2017/12/26/2017-12-26-Tomcat在Linux服务器上的BIO、NIO、APR模式设置/tomcat02.png">
 <meta property="og:image" content="http://dijia478.cn/blog/2017/12/26/2017-12-26-Tomcat在Linux服务器上的BIO、NIO、APR模式设置/tomcat03.png">
-<meta property="og:updated_time" content="2018-01-01T06:11:44.383Z">
+<meta property="og:updated_time" content="2018-01-02T04:15:38.496Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tomcat在Linux服务器上的BIO、NIO、APR模式设置">
 <meta name="twitter:description" content="一、BIO、NIO、AIO先了解四个概念同步： 自己亲自出马持银行卡到银行取钱（使用同步IO时，Java自己处理IO读写）。 异步：  委托一小弟拿银行卡到银行取钱，然后给你（使用异步IO时，Java将IO读写委托给OS处理，需要将数据缓冲区地址和大小传给OS(银行卡和密码)，OS需要支持异步IO操作API）。">
@@ -371,9 +371,9 @@
 <h3 id="NIO"><a href="#NIO" class="headerlink" title="NIO"></a>NIO</h3><p>是Java SE 1.4及后续版本提供的一种新的I/O操作方式(即java.nio包及其子包)。Java nio是一个基于缓冲区、并能提供非阻塞I/O操作的Java API，因此nio也被看成是non-blocking I/O的缩写。它拥有比传统I/O操作(bio)更好的并发运行性能。</p>
 <h3 id="APR"><a href="#APR" class="headerlink" title="APR"></a>APR</h3><p>(Apache Portable Runtime/Apache可移植运行库)，是Apache HTTP服务器的支持库。你可以简单地理解为，Tomcat将以JNI的形式调用Apache HTTP服务器的核心动态链接库来处理文件读取或网络传输操作，从而大大地提高Tomcat对静态文件的处理性能。 Tomcat apr也是在Tomcat上运行高并发应用的首选模式。</p>
 <h2 id="三、tomcat三种模式性能比较"><a href="#三、tomcat三种模式性能比较" class="headerlink" title="三、tomcat三种模式性能比较"></a>三、tomcat三种模式性能比较</h2><p>这里我引用了网友给出的测试结果</p>
-<p><img src="tomcat01.png" alt=""></p>
+<img src="/blog/2017/12/26/2017-12-26-Tomcat在Linux服务器上的BIO、NIO、APR模式设置/tomcat01.png">
 <h2 id="四、tomcat模式设置"><a href="#四、tomcat模式设置" class="headerlink" title="四、tomcat模式设置"></a>四、tomcat模式设置</h2><p>我这里演示的是tomcat7，默认是BIO模式的。而tomcat8是默认NIO模式的。</p>
-<p><img src="tomcat02.png" alt=""></p>
+<img src="/blog/2017/12/26/2017-12-26-Tomcat在Linux服务器上的BIO、NIO、APR模式设置/tomcat02.png">
 <h3 id="BIO模式"><a href="#BIO模式" class="headerlink" title="BIO模式"></a>BIO模式</h3><p>tomcat7默认就是。如果你是tomcat8或9想设置成BIO模式的，那么在tomcat目录里的conf目录里的server.xml文件中修改。找到设置端口号8080的那个标签，主要是修改protocol属性为<code>HTTP/1.1</code>，重启tomcat就会使用BIO模式。tomcat7默认就是这个样子的</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Connector</span> <span class="attr">port</span>=<span class="string">"8080"</span> <span class="attr">protocol</span>=<span class="string">"HTTP/1.1"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">connectionTimeout</span>=<span class="string">"20000"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">redirectPort</span>=<span class="string">"8443"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
 <h3 id="NIO模式"><a href="#NIO模式" class="headerlink" title="NIO模式"></a>NIO模式</h3><p>在和设置BIO模式同样的位置上，修改protocol属性为<code>org.apache.coyote.http11.Http11NioProtocol</code>，重启tomcat就会使用NIO模式。tomcat8以上默认就是这个样子的</p>
@@ -570,7 +570,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

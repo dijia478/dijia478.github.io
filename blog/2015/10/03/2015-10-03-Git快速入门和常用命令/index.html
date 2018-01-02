@@ -81,19 +81,19 @@
 
 
 
-<meta name="description" content="简易图解git流程概念 Workspace：工作区 Index / Stage：暂存区 Repository：本地仓库区（用HEAD指向最后一次commit的结果） Remote：远程仓库">
+<meta name="description" content="简易图解git流程概念  Workspace：工作区 Index / Stage：暂存区 Repository：本地仓库区（用HEAD指向最后一次commit的结果） Remote：远程仓库">
 <meta name="keywords" content="Git">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Git快速入门和常用命令">
 <meta property="og:url" content="http://dijia478.cn/blog/2015/10/03/2015-10-03-Git快速入门和常用命令/index.html">
 <meta property="og:site_name" content="dijia478-刘力源">
-<meta property="og:description" content="简易图解git流程概念 Workspace：工作区 Index / Stage：暂存区 Repository：本地仓库区（用HEAD指向最后一次commit的结果） Remote：远程仓库">
+<meta property="og:description" content="简易图解git流程概念  Workspace：工作区 Index / Stage：暂存区 Repository：本地仓库区（用HEAD指向最后一次commit的结果） Remote：远程仓库">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://dijia478.cn/blog/2015/10/03/2015-10-03-Git快速入门和常用命令/git01.png">
-<meta property="og:updated_time" content="2018-01-01T03:43:22.848Z">
+<meta property="og:updated_time" content="2018-01-02T04:20:33.002Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Git快速入门和常用命令">
-<meta name="twitter:description" content="简易图解git流程概念 Workspace：工作区 Index / Stage：暂存区 Repository：本地仓库区（用HEAD指向最后一次commit的结果） Remote：远程仓库">
+<meta name="twitter:description" content="简易图解git流程概念  Workspace：工作区 Index / Stage：暂存区 Repository：本地仓库区（用HEAD指向最后一次commit的结果） Remote：远程仓库">
 <meta name="twitter:image" content="http://dijia478.cn/blog/2015/10/03/2015-10-03-Git快速入门和常用命令/git01.png">
 
 
@@ -356,14 +356,14 @@
       
 
       
-        <h2 id="简易图解git流程概念"><a href="#简易图解git流程概念" class="headerlink" title="简易图解git流程概念"></a>简易图解git流程概念</h2><ul>
+        <h2 id="简易图解git流程概念"><a href="#简易图解git流程概念" class="headerlink" title="简易图解git流程概念"></a>简易图解git流程概念</h2><img src="/blog/2015/10/03/2015-10-03-Git快速入门和常用命令/git01.png">
+<ul>
 <li>Workspace：工作区</li>
 <li>Index / Stage：暂存区</li>
 <li>Repository：本地仓库区（用HEAD指向最后一次commit的结果）</li>
-<li>Remote：远程仓库</li>
+<li>Remote：远程仓库<a id="more"></a>
+</li>
 </ul>
-<a id="more"></a>
-<p>  <img src="git01.png" alt=""></p>
 <h2 id="一、快速入门"><a href="#一、快速入门" class="headerlink" title="一、快速入门"></a>一、快速入门</h2><h3 id="本地初始化一个项目"><a href="#本地初始化一个项目" class="headerlink" title="本地初始化一个项目"></a>本地初始化一个项目</h3><p>首先，你需要执行下面两条命令，作为 git 的基础配置，作用是告诉 git 你是谁，你输入的信息将出现在你创建的提交中。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --<span class="keyword">global</span> user.name <span class="string">"你的名字或昵称"</span></span><br><span class="line">git config --<span class="keyword">global</span> user.email <span class="string">"你的邮箱"</span></span><br></pre></td></tr></table></figure>
 <p>然后在你的需要初始化版本库的文件夹中执行：</p>
@@ -372,7 +372,7 @@
 <p>如果你想克隆一个项目，只需要执行：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone 项目地址</span><br></pre></td></tr></table></figure>
 <h3 id="完成第一次提交"><a href="#完成第一次提交" class="headerlink" title="完成第一次提交"></a>完成第一次提交</h3><p>进入你已经初始化好的或者克隆项目的目录，然后执行：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git pull origin master　　<span class="comment"># 从远程仓库获取最新版本并合并&lt;这里需要修改/添加文件，否则与原文件相比就没有变动&gt;</span></span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">"这是我第一次提交的说明"</span></span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git pull origin master　　<span class="comment"># 从远程仓库获取最新版本并合并，因为你提交前可能已经有别人提交过了，你需要合并最新版本才能提交到远程仓库</span></span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">"这是我第一次提交的说明"</span></span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
 <p>然后如果需要账号密码的话就输入账号密码，这样就完成了一次提交。</p>
 <h2 id="二、基本命令"><a href="#二、基本命令" class="headerlink" title="二、基本命令"></a>二、基本命令</h2><h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 显示当前的Git配置</span></span><br><span class="line">git config --list</span><br><span class="line"></span><br><span class="line"><span class="comment"># 编辑Git配置文件</span></span><br><span class="line">git config -e [--<span class="keyword">global</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置提交代码时的用户信息</span></span><br><span class="line">git config --<span class="keyword">global</span> user.name <span class="string">"[name]"</span></span><br><span class="line">git config --<span class="keyword">global</span> user.email <span class="string">"[email address]"</span></span><br></pre></td></tr></table></figure>
 <h3 id="获取与创建本地项目"><a href="#获取与创建本地项目" class="headerlink" title="获取与创建本地项目"></a>获取与创建本地项目</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git init    <span class="comment"># 在当前目录新建一个Git代码库</span></span><br><span class="line">git init 目录    <span class="comment"># 新建一个目录，将其初始化为Git代码库</span></span><br></pre></td></tr></table></figure>
@@ -587,7 +587,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

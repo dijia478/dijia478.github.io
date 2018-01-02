@@ -81,20 +81,20 @@
 
 
 
-<meta name="description" content="一、系统目录结构约定俗成：   bin (binaries)存放二进制可执行文件  etc (etcetera)存放系统配置文件  usr (unix shared resources)用于存放共享的系统资源  home 存放用户文件的根目录  root 超级用户目录">
+<meta name="description" content="一、系统目录结构 约定俗成：   bin (binaries)存放二进制可执行文件  etc (etcetera)存放系统配置文件  usr (unix shared resources)用于存放共享的系统资源  home 存放用户文件的根目录  root 超级用户目录">
 <meta name="keywords" content="Linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux常用命令">
 <meta property="og:url" content="http://dijia478.cn/blog/2016/05/13/2016-05-13-Linux常用命令/index.html">
 <meta property="og:site_name" content="dijia478-刘力源">
-<meta property="og:description" content="一、系统目录结构约定俗成：   bin (binaries)存放二进制可执行文件  etc (etcetera)存放系统配置文件  usr (unix shared resources)用于存放共享的系统资源  home 存放用户文件的根目录  root 超级用户目录">
+<meta property="og:description" content="一、系统目录结构 约定俗成：   bin (binaries)存放二进制可执行文件  etc (etcetera)存放系统配置文件  usr (unix shared resources)用于存放共享的系统资源  home 存放用户文件的根目录  root 超级用户目录">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://dijia478.cn/blog/2016/05/13/2016-05-13-Linux常用命令/linux01.png">
 <meta property="og:image" content="http://dijia478.cn/blog/2016/05/13/2016-05-13-Linux常用命令/linux02.png">
-<meta property="og:updated_time" content="2017-12-31T12:37:05.925Z">
+<meta property="og:updated_time" content="2018-01-02T04:18:52.822Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux常用命令">
-<meta name="twitter:description" content="一、系统目录结构约定俗成：   bin (binaries)存放二进制可执行文件  etc (etcetera)存放系统配置文件  usr (unix shared resources)用于存放共享的系统资源  home 存放用户文件的根目录  root 超级用户目录">
+<meta name="twitter:description" content="一、系统目录结构 约定俗成：   bin (binaries)存放二进制可执行文件  etc (etcetera)存放系统配置文件  usr (unix shared resources)用于存放共享的系统资源  home 存放用户文件的根目录  root 超级用户目录">
 <meta name="twitter:image" content="http://dijia478.cn/blog/2016/05/13/2016-05-13-Linux常用命令/linux01.png">
 
 
@@ -357,8 +357,9 @@
       
 
       
-        <h2 id="一、系统目录结构"><a href="#一、系统目录结构" class="headerlink" title="一、系统目录结构"></a>一、系统目录结构</h2><p>约定俗成：</p>
-<p>  bin (binaries)存放二进制可执行文件<br>  etc (etcetera)存放系统配置文件<br>  usr (unix shared resources)用于存放共享的系统资源<br>  home 存放用户文件的根目录<br>  root 超级用户目录<br><a id="more"></a><br>  sbin (super user binaries)存放二进制可执行文件，只有root才能访问<br>  dev (devices)用于存放设备文件<br>  lib (library)存放跟文件系统中的程序运行所需要的共享库及内核模块<br>  mnt (mount)系统管理员安装临时文件系统的安装点<br>  boot 存放用于系统引导时使用的各种文件<br>  tmp (temporary)用于存放各种临时文件<br>  var (variable)用于存放运行时需要改变数据的文件<br><img src="linux01.png" alt=""></p>
+        <h2 id="一、系统目录结构"><a href="#一、系统目录结构" class="headerlink" title="一、系统目录结构"></a>一、系统目录结构</h2><img src="/blog/2016/05/13/2016-05-13-Linux常用命令/linux01.png">
+<p>约定俗成：</p>
+<p>  bin (binaries)存放二进制可执行文件<br>  etc (etcetera)存放系统配置文件<br>  usr (unix shared resources)用于存放共享的系统资源<br>  home 存放用户文件的根目录<br>  root 超级用户目录<br><a id="more"></a><br>  sbin (super user binaries)存放二进制可执行文件，只有root才能访问<br>  dev (devices)用于存放设备文件<br>  lib (library)存放跟文件系统中的程序运行所需要的共享库及内核模块<br>  mnt (mount)系统管理员安装临时文件系统的安装点<br>  boot 存放用于系统引导时使用的各种文件<br>  tmp (temporary)用于存放各种临时文件<br>  var (variable)用于存放运行时需要改变数据的文件</p>
 <h2 id="二、基本命令"><a href="#二、基本命令" class="headerlink" title="二、基本命令"></a>二、基本命令</h2><p><strong>加粗命令为本人比较常用的命令（会经常更新）</strong></p>
 <h3 id="1-目录操作"><a href="#1-目录操作" class="headerlink" title="1.目录操作"></a>1.目录操作</h3><p>相对路径和绝对路径说明：</p>
 <p>现在在/home/dijia478/下<br>./a/b.txt和a/b.txt都表示相对路径，当前目录下的a文件夹下的b.txt文件<br>/home/dijia478/a/b.txt表示绝对路径，根目录下的home文件夹下的dijia478文件夹下的a文件夹下的b.txt文件</p>
@@ -472,7 +473,7 @@
 <p>#   0 - halt (Do NOT set initdefault to this)<br>#   1 - Single user mode<br>#   2 - Multiuser, without NFS (The same as 3, if you do not have networking)<br>#   3 - Full multiuser mode<br>#   4 - unused<br>#   5 - X11<br>#   6 - reboot (Do NOT set initdefault to this)<br>#<br>id:3:initdefault:<br>~</p>
 </blockquote>
 <p>用level 3 就启动全功能状态的命令行界面，5是图形界面。不要设置其他的，容易作死。<br>在命令行模式下，用startx可以手动启动图形界面(在服务器上操作)</p>
-<h3 id="5-文件权限管理"><a href="#5-文件权限管理" class="headerlink" title="5.文件权限管理"></a>5.文件权限管理</h3><p><img src="linux02.png" alt=""></p>
+<h3 id="5-文件权限管理"><a href="#5-文件权限管理" class="headerlink" title="5.文件权限管理"></a>5.文件权限管理</h3><img src="/blog/2016/05/13/2016-05-13-Linux常用命令/linux02.png">
 <p>Linux三种文件类型：<br>普通文件： 包括文本文件、数据文件、可执行的二进制程序文件等。<br>目录文件： Linux系统把目录看成是一种特殊的文件，利用它构成文件系统的树型结构。<br>设备文件： Linux系统把每一个设备都看成是一个文件<br>文件类型标识：<br>普通文件（-）<br>目录（d）<br>符号链接（l）<br>* 进入etc可以查看，相当于快捷方式<br>字符设备文件（c）<br>块设备文件（s）<br>套接字（s）<br>命名管道（p）</p>
 <p>u 表示“用户（user）”，即文件或目录的所有者。<br>g 表示“同组（group）用户”，即与文件属主有相同组ID的所有用户。<br>o 表示“其他（others）用户”。<br>a 表示“所有（all）用户”。它是系统默认值。<br>操作符号可以是：<br>+ 添加某个权限。<br>- 取消某个权限。<br>= 赋予给定权限并取消其他所有权限（如果有的话）。<br>设置mode所表示的权限可用下述字母的任意组合：<br>r 可读。<br>w 可写。<br>x 可执行。</p>
 <p>文件权限管理：<br><strong>chmod u+rwx a.txt    为a.txt添加所属用户的rwx权限</strong><br>chmod 755 a.txt    为a.txt设置所属用户rwx权限，所属组rx权限，其他用户rx权限（r-4，w-2，x-1）<br>chmod u=rwx,g=rx,o=rx a.txt    （u代表所属用户 g代表所属组的成员用户 o代表其他用户）<br>chown user001:hello1 a.txt    将a.txt的所有者改成user001用户，所属组改成hello1组（需要root权限）<br>chown -R user001:hello1 dir    将dir文件夹的所有者改成user001用户，所属组改成hello1组（需要root权限）</p>
@@ -651,7 +652,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
