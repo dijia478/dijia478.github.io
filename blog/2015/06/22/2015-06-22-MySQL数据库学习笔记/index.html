@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="MySQL," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="dijia478-刘力源" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="数据库1.事务 说明 ：事务是恢复和并发控制的基本单位，是用户定义的一个操作序列。这些操作要么都做，要么都不做，是一个不可分割的工作单位。通过事务，逻辑相关的一组操作绑定在一起，以便服务器保持数据的完整性。 事务的特性：ACID A:原子性(Atomicity)事务是数据库的逻辑工作单位，事务中包括的诸操作要么全做，要么全不做。">
+<meta name="keywords" content="MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL数据库学习笔记">
+<meta property="og:url" content="http://dijia478.cn/blog/2015/06/22/2015-06-22-MySQL数据库学习笔记/index.html">
+<meta property="og:site_name" content="dijia478-刘力源">
+<meta property="og:description" content="数据库1.事务 说明 ：事务是恢复和并发控制的基本单位，是用户定义的一个操作序列。这些操作要么都做，要么都不做，是一个不可分割的工作单位。通过事务，逻辑相关的一组操作绑定在一起，以便服务器保持数据的完整性。 事务的特性：ACID A:原子性(Atomicity)事务是数据库的逻辑工作单位，事务中包括的诸操作要么全做，要么全不做。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-01-03T13:17:16.170Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL数据库学习笔记">
+<meta name="twitter:description" content="数据库1.事务 说明 ：事务是恢复和并发控制的基本单位，是用户定义的一个操作序列。这些操作要么都做，要么都不做，是一个不可分割的工作单位。通过事务，逻辑相关的一组操作绑定在一起，以便服务器保持数据的完整性。 事务的特性：ACID A:原子性(Atomicity)事务是数据库的逻辑工作单位，事务中包括的诸操作要么全做，要么全不做。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://dijia478.cn/blog/2015/06/22/2015-06-22-MySQL数据库学习笔记/"/>
+
+
+
+
+
+  <title>MySQL数据库学习笔记 | dijia478-刘力源</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">dijia478-刘力源</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dijia478.cn/blog/2015/06/22/2015-06-22-MySQL数据库学习笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="dijia478">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="dijia478-刘力源">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MySQL数据库学习笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-06-22T21:50:51+08:00">
+                2015-06-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><p><strong>1.事务</strong></p>
+<p>说明 ：事务是恢复和并发控制的基本单位，是用户定义的一个操作序列。这些操作要么都做，要么都不做，是一个不可分割的工作单位。通过事务，逻辑相关的一组操作绑定在一起，以便服务器保持数据的完整性。</p>
+<p>事务的特性：ACID</p>
+<p>A:原子性(Atomicity)<br>事务是数据库的逻辑工作单位，事务中包括的诸操作要么全做，要么全不做。<br><a id="more"></a><br>C:一致性(Consistency)<br>事务执行的结果必须是使数据库从一个一致性状态变到另一个一致性状态。一致性与原子性是密切相关的。</p>
+<p>I:隔离性(Isolation)<br>一个事务的执行不能被其他事务干扰。</p>
+<p>D:持续性/永久性(Durability)<br>一个事务一旦提交，它对数据库中数据的改变就应该是永久性的。</p>
+<p><strong>2.多个条件where 1=1 模糊查询%%通配符</strong></p>
+<p><strong>3.手写一段sql语句，具体内容忘了，好像和limit有关</strong></p>
+<p><strong>4.存储引擎的区别</strong></p>
+<p>InnoDB 是支持事务的存储引擎，其设计目标是面向在线事务处理的应用，其特点是行锁设计，支持外键，支持类似Oracle的非锁定读，默认读取操作不会产生锁。MySQL5.5以后是默认的存储引擎。还提供了插入缓存，二次写，预读等高性能和高可用的功能。</p>
+<p>MyISAM 引擎不支持事务，表锁设计，支持全文索引，主要是面向OLAP数据库应用。</p>
+<p>NDB是集群存储引擎，其数据全部放在内存中，因此主键查找的速度极快。</p>
+<p>Memory将表中的数据存放在内存中，如果数据库重启或者发生奔溃，表中的数据都将消失。它使用于存储临时数据的临时表。默认采用哈希索引</p>
+<p><strong>5.sql注入原理 </strong></p>
+<p>就是通过把SQL命令插入到Web 表单 提交或输入域名或页面请求的查询字符串，最终达到欺骗服务器执行恶意的SQL命令</p>
+<p>1）猜表名，列名等 2）后台身份验证绕过漏洞 </p>
+<p>验证绕过漏洞就是’or’=’or’后台绕过漏洞，利用的就是AND和OR的运算规则，从而造成后台脚本逻辑性错误.</p>
+<p>防范：</p>
+<p>1）永远不要信任用户的输入，要对用户的输入进行校验，可以通过正则表达式，或限制长度，对单引号和双”-“进行转换等。</p>
+<p>2）永远不要使用动态拼装SQL，可以使用参数化的SQL或者直接使用存储过程进行数据查询存取。</p>
+<p>3）永远不要使用管理员权限的数据库连接，为每个应用使用单独的权限有限的数据库连接。</p>
+<p>4）不要把机密信息明文存放，请加密或者hash掉密码和敏感的信息。</p>
+<p>5）应用的异常信息应该给出尽可能少的提示，最好使用自定义的错误信息对原始错误信息进行包装，把异常信息存放在独立的表中。 </p>
+<p><strong>6.数据库范式</strong></p>
+<p>第一范式（1NF）：属性不可分。</p>
+<p>第二范式（2NF）：符合1NF，并且，非主属性完全依赖于码。</p>
+<p>第三范式（3NF）：符合2NF，并且，消除传递依赖</p>
+<p>BCNF:符合3NF, 并且,没有任何属性完全函数依赖于非码的任何一组属性.</p>
+<h2 id="数据库索引"><a href="#数据库索引" class="headerlink" title="数据库索引"></a>数据库索引</h2><p>索引是一个单独存储在磁盘上的数据库结构，它们包含着对数据表里所有记录的引用指针，使用索引可以提高数据库特定数据的查询速度.索引时在存储引擎中实现的，因此每种存储引擎的索引不一定完全相同,并且每种存储引擎也不一定支持所有索引类型．</p>
+<p>索引的存储类型有两种：BTREE和HASH,具体和表的存储引擎有关．MyISAM和InnoDB存储引擎只支持BTREE;MEMORY/HEAD存储索引可以支持HASH和BTREE索引．</p>
+<p><strong>索引的优点：</strong></p>
+<p>1.通过创建唯一索引，可以保证数据库表中每行数据的唯一性.</p>
+<p>2.可以加快数据的查询速度．</p>
+<p>3.在实现数据的参考完整性方面，可以加速表和表之间的连接．</p>
+<p><strong>索引的缺点：</strong></p>
+<p>1.创建索引和维护索引要耗费时间，并且随着数据量的增加耗费时间也增加．</p>
+<p>2.索引需要占空间内存．</p>
+<p>3.在对表中数据进行增加,删除和修改的时候，索引也需要动态维护，这样降低了数据维护速度．</p>
+<p><strong>索引分类：</strong></p>
+<p>1.普通索引</p>
+<p>2.唯一索引</p>
+<h2 id="数据库锁机制"><a href="#数据库锁机制" class="headerlink" title="数据库锁机制"></a>数据库锁机制</h2><p>数据库锁定机制简单来说就是数据库为了保证数据的一致性而使各种共享资源在被并发访问，访问变得有序所设计的一种规则。MySQL各存储引擎使用了三种类型（级别）的锁定机制：行级锁定，页级锁定和表级锁定。</p>
+<ul>
+<li>表级锁定（table-level）：表级别的锁定是MySQL各存储引擎中最大颗粒度的锁定机制。该锁定机制最大的特点是实现逻辑非常简单，带来的系统负面影响最小。所以获取锁和释放锁的速度很快。由于表级锁一次会将整个表锁定，所以可以很好的避免困扰我们的死锁问题。当然，锁定颗粒度大所带来最大的负面影响就是出现锁定资源争用的概率也会最高，致使并大度大打折扣。表级锁分为读锁和写锁。</li>
+<li>页级锁定（page-level）：页级锁定的特点是锁定颗粒度介于行级锁定与表级锁之间，所以获取锁定所需要的资源开销，以及所能提供的并发处理能力也同样是介于上面二者之间。另外，页级锁定和行级锁定一样，会发生死锁。</li>
+<li>行级锁定（row-level）：行级锁定最大的特点就是锁定对象的颗粒度很小，也是目前各大数据库管理软件所实现的锁定颗粒度最小的。由于锁定颗粒度很小，所以发生锁定资源争用的概率也最小，能够给予应用程序尽可能大的并发处理能力而提高一些需要高并发应用系统的整体性能。虽然能够在并发处理能力上面有较大的优势，但是行级锁定也因此带来了不少弊端。由于锁定资源的颗粒度很小，所以每次获取锁和释放锁需要做的事情也更多，带来的消耗自然也就更大了。此外，行级锁定也最容易发生死锁。InnoDB的行级锁同样分为两种，共享锁和排他锁，同样InnoDB也引入了意向锁（表级锁）的概念，所以也就有了意向共享锁和意向排他锁，所以InnoDB实际上有四种锁，即共享锁（S）、排他锁（X）、意向共享锁（IS）、意向排他锁（IX）；</li>
+</ul>
+<p>在MySQL数据库中，使用表级锁定的主要是MyISAM，Memory，CSV等一些非事务性存储引擎，而使用行级锁定的主要是Innodb存储引擎和NDBCluster存储引擎，页级锁定主要是BerkeleyDB存储引擎的锁定方式。</p>
+<p>而意向锁的作用就是当一个事务在需要获取资源锁定的时候，如果遇到自己需要的资源已经被排他锁占用的时候，该事务可以需要锁定行的表上面添加一个合适的意向锁。如果自己需要一个共享锁，那么就在表上面添加一个意向共享锁。而如果自己需要的是某行（或者某些行）上面添加一个排他锁的话，则先在表上面添加一个意向排他锁。意向共享锁可以同时并存多个，但是意向排他锁同时只能有一个存在。</p>
+<p>|             | 共享锁（S）| 排他锁（X）| 意向共享锁（IS）| 意向排他锁（IX）|<br>共享锁（S）    | 兼容        | 冲突       | 兼容            |冲突<br>排他锁（X）    | 冲突        | 冲突       | 冲突            |冲突<br>意向共享锁（IS） | 兼容      | 冲突       | 兼容            |兼容<br>意向排他锁（IX） | 冲突         | 冲突       | 兼容            |兼容</p>
+<p>参考地址：<a href="http://www.cnblogs.com/ggjucheng/archive/2012/11/14/2770445.html" target="_blank" rel="noopener">http://www.cnblogs.com/ggjucheng/archive/2012/11/14/2770445.html</a></p>
+<p>MyISAM 表锁优化建议：</p>
+<p>1、缩短锁定时间</p>
+<p>2、分离能并行的操作</p>
+<p>3、合理利用读写优先级</p>
+<h2 id="乐观锁，悲观锁"><a href="#乐观锁，悲观锁" class="headerlink" title="乐观锁，悲观锁"></a>乐观锁，悲观锁</h2><p>悲观锁:它指的是对数据被外界（包括本系统当前的其他事务，以及来自外部系统的事务处理）修改持保守态度，因此，在整个数据处理过程中，将数据处于锁定状态。悲观锁的实现，往往依靠数据库提供的锁机制。悲观的缺陷是不论是页锁还是行锁，加锁的时间可能会很长，这样可能会长时间的限制其他用户的访问，也就是说悲观锁的并发访问性不好。</p>
+<p>乐观锁（ Optimistic Locking ） :相对悲观锁而言，乐观锁假设认为数据一般情况下不会造成冲突，所以在数据进行提交更新的时候，才会正式对数据的冲突与否进行检测，如果发现冲突了，则则拒绝更新并返回用户错误的信息，让用户决定如何去做。乐观锁由程序实现，不会存在死锁问题。它适用的场景也相对乐观。但乐观锁不能解决脏读的问题</p>
+<p>悲观锁：假定会发生并发冲突，屏蔽一切可能违反数据完整性的操作。[1]</p>
+<p>乐观锁：假设不会发生并发冲突，只在提交操作时检查是否违反数据完整性。[1] </p>
+<p>乐观锁不能解决脏读的问题。</p>
+<h2 id="事务隔离机制"><a href="#事务隔离机制" class="headerlink" title="事务隔离机制"></a>事务隔离机制</h2><p>为什么？</p>
+<p>1.更新丢失</p>
+<p>两个事务都同时更新一行数据，一个事务对数据的更新把另一个事务对数据的更新覆盖了。这是因为系统没有执行任何的锁操作，因此并发事务并没有被隔离开来。</p>
+<p>2.脏读</p>
+<p>一个事务读取到了另一个事务未提交的数据操作结果。这是相当危险的，因为很可能所有的操作都被回滚。</p>
+<p>3.不可重复读</p>
+<p>不可重复读（Non-repeatable Reads）：一个事务对同一行数据重复读取两次，但是却得到了不同的结果。</p>
+<p>4、幻读：幻读与不可重复读类似。它发生在一个事务(T1)读取了几行数据，接着另一个并发事务(T2)插入了一些数据时。在随后的查询中，第一个事务(T1)就会发现多了一些原本不存在的记录</p>
+<p>事物隔离级别：</p>
+<ul>
+<li>未提交读(READ UNCOMMITTED):允许脏读 不允许更新丢失</li>
+<li>提交读(READ COMMITTED):允许不可重复读 但不允许脏读</li>
+<li>可重复读(REPEATABLE READ):禁止不可重复读和脏读 但可能出现幻读</li>
+<li>可串行化(SERIZLIZABLE):它通过强制事务串行执行，不能并发的执行，避免了前面说的幻读的问题。</li>
+</ul>
+<p>总结：隔离级别越高，越能保证事务的完整性和一致性，但对并发性能的影响也就越大。对于多数应用可以把隔离级别设置为ReadCommited，也就是授权读取，能够避免脏读，而保持较好的并发性能。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">脏读	不可重复读	幻读可能性	加锁读</span><br></pre></td></tr></table></figure>
+<p>未提交读  YES    YES        YES        NO<br>提交读    NO    YES        YES        NO<br>可重复读  NO    NO        YES        NO<br>可串行化  NO    NO        NO        YES</p>
+<h2 id="数据库事务属性"><a href="#数据库事务属性" class="headerlink" title="数据库事务属性"></a>数据库事务属性</h2><p>事务是由一组SQL语句组成的逻辑处理单元，事务具有以下4个属性，通常简称为事务的ACID属性。<br>原子性（Atomicity）：事务是一个原子操作单元，其对数据的修改，要么全都执行，要么全都不执行。<br>一致性（Consistent）：在事务开始和完成时，数据都必须保持一致状态。这意味着所有相关的数据规则都必须应用于事务的修改，以保持数据的完整性；事务结束时，所有的内部数据结构（如B树索引或双向链表）也都必须是正确的。<br>隔离性（Isolation）：数据库系统提供一定的隔离机制，保证事务在不受外部并发操作影响的“独立”环境执行。这意味着事务处理过程中的中间状态对外部是不可见的，反之亦然。<br>持久性（Durable）：事务完成之后，它对于数据的修改是永久性的，即使出现系统故障也能够保持。</p>
+<h2 id="数据库事务的几种粒度"><a href="#数据库事务的几种粒度" class="headerlink" title="数据库事务的几种粒度"></a>数据库事务的几种粒度</h2><h2 id="数据库的索引是如何实现的"><a href="#数据库的索引是如何实现的" class="headerlink" title="数据库的索引是如何实现的"></a>数据库的索引是如何实现的</h2><h3 id="MyISAM索引实现"><a href="#MyISAM索引实现" class="headerlink" title="MyISAM索引实现"></a>MyISAM索引实现</h3><p>MyISAM索引使用了B+Tree作为索引结构，叶子结点的data域存放的是数据记录的地址。MyISAM中索引检索的算法为首先按照B+Tree搜索算法搜索索引，如果指定的Key存在，则取出其data域的值，然后以data域的值为地址，读取相应数据记录。主索引和辅助索引的存储结构没有任何区别。</p>
+<h3 id="InnoDB索引实现"><a href="#InnoDB索引实现" class="headerlink" title="InnoDB索引实现"></a>InnoDB索引实现</h3><p>虽然InnoDB也使用B+Tree作为索引结构，但具体实现方式却与MyISAM截然不同。<br>第一个重大区别是InnoDB的数据文件本身就是索引文件。从上文知道，MyISAM索引文件和数据文件是分离的，索引文件仅保存数据记录的地址。而在InnoDB中，表数据文件本身就是按B+Tree组织的一个索引结构，这棵树的叶节点data域保存了完整的数据记录。这种索引叫做聚集索引。这种索引叫做聚集索引。因为InnoDB的数据文件本身要按主键聚集，所以InnoDB要求表必须有主键（MyISAM可以没有），如果没有显式指定，则MySQL系统会自动选择一个可以唯一标识数据。<br>第二个与MyISAM索引的不同是InnoDB的辅助索引data域存储相应记录主键的值而不是地址。换句话说，InnoDB的所有辅助索引都引用主键作为data域。</p>
+<h3 id="Memory索引实现"><a href="#Memory索引实现" class="headerlink" title="Memory索引实现"></a>Memory索引实现</h3><p>Memory索引适用于需要快速访问数据的场景，显示支持哈希索引。内部基于哈希表数据结构实现，只包含哈希值和行指针，对于每一行数据，存储引擎都会对所有的引擎列计算一个哈希码，在哈希表对应位置存放该行数据的指针或地址。为了解决多个hash冲突问题，哈希索引采用了链地址法来解决冲突问题。所以采用链表数组作为存储结构。这种索引结构十分紧凑，且具有很快的查询速度。但也存在一些问题，1.哈希表数据不是按照索引顺序存储的，所以无法用于排序。2.只能支持等值比较查询。3.存在冲突情况下查询速度变慢。<br><a href="https://msdn.microsoft.com/zh-cn/library/dn133190.aspx" target="_blank" rel="noopener">https://msdn.microsoft.com/zh-cn/library/dn133190.aspx</a></p>
+<h2 id="数据库连接池原理"><a href="#数据库连接池原理" class="headerlink" title="数据库连接池原理"></a>数据库连接池原理</h2><p><strong>背景</strong></p>
+<p>传统的数据库连接方式是，用户每次请求都要向数据库获取连接，而数据库连接的创建和关闭需要一定的开销。频繁的建立、关闭数据库，会极大的降低系统的性能，增大系统的开销，甚至成为系统的瓶颈。另外使用这种传统的模式，还必须管理数据库的每一个连接，以确保他们能正确关闭，如果出现程序异常而导致某些连接未能关闭。同时无节制的创建连接极易导致数据库服务器内存溢出。</p>
+<p><strong>原理</strong></p>
+<p>数据库连接池的基本思想就是为数据库连接建立一个“缓冲池”。预先在缓冲池中放入一定数量的连接，当需要建立数据库连接时，只需从“缓冲池”中取出一个，使用完毕之后再放回去。以及一套连接使用、分配、管理策略，使得该连接池中的连接可以得到高效、安全的复用，避免了数据库连接频繁建立、关闭的开销。我们可以通过设定连接池最大连接数来防止系统无尽的与数据库连接。</p>
+<p><strong>开源java连接池</strong></p>
+<p>现在很多Web服务器(Weblogic, WebSphere, Tomcat)都提供了DataSoruce的实现，即连接池的实现。通常我们把DataSource的实现，按其英文含义称之为数据源，数据源中都包含了数据库连接池的实现。</p>
+<p>1.C3P0  :是一个开放源代码的JDBC连接池，它在lib目录中与Hibernate一起发布,包括了实现jdbc3和jdbc2扩展规范说明的Connection 和Statement 池的DataSources 对象。参考网站: <a href="http://sourceforge.net/projects/c30/" target="_blank" rel="noopener">http://sourceforge.net/projects/c30/</a></p>
+<p>2.Proxool :是一个Java SQL Driver驱动程序，提供了对你选择的其它类型的驱动程序的连接池封装。可以非常简单的移植到现存的代码中。完全可配置。快速，成熟，健壮。可以透明地为你现存的JDBC驱动程序增加连接池功能。  参考网站: <a href="http://proxool.sourceforge.net" target="_blank" rel="noopener">http://proxool.sourceforge.net</a></p>
+<p>3.Jakarta DBCP  :是一个依赖Jakarta commons-pool对象池机制的数据库连接池.DBCP可以直接的在应用程序用使用。参考网站: <a href="http://commons.apache.org/proper/commons-dbcp/" target="_blank" rel="noopener">http://commons.apache.org/proper/commons-dbcp/</a></p>
+<p>原理: <a href="http://www.uml.org.cn/sjjm/201004153.asp" target="_blank" rel="noopener">http://www.uml.org.cn/sjjm/201004153.asp</a><br>实现: <a href="http://www.cnblogs.com/lihuiyy/archive/2012/02/14/2351768.html" target="_blank" rel="noopener">http://www.cnblogs.com/lihuiyy/archive/2012/02/14/2351768.html</a></p>
+<p>连接池使用什么数据结构实现（链表）</p>
+<h2 id="mysql有那些存储引擎，分别有什么特点"><a href="#mysql有那些存储引擎，分别有什么特点" class="headerlink" title="mysql有那些存储引擎，分别有什么特点"></a>mysql有那些存储引擎，分别有什么特点</h2><h2 id="join操作"><a href="#join操作" class="headerlink" title="join操作"></a>join操作</h2><p>LEFT JOIN 关键字会从左表 (Persons) 那里返回所有的行，即使在右表 (Orders) 中没有匹配的行。</p>
+<p>RIGHT JOIN 关键字会从右表 (Orders) 那里返回所有的行，即使在左表 (Persons) 中没有匹配的行。</p>
+<p>FULL JOIN 关键字会从左表 (Persons) 和右表 (Orders) 那里返回所有的行。如果 “Persons” 中的行在表 “Orders” 中没有匹配，或者如果 “Orders” 中的行在表 “Persons” 中没有匹配，这些行同样会列出。</p>
+<p>INNER JOIN 关键字在表中存在至少一个匹配时返回行。如果 “Persons” 中的行在 “Orders” 中没有匹配，就不会列出这些行。</p>
+<h2 id="三大范式"><a href="#三大范式" class="headerlink" title="三大范式"></a>三大范式</h2><p><strong>第一范式</strong>（无重复的列）</p>
+<p><strong>第二范式</strong>（属性完全依赖于主键）</p>
+<p>定义：满足第一范式前提，当存在多个主键的时候，才会发生不符合第二范式的情况。比如有两个主键，不能存在这样的属性，它只依赖于其中一个主键，这就是不符合。通俗解释：任意一个字段都只依赖表中的同一个字段。</p>
+<p>eg:比如不符合第二范式<br>学生证 名称    学生证号    学生证办理时间    借书证名称    借书证号    借书证办理时间</p>
+<p>改成2张表如下<br>学生证表<br>学生证    学生证号    学生证办理时间</p>
+<p>借书证表<br>借书证    借书证号    借书证办理时间</p>
+<p><strong>第三范式</strong>（属性不能传递依赖于主属性）</p>
+<p>定义：满足第二范式前提，如果某一属性依赖于其他非主键属性，而其他非主键属性又依赖于主键，那么这个属性就是间接依赖于主键，这被称作传递依赖于主属性。 </p>
+<p>eg:爸爸资料表，不满足第三范式<br>爸爸    儿子    女儿    女儿的小熊    女儿的海绵宝宝</p>
+<p>改成 爸爸信息表：<br>爸爸    儿子    女儿<br>女儿信息表<br>女儿    女儿的小熊    女儿的海绵宝宝</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您的支持将鼓励我继续创作</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="dijia478 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="dijia478 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2015/06/10/2015-06-10-MySQL修改root密码/" rel="next" title="MySQL在Linux上修改root密码">
+                <i class="fa fa-chevron-left"></i> MySQL在Linux上修改root密码
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2015/09/21/2015-09-21-Git分支的学习笔记整理/" rel="prev" title="Git分支的学习笔记整理">
+                Git分支的学习笔记整理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.gif"
+                alt="dijia478" />
+            
+              <p class="site-author-name" itemprop="name">dijia478</p>
+              <p class="site-description motion-element" itemprop="description">写写代码，发发感悟，聊聊人生</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.importnew.com/" title="ImportNew" target="_blank">ImportNew</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://segmentfault.com/" title="SegmentFault" target="_blank">SegmentFault</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://stackoverflow.com/" title="Stack Overflow" target="_blank">Stack Overflow</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.cnblogs.com/" title="博客园" target="_blank">博客园</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.csdn.net/" title="CSDN" target="_blank">CSDN</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库"><span class="nav-number">1.</span> <span class="nav-text">数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库索引"><span class="nav-number">2.</span> <span class="nav-text">数据库索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库锁机制"><span class="nav-number">3.</span> <span class="nav-text">数据库锁机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#乐观锁，悲观锁"><span class="nav-number">4.</span> <span class="nav-text">乐观锁，悲观锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事务隔离机制"><span class="nav-number">5.</span> <span class="nav-text">事务隔离机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库事务属性"><span class="nav-number">6.</span> <span class="nav-text">数据库事务属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库事务的几种粒度"><span class="nav-number">7.</span> <span class="nav-text">数据库事务的几种粒度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库的索引是如何实现的"><span class="nav-number">8.</span> <span class="nav-text">数据库的索引是如何实现的</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MyISAM索引实现"><span class="nav-number">8.1.</span> <span class="nav-text">MyISAM索引实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB索引实现"><span class="nav-number">8.2.</span> <span class="nav-text">InnoDB索引实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Memory索引实现"><span class="nav-number">8.3.</span> <span class="nav-text">Memory索引实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库连接池原理"><span class="nav-number">9.</span> <span class="nav-text">数据库连接池原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mysql有那些存储引擎，分别有什么特点"><span class="nav-number">10.</span> <span class="nav-text">mysql有那些存储引擎，分别有什么特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#join操作"><span class="nav-number">11.</span> <span class="nav-text">join操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三大范式"><span class="nav-number">12.</span> <span class="nav-text">三大范式</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2014 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dijia478</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
