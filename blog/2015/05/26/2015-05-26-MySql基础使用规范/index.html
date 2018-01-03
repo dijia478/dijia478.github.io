@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="泛型," />
+  <meta name="keywords" content="MySQL," />
 
 
 
@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="代码背景：有大量的action类中需要使用模型驱动，所以会抽取公共部分代码， 但由于action类要实现ModelDriven接口，抽取成BaseAction里面的泛型T如何在子类实例化的问题。">
-<meta name="keywords" content="泛型">
+<meta name="description" content="一、基础规范1、使用InnoDB存储引擎 支持事务、行级锁、并发性能更好、CPU及内存缓存页优化使得资源利用率更高 2、推荐使用utf8mb4字符集 无需转码，无乱码风险, 支持emoji表情以及部分不常见汉字 3、表、字段必须加注释 方便他人理解字段意思。">
+<meta name="keywords" content="MySQL">
 <meta property="og:type" content="article">
-<meta property="og:title" content="如何抽取代码后，在父类实例化泛型的问题">
-<meta property="og:url" content="http://dijia478.cn/blog/2017/08/18/2017-08-18-父类实例化泛型/index.html">
+<meta property="og:title" content="MySQL基础使用规范">
+<meta property="og:url" content="http://dijia478.cn/blog/2015/05/26/2015-05-26-MySql基础使用规范/index.html">
 <meta property="og:site_name" content="dijia478-刘力源">
-<meta property="og:description" content="代码背景：有大量的action类中需要使用模型驱动，所以会抽取公共部分代码， 但由于action类要实现ModelDriven接口，抽取成BaseAction里面的泛型T如何在子类实例化的问题。">
+<meta property="og:description" content="一、基础规范1、使用InnoDB存储引擎 支持事务、行级锁、并发性能更好、CPU及内存缓存页优化使得资源利用率更高 2、推荐使用utf8mb4字符集 无需转码，无乱码风险, 支持emoji表情以及部分不常见汉字 3、表、字段必须加注释 方便他人理解字段意思。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-01T05:07:49.184Z">
+<meta property="og:updated_time" content="2018-01-03T02:01:57.127Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="如何抽取代码后，在父类实例化泛型的问题">
-<meta name="twitter:description" content="代码背景：有大量的action类中需要使用模型驱动，所以会抽取公共部分代码， 但由于action类要实现ModelDriven接口，抽取成BaseAction里面的泛型T如何在子类实例化的问题。">
+<meta name="twitter:title" content="MySQL基础使用规范">
+<meta name="twitter:description" content="一、基础规范1、使用InnoDB存储引擎 支持事务、行级锁、并发性能更好、CPU及内存缓存页优化使得资源利用率更高 2、推荐使用utf8mb4字符集 无需转码，无乱码风险, 支持emoji表情以及部分不常见汉字 3、表、字段必须加注释 方便他人理解字段意思。">
 
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://dijia478.cn/blog/2017/08/18/2017-08-18-父类实例化泛型/"/>
+  <link rel="canonical" href="http://dijia478.cn/blog/2015/05/26/2015-05-26-MySql基础使用规范/"/>
 
 
 
 
 
-  <title>如何抽取代码后，在父类实例化泛型的问题 | dijia478-刘力源</title>
+  <title>MySQL基础使用规范 | dijia478-刘力源</title>
   
 
 
@@ -265,7 +265,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dijia478.cn/blog/2017/08/18/2017-08-18-父类实例化泛型/">
+    <link itemprop="mainEntityOfPage" href="http://dijia478.cn/blog/2015/05/26/2015-05-26-MySql基础使用规范/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="dijia478">
@@ -282,7 +282,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">如何抽取代码后，在父类实例化泛型的问题</h1>
+          <h1 class="post-title" itemprop="name headline">MySQL基础使用规范</h1>
         
 
         <div class="post-meta">
@@ -294,8 +294,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-18T21:10:45+08:00">
-                2017-08-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-05-26T19:41:51+08:00">
+                2015-05-26
               </time>
             
 
@@ -354,10 +354,69 @@
       
 
       
-        <p>代码背景：有大量的action类中需要使用模型驱动，所以会抽取公共部分代码，</p>
-<p>但由于action类要实现ModelDriven<t>接口，抽取成BaseAction里面的泛型T如何在子类实例化的问题。<a id="more"></a></t></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 抽取Action的公共代码 ，简化开发</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> dijia478</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span> 1.0，2017-8-30 20:36</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseAction</span>&lt;<span class="title">T</span>&gt; <span class="keyword">extends</span> <span class="title">ActionSupport</span> <span class="keyword">implements</span> <span class="title">ModelDriven</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 模型驱动 */</span></span><br><span class="line">    <span class="keyword">protected</span> T model;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getModel</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> model;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 构造器 完成model实例化</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">BaseAction</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 构造子类Action对象 ，获取继承父类型的泛型</span></span><br><span class="line">        <span class="comment">// AreaAction extends BaseAction&lt;Area&gt;</span></span><br><span class="line">        <span class="comment">// BaseAction&lt;Area&gt;</span></span><br><span class="line">        Type genericSuperclass = <span class="keyword">this</span>.getClass().getGenericSuperclass();</span><br><span class="line">        <span class="comment">// 获取类型第一个泛型参数</span></span><br><span class="line">        ParameterizedType parameterizedType = (ParameterizedType) genericSuperclass;</span><br><span class="line">        Class&lt;T&gt; modelClass = (Class&lt;T&gt;) parameterizedType.getActualTypeArguments()[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            model = modelClass.newInstance();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InstantiationException | IllegalAccessException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">            System.out.println(<span class="string">"模型构造失败..."</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这段代码是通过构造器来实例化泛型T的，子类要继承BaseAction，加载子类的时候，子类构造默认会调用supper();，所以会将泛型T实例化</p>
+        <h3 id="一、基础规范"><a href="#一、基础规范" class="headerlink" title="一、基础规范"></a>一、基础规范</h3><p><strong>1、使用InnoDB存储引擎</strong></p>
+<p>支持事务、行级锁、并发性能更好、CPU及内存缓存页优化使得资源利用率更高</p>
+<p><strong>2、推荐使用utf8mb4字符集</strong></p>
+<p>无需转码，无乱码风险, 支持emoji表情以及部分不常见汉字</p>
+<p><strong>3、表、字段必须加注释</strong></p>
+<p>方便他人理解字段意思。<br><a id="more"></a><br><strong>4、不在数据库做计算</strong></p>
+<p>禁止使用存储过程、视图、触发器、Event。</p>
+<p>在并发量大的情况下，这些功能很可能将数据库拖跨，业务逻辑放到服务层具备更好的扩展性，能够轻易实现“增机器就加性能”</p>
+<p><strong>5、禁止存储文件</strong></p>
+<p>文件存储在文件系统，数据库里存URI</p>
+<p><strong>6、控制单表数据量</strong></p>
+<p>单表记录控制在千万级</p>
+<h3 id="二、命名规范"><a href="#二、命名规范" class="headerlink" title="二、命名规范"></a>二、命名规范</h3><p><strong>1、库名、表名、字段名：小写，下划线风格</strong></p>
+<p>非唯一索引名idx_xxx，唯一索引名uniq_xxx</p>
+<p><strong>2、表必须有主键，例如自增主键</strong></p>
+<p>a）主键递增，数据行写入可以提高插入性能</p>
+<p>b）主键要选择较短的数据类型，Innodb引擎普通索引都会保存主键的值，较短的数据类型可以有效的减少索引的磁盘空间，提高索引的缓存效率</p>
+<p>c）保证实体的完整性，唯一性</p>
+<p><strong>3、不要使用外键，如果有外键约束，用应用程序控制</strong></p>
+<p>外键会导致表与表之间耦合，update与delete操作都会涉及相关联的表，十分影响sql 的性能，甚至会造成死锁。高并发情况下容易造成数据库性能下降，大数据高并发业务场景数据库使用以性能优先</p>
+<h3 id="三、字段设计规范"><a href="#三、字段设计规范" class="headerlink" title="三、字段设计规范"></a>三、字段设计规范</h3><p><strong>1、把字段定义为NOT NULL并且提供默认值</strong></p>
+<p>a）null的列使索引/索引统计/值比较都更加复杂，对MySQL来说更难优化</p>
+<p>b）null 这种类型MySQL内部需要进行特殊处理，增加数据库处理记录的复杂性；同等条件下，表中有较多空字段的时候，数据库的处理性能会降低很多</p>
+<p>c）null值需要更多的存储空间，无论是表还是索引中每行中的null的列都需要额外的空间来标识</p>
+<p>d）对null 的处理时候，只能采用is null或is not null，而不能采用=、in、&lt;、&lt;&gt;、!=、not in这些操作符号。如：where name!=’zhangsan’，如果存在name为null值的记录，查询结果就不会包含name为null值的记录</p>
+<p><strong>2、不要使用TEXT、BLOB类型</strong></p>
+<p>会浪费更多的磁盘和内存空间，非必要的大量的大字段查询会淘汰掉热数据，导致内存命中率急剧降低，影响数据库性能,如果必须要使用则独立出来一张表，用主键来对应，避免影响其它字段索引效率</p>
+<p><strong>3、不要使用小数存储货币</strong></p>
+<p>建议使用整数，小数容易导致钱对不上</p>
+<p><strong>4、必须使用varchar存储手机号</strong></p>
+<p>手机号会去做数学运算么？</p>
+<p><strong>5、为提高效率可以牺牲范式设计，冗余数据</strong></p>
+<p>a）不是频繁修改的字段</p>
+<p>b）不是 varchar 超长字段，更不能是 text 字段</p>
+<h3 id="四、索引设计规范"><a href="#四、索引设计规范" class="headerlink" title="四、索引设计规范"></a>四、索引设计规范</h3><p><strong>1、禁止在更新十分频繁、区分度不高的属性上建立索引</strong></p>
+<p>a）更新会变更B+树，更新频繁的字段建立索引会大大降低数据库性能</p>
+<p>b）“性别”这种区分度不大的属性，建立索引是没有什么意义的</p>
+<p><strong>2、建立组合索引，必须把区分度高的字段放在最左边</strong></p>
+<p>如果 where a=? and b=? ， a 列的几乎接近于唯一值，那么只需要单建 idx_a 索引即可</p>
+<p><strong>3、 页面搜索严禁左模糊或者全模糊</strong></p>
+<p>索引文件具有 B-Tree 的最左前缀匹配特性，如果左边的值未确定，那么无法使用此索引, 如果需要请走搜索引擎来解决</p>
+<h3 id="五、SQL使用规范"><a href="#五、SQL使用规范" class="headerlink" title="五、SQL使用规范"></a>五、SQL使用规范</h3><p><strong>1、禁止使用SELECT *，只获取必要的字段，需要显示说明列属性</strong></p>
+<p>a）消耗cpu，io，内存，带宽</p>
+<p>b）不能有效的利用覆盖索引</p>
+<p>c）使用SELECT *容易在增加或者删除字段后出现程序BUG, 不具有扩展性</p>
+<p><strong>2、使用INSERT INTO t_xxx VALUES(xxx)，必须显示指定插入的列属性</strong></p>
+<p>容易在增加或者删除字段后出现程序BUG</p>
+<p><strong>3、务必请使用“同类型”进行比较，否则可能全表扫面</strong></p>
+<p>SELECT name FROM t_user WHERE phone=1333333333 会导致全表扫描.</p>
+<p><strong>4、禁止在WHERE条件的上使用函数或者计算</strong></p>
+<p>解读：SELECT naem FROM t_user WHERE date(create_datatime)=’2017-12-15’ 会导致全表扫描</p>
+<p>推荐的写法是：SELECT name FROM t_user WHERE create_datatime&gt;=’2017-02-15’ and create_datatime &lt; ‘2017-02-16 ‘</p>
+<p><strong>5、禁止负向查询，以及%开头的模糊查询</strong></p>
+<p>a）负向查询条件：NOT、!=、&lt;&gt;、!&lt;、!&gt;、NOT IN、NOT LIKE等，会导致全表扫描</p>
+<p>b）%开头的模糊查询，会导致全表扫描</p>
+<p><strong>6、不要大表使用JOIN查询，禁止大表使用子查询</strong></p>
+<p>会产生临时表，消耗较多内存与CPU，极大影响数据库性能</p>
+<p><strong>7、OR改写为IN()或者UNION</strong></p>
+<p>原因很简单or不会走索引</p>
+<p><strong>8、简单的事务</strong></p>
+<p>事务就像程序中的锁一样粒度尽可能要小</p>
+<p><strong>9、不要一次更新大量数据</strong></p>
+<p>数据更新会对行或者表加锁，应该分为多次更新</p>
 
       
     </div>
@@ -404,7 +463,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/泛型/" rel="tag"># 泛型</a>
+            <a href="/tags/MySQL/" rel="tag"># MySQL</a>
           
         </div>
       
@@ -417,8 +476,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/blog/2017/06/07/2017-06-07-Linux服务器上安装JDK小白教程/" rel="next" title="Linux服务器上安装JDK小白教程">
-                <i class="fa fa-chevron-left"></i> Linux服务器上安装JDK小白教程
+              <a href="/blog/2015/04/18/2015-04-18-如何正确的写出单例模式/" rel="next" title="如何正确的写出单例模式">
+                <i class="fa fa-chevron-left"></i> 如何正确的写出单例模式
               </a>
             
           </div>
@@ -427,8 +486,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/blog/2017/11/02/2017-11-02-阿里巴巴Java开发手册/" rel="prev" title="阿里巴巴Java开发手册-编程规约">
-                阿里巴巴Java开发手册-编程规约 <i class="fa fa-chevron-right"></i>
+              <a href="/blog/2015/09/21/2015-09-21-Git分支的学习笔记整理/" rel="prev" title="Git分支的学习笔记整理">
+                Git分支的学习笔记整理 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -481,8 +540,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -583,6 +651,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、基础规范"><span class="nav-number">1.</span> <span class="nav-text">一、基础规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、命名规范"><span class="nav-number">2.</span> <span class="nav-text">二、命名规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、字段设计规范"><span class="nav-number">3.</span> <span class="nav-text">三、字段设计规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、索引设计规范"><span class="nav-number">4.</span> <span class="nav-text">四、索引设计规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、SQL使用规范"><span class="nav-number">5.</span> <span class="nav-text">五、SQL使用规范</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
