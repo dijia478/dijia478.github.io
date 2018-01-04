@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Redis," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="dijia478-刘力源" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="一、redis的安装这里演示的版本是Redis4.0，Linux系统是CentOS6.7，Jdk1.7，Jedis2.8 这是官方文档介绍的安装方式 下载，解压，编译: 1234$ wget http://download.redis.io/releases/redis-4.0.0.tar.gz$ tar xzf redis-4.0.0.tar.gz$ cd redis-4.0.0$ make">
+<meta name="keywords" content="Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis在Linux上的部署和Jedis简单使用">
+<meta property="og:url" content="http://dijia478.cn/blog/2017/03/18/2017-03-18-Redis在Linux上的部署和Jedis简单使用/index.html">
+<meta property="og:site_name" content="dijia478-刘力源">
+<meta property="og:description" content="一、redis的安装这里演示的版本是Redis4.0，Linux系统是CentOS6.7，Jdk1.7，Jedis2.8 这是官方文档介绍的安装方式 下载，解压，编译: 1234$ wget http://download.redis.io/releases/redis-4.0.0.tar.gz$ tar xzf redis-4.0.0.tar.gz$ cd redis-4.0.0$ make">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://dijia478.cn/blog/2017/03/18/2017-03-18-Redis在Linux上的部署和Jedis简单使用/redis01.png">
+<meta property="og:image" content="http://dijia478.cn/blog/2017/03/18/2017-03-18-Redis在Linux上的部署和Jedis简单使用/redis02.png">
+<meta property="og:image" content="http://dijia478.cn/blog/2017/03/18/2017-03-18-Redis在Linux上的部署和Jedis简单使用/redis03.png">
+<meta property="og:image" content="http://dijia478.cn/blog/2017/03/18/2017-03-18-Redis在Linux上的部署和Jedis简单使用/redis04.png">
+<meta property="og:updated_time" content="2018-01-04T13:38:13.457Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis在Linux上的部署和Jedis简单使用">
+<meta name="twitter:description" content="一、redis的安装这里演示的版本是Redis4.0，Linux系统是CentOS6.7，Jdk1.7，Jedis2.8 这是官方文档介绍的安装方式 下载，解压，编译: 1234$ wget http://download.redis.io/releases/redis-4.0.0.tar.gz$ tar xzf redis-4.0.0.tar.gz$ cd redis-4.0.0$ make">
+<meta name="twitter:image" content="http://dijia478.cn/blog/2017/03/18/2017-03-18-Redis在Linux上的部署和Jedis简单使用/redis01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://dijia478.cn/blog/2017/03/18/2017-03-18-Redis在Linux上的部署和Jedis简单使用/"/>
+
+
+
+
+
+  <title>Redis在Linux上的部署和Jedis简单使用 | dijia478-刘力源</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">dijia478-刘力源</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dijia478.cn/blog/2017/03/18/2017-03-18-Redis在Linux上的部署和Jedis简单使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="dijia478">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="dijia478-刘力源">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Redis在Linux上的部署和Jedis简单使用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-18T20:51:26+08:00">
+                2017-03-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一、redis的安装"><a href="#一、redis的安装" class="headerlink" title="一、redis的安装"></a>一、redis的安装</h2><p>这里演示的版本是Redis4.0，Linux系统是CentOS6.7，Jdk1.7，Jedis2.8</p>
+<p>这是官方文档介绍的安装方式</p>
+<p>下载，解压，编译:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://download.redis.io/releases/redis-4.0.0.tar.gz</span><br><span class="line">$ tar xzf redis-4.0.0.tar.gz</span><br><span class="line">$ <span class="built_in">cd</span> redis-4.0.0</span><br><span class="line">$ make</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>二进制文件是编译完成后在src目录下，通过下面的命令启动Redis服务：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ src/redis-server</span><br></pre></td></tr></table></figure>
+<p>你可以使用内置的客户端命令redis-cli进行使用：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ src/redis-cli</span><br><span class="line">redis&gt; <span class="built_in">set</span> foo bar</span><br><span class="line">OK</span><br><span class="line">redis&gt; get foo</span><br><span class="line"><span class="string">"bar"</span></span><br></pre></td></tr></table></figure>
+<p>本人不建议直接使用源码文件中的服务，make编译完成后，可以安装到指定目录：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make PREFIX=/usr/<span class="built_in">local</span>/redis install</span><br></pre></td></tr></table></figure>
+<p> 现在去刚刚tar包解压出来的源码目录中，拷贝一个redis.conf配置文件，放到/usr/local/redis/bin/目录下，以后在这个目录下使用就好了。</p>
+<p>启动服务端（暂时不使用自己刚才复制过来的redis.conf配置文件）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./redis-server</span><br></pre></td></tr></table></figure>
+<p>复制一个会话窗口，启动客户端（暂时不设置ip，端口号和密码）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./redis-cli</span><br></pre></td></tr></table></figure>
+<p>测试下：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; ping</span><br><span class="line">PONG</span><br><span class="line"><span class="comment"># 客户端启动成功</span></span><br></pre></td></tr></table></figure>
+<h2 id="二、Java程序中jedis操作redis"><a href="#二、Java程序中jedis操作redis" class="headerlink" title="二、Java程序中jedis操作redis"></a>二、Java程序中jedis操作redis</h2><p>上面的方式只是一种小练习，我们现在通过Java程序用jedis来操作Linux服务器上的redis。</p>
+<p>用maven来引入jedis：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>redis.clients<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jedis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.8.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Java代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">　　 <span class="comment">// 服务器ip，redis默认端口号</span></span><br><span class="line">    Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">"192.168.133.128"</span>, <span class="number">6379</span>);</span><br><span class="line">    jedis.set(<span class="string">"key01"</span>, <span class="string">"zhangsan"</span>);</span><br><span class="line">    jedis.set(<span class="string">"key02"</span>, <span class="string">"lisi"</span>);</span><br><span class="line">    System.out.println(jedis.get(<span class="string">"key01"</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>注意上面的代码是有问题的！</strong></p>
+<h2 id="三、redis配置文件"><a href="#三、redis配置文件" class="headerlink" title="三、redis配置文件"></a>三、redis配置文件</h2><p>上面的代码运行后，会报错</p>
+<p><code>redis.clients.jedis.exceptions.JedisConnectionException: java.net.ConnectException: Connection refused: connect</code></p>
+<p>连接超被拒绝了，这是因为，redis的访问ip默认是127.0.0.1</p>
+<p>你需要在自己拷贝的redis.conf配置文件中修改：</p>
+<img src="/blog/2017/03/18/2017-03-18-Redis在Linux上的部署和Jedis简单使用/redis01.png">
+<p>把绑定的主机ip添加进去，之后启动redis服务的时候，需要手动加载配置文件</p>
+<p>我的配置文件放在了和server服务的同一个目录里，所以启动服务时输入：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./redis-server redis.conf</span><br></pre></td></tr></table></figure>
+<p>注意啊：如果不输入后面的配置文件目录，那么该配置文件不起作用，会提示说启动默认的配置文件。</p>
+<p>之后再次运行Java代码</p>
+<p>又报错！！</p>
+<p><code>redis.clients.jedis.exceptions.JedisDataException: DENIED Redis is running in protected mode because protected mode is enabled, no bind address was specified, no authentication password is requested to clients. In this mode connections are only accepted from the loopback interface. If you want to connect from external computers to Redis you may adopt one of the following solutions: 1) Just disable protected mode sending the command &#39;CONFIG SET protected-mode no&#39; from the loopback interface by connecting to Redis from the same host the server is running, however MAKE SURE Redis is not publicly accessible from internet if you do so. Use CONFIG REWRITE to make this change permanent. 2) Alternatively you can just disable the protected mode by editing the Redis configuration file, and setting the protected mode option to &#39;no&#39;, and then restarting the server. 3) If you started the server manually just for testing, restart it with the &#39;--protected-mode no&#39; option. 4) Setup a bind address or an authentication password. NOTE: You only need to do one of the above things in order for the server to start accepting connections from the outside.</code></p>
+<p>这错报的好长。。</p>
+<p>好心的博主帮你谷歌翻译了一下。</p>
+<p>简单来说呢？就是给你提供了几个解决方案</p>
+<p>1）只需禁用保护模式，即可通过从同一主机连接到Redis，从回送接口发送命令“CONFIG SET protected-mode no”正在运行，但是如果您这样做，请勿使用互联网公开访问互联网。使用CONFIG REWRITE使此更改永久。</p>
+<p>2）或者，您可以通过编辑Redis配置文件并将protected mode选项设置为“no”来禁用保护模式，然后重新启动服务器。</p>
+<p>3）如果您只是为了测试而手动启动服务器，请使用“ –protected-mode no”选项重新启动服务器。</p>
+<p>4）设置绑定地址或认证密码。</p>
+<p>这是redis4.0版本的新特性，redis3不会报错。</p>
+<p>在这里我选择设置redis密码，同样打开redis.conf配置文件，设置密码为123456，保存退出</p>
+<img src="/blog/2017/03/18/2017-03-18-Redis在Linux上的部署和Jedis简单使用/redis02.png">
+<p>然后启动服务器</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./redis-server redis.conf</span><br></pre></td></tr></table></figure>
+<p>以后如果你要想在Linux里用命令打开redis客户端，就需要输入一些参数才行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./redis-cli -h 192.168.133.128 -p 6379 -a 123456</span><br></pre></td></tr></table></figure>
+<p>很显然，-h是redis服务绑定的主机ip，-p是redis服务的端口号，-a是redis服务的密码，都可以在redis.conf里更改的</p>
+<p>然后就好了</p>
+<img src="/blog/2017/03/18/2017-03-18-Redis在Linux上的部署和Jedis简单使用/redis03.png">
+<p>这个时候，Java代码中的问题还没解决完，运行代码还会报错的，没有访问权限</p>
+<p><code>redis.clients.jedis.exceptions.JedisDataException: NOAUTH Authentication required.</code></p>
+<p>你还需要在Java代码中增加一条密码设置</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 服务器ip，redis默认端口号</span></span><br><span class="line">    Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">"192.168.133.128"</span>, <span class="number">6379</span>);</span><br><span class="line">    <span class="comment">// redis访问密码</span></span><br><span class="line">    jedis.auth(<span class="string">"123456"</span>);</span><br><span class="line">    jedis.set(<span class="string">"key01"</span>, <span class="string">"zhangsan"</span>);</span><br><span class="line">    jedis.set(<span class="string">"key02"</span>, <span class="string">"lisi"</span>);</span><br><span class="line">    System.out.println(jedis.get(<span class="string">"key01"</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>OK，运行正常</p>
+<img src="/blog/2017/03/18/2017-03-18-Redis在Linux上的部署和Jedis简单使用/redis04.png">
+<h2 id="四、其他"><a href="#四、其他" class="headerlink" title="四、其他"></a>四、其他</h2><p>分享一个redis详细学习教程的网址：</p>
+<p><a href="http://www.runoob.com/redis/redis-intro.html" target="_blank" rel="noopener">http://www.runoob.com/redis/redis-intro.html</a></p>
+<p>redis.conf 配置项说明如下：</p>
+<p>1.Redis默认不是以守护进程的方式运行，可以通过该配置项修改，使用yes启用守护进程，可以后台启动，用ps -ef | grep redis查看redis进程</p>
+<p><strong>daemonize no</strong></p>
+<p>2.当Redis以守护进程方式运行时，Redis默认会把pid写入/var/run/redis.pid文件，可以通过pidfile指定</p>
+<p><strong>pidfile /var/run/redis.pid</strong></p>
+<p>3.指定Redis监听端口，默认端口为6379，作者在自己的一篇博文中解释了为什么选用6379作为默认端口，因为6379在手机按键上MERZ对应的号码，而MERZ取自意大利歌女Alessia Merz的名字</p>
+<p><strong>port 6379</strong></p>
+<p>4.绑定的主机地址</p>
+<p><strong>bind 127.0.0.1</strong></p>
+<p>5.当客户端闲置多长时间后关闭连接，如果指定为0，表示关闭该功能</p>
+<p><strong>timeout 300</strong></p>
+<p>6.指定日志记录级别，Redis总共支持四个级别：debug、verbose、notice、warning，默认为verbose</p>
+<p><strong>loglevel verbose</strong></p>
+<p>7.日志记录方式，默认为标准输出，如果配置Redis为守护进程方式运行，而这里又配置为日志记录方式为标准输出，则日志将会发送给/dev/null</p>
+<p><strong>logfile stdout</strong></p>
+<p>8.设置数据库的数量，默认数据库为0，可以使用SELECT \<dbid>命令在连接上指定数据库id</dbid></p>
+<p><strong>databases 16</strong></p>
+<p>9.指定在多长时间内，有多少次更新操作，就将数据同步到数据文件，可以多个条件配合</p>
+<p><strong>save \<seconds> \<changes></changes></seconds></strong></p>
+<p>Redis默认配置文件中提供了三个条件：</p>
+<p><strong>save 900 1</strong></p>
+<p><strong>save 300 10</strong></p>
+<p><strong>save 60 10000</strong></p>
+<p>分别表示900秒（15分钟）内有1个更改，300秒（5分钟）内有10个更改以及60秒内有10000个更改。</p>
+<p>10.指定存储至本地数据库时是否压缩数据，默认为yes，Redis采用LZF压缩，如果为了节省CPU时间，可以关闭该选项，但会导致数据库文件变的巨大</p>
+<p><strong>rdbcompression yes</strong></p>
+<p>11.指定本地数据库文件名，默认值为dump.rdb</p>
+<p><strong>dbfilename dump.rdb</strong></p>
+<p>12.指定本地数据库存放目录</p>
+<p><strong>dir ./</strong></p>
+<p>13.设置当本机为slav服务时，设置master服务的IP地址及端口，在Redis启动时，它会自动从master进行数据同步</p>
+<p><strong>slaveof \<masterip> \<masterport></masterport></masterip></strong></p>
+<p>14.当master服务设置了密码保护时，slav服务连接master的密码</p>
+<p><strong>masterauth <master-password></master-password></strong></p>
+<p>15.设置Redis连接密码，如果配置了连接密码，客户端在连接Redis时需要通过AUTH \<password>命令提供密码，默认关闭</password></p>
+<p><strong>requirepass foobared</strong></p>
+<p>16.设置同一时间最大客户端连接数，默认无限制，Redis可以同时打开的客户端连接数为Redis进程可以打开的最大文件描述符数，如果设置 maxclients 0，表示不作限制。当客户端连接数到达限制时，Redis会关闭新的连接并向客户端返回max number of clients reached错误信息</p>
+<p><strong>maxclients 128</strong></p>
+<p>17.指定Redis最大内存限制，Redis在启动时会把数据加载到内存中，达到最大内存后，Redis会先尝试清除已到期或即将到期的Key，当此方法处理 后，仍然到达最大内存设置，将无法再进行写入操作，但仍然可以进行读取操作。Redis新的vm机制，会把Key存放内存，Value会存放在swap区</p>
+<p><strong>maxmemory \<bytes></bytes></strong></p>
+<p>18.指定是否在每次更新操作后进行日志记录，Redis在默认情况下是异步的把数据写入磁盘，如果不开启，可能会在断电时导致一段时间内的数据丢失。因为 redis本身同步数据文件是按上面save条件来同步的，所以有的数据会在一段时间内只存在于内存中。默认为no</p>
+<p><strong>appendonly no</strong></p>
+<p>19.指定更新日志文件名，默认为appendonly.aof</p>
+<p><strong>appendfilename appendonly.aof</strong></p>
+<p>20.指定更新日志条件，共有3个可选值： </p>
+<p><strong>no</strong>：表示等操作系统进行数据缓存同步到磁盘（快）<br><strong>always</strong>：表示每次更新操作后手动调用fsync()将数据写到磁盘（慢，安全）<br><strong>everysec</strong>：表示每秒同步一次（折衷，默认值）</p>
+<p><strong>appendfsync everysec</strong></p>
+<p>21.指定是否启用虚拟内存机制，默认值为no，简单的介绍一下，VM机制将数据分页存放，由Redis将访问量较少的页即冷数据swap到磁盘上，访问多的页面由磁盘自动换出到内存中（在后面的文章我会仔细分析Redis的VM机制）</p>
+<p> <strong>vm-enabled no</strong></p>
+<p>22.虚拟内存文件路径，默认值为/tmp/redis.swap，不可多个Redis实例共享</p>
+<p> <strong>vm-swap-file /tmp/redis.swap</strong></p>
+<p>23.将所有大于vm-max-memory的数据存入虚拟内存,无论vm-max-memory设置多小,所有索引数据都是内存存储的(Redis的索引数据 就是keys),也就是说,当vm-max-memory设置为0的时候,其实是所有value都存在于磁盘。默认值为0</p>
+<p> <strong>vm-max-memory 0</strong></p>
+<p>24.Redis swap文件分成了很多的page，一个对象可以保存在多个page上面，但一个page上不能被多个对象共享，vm-page-size是要根据存储的 数据大小来设定的，作者建议如果存储很多小对象，page大小最好设置为32或者64bytes；如果存储很大大对象，则可以使用更大的page，如果不 确定，就使用默认值</p>
+<p> <strong>vm-page-size 32</strong></p>
+<p>25.设置swap文件中的page数量，由于页表（一种表示页面空闲或使用的bitmap）是在放在内存中的，在磁盘上每8个pages将消耗1byte的内存。</p>
+<p> <strong>vm-pages 134217728</strong></p>
+<p>26.设置访问swap文件的线程数,最好不要超过机器的核数,如果设置为0,那么所有对swap文件的操作都是串行的，可能会造成比较长时间的延迟。默认值为4</p>
+<p> <strong>vm-max-threads 4</strong></p>
+<p>27.设置在向客户端应答时，是否把较小的包合并为一个包发送，默认为开启</p>
+<p><strong>glueoutputbuf yes</strong></p>
+<p>28.指定在超过一定的数量或者最大的元素超过某一临界值时，采用一种特殊的哈希算法</p>
+<p><strong>hash-max-zipmap-entries 64</strong></p>
+<p><strong>hash-max-zipmap-value 512</strong></p>
+<p>29.指定是否激活重置哈希，默认为开启（后面在介绍Redis的哈希算法时具体介绍）</p>
+<p><strong>activerehashing yes</strong></p>
+<p>30.指定包含其它的配置文件，可以在同一主机上多个Redis实例之间使用同一份配置文件，而同时各个实例又拥有自己的特定配置文件</p>
+<p><strong>include /path/to/local.conf</strong></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您的支持将鼓励我继续创作</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="dijia478 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="dijia478 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag"># Redis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2017/02/02/2017-02-02-关于异常处理的一些建议/" rel="next" title="关于异常处理的一些建议">
+                <i class="fa fa-chevron-left"></i> 关于异常处理的一些建议
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2017/06/07/2017-06-07-Linux服务器上安装JDK小白教程/" rel="prev" title="Linux服务器上安装JDK小白教程">
+                Linux服务器上安装JDK小白教程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.gif"
+                alt="dijia478" />
+            
+              <p class="site-author-name" itemprop="name">dijia478</p>
+              <p class="site-description motion-element" itemprop="description">写写代码，发发感悟，聊聊人生</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.importnew.com/" title="ImportNew" target="_blank">ImportNew</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://segmentfault.com/" title="SegmentFault" target="_blank">SegmentFault</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://stackoverflow.com/" title="Stack Overflow" target="_blank">Stack Overflow</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.cnblogs.com/" title="博客园" target="_blank">博客园</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.csdn.net/" title="CSDN" target="_blank">CSDN</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、redis的安装"><span class="nav-number">1.</span> <span class="nav-text">一、redis的安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Java程序中jedis操作redis"><span class="nav-number">2.</span> <span class="nav-text">二、Java程序中jedis操作redis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、redis配置文件"><span class="nav-number">3.</span> <span class="nav-text">三、redis配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、其他"><span class="nav-number">4.</span> <span class="nav-text">四、其他</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2014 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dijia478</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
