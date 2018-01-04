@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="dijia478-刘力源">
 <meta property="og:description" content="一、JVM内存模型及垃圾收集算法1.根据Java虚拟机规范，JVM将内存划分为： New（年轻代） Tenured（年老代） 永久代（Perm）  其中New和Tenured属于堆内存，堆内存会从JVM启动参数（-Xmx:3G）指定的内存中分配，Perm不属于堆内存，有虚拟机直接分配，但可以通过-XX:PermSize -XX:MaxPermSize 等参数调整其大小。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-03T08:27:17.356Z">
+<meta property="og:updated_time" content="2018-01-04T02:22:56.586Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM内存泄漏及性能调优">
 <meta name="twitter:description" content="一、JVM内存模型及垃圾收集算法1.根据Java虚拟机规范，JVM将内存划分为： New（年轻代） Tenured（年老代） 永久代（Perm）  其中New和Tenured属于堆内存，堆内存会从JVM启动参数（-Xmx:3G）指定的内存中分配，Perm不属于堆内存，有虚拟机直接分配，但可以通过-XX:PermSize -XX:MaxPermSize 等参数调整其大小。">
@@ -414,7 +414,13 @@
 <h3 id="5-回归问题"><a href="#5-回归问题" class="headerlink" title="5.回归问题"></a>5.回归问题</h3><p>Q：为什么崩溃前垃圾回收的时间越来越长？<br>A:根据内存模型和垃圾回收算法，垃圾回收分两部分：内存标记、清除（复制），标记部分只要内存大小固定时间是不变的，变的是复制部分，因为每次垃圾回收都有一些回收不掉的内存，所以增加了复制量，导致时间延长。所以，垃圾回收的时间也可以作为判断内存泄漏的依据</p>
 <p>Q：为什么Full GC的次数越来越多？<br>A：因此内存的积累，逐渐耗尽了年老代的内存，导致新对象分配没有更多的空间，从而导致频繁的垃圾回收</p>
 <p>Q:为什么年老代占用的内存越来越大？<br>A:因为年轻代的内存无法被回收，越来越多地被Copy到年老代</p>
-<h2 id="三、性能调优"><a href="#三、性能调优" class="headerlink" title="三、性能调优"></a>三、性能调优</h2><p>除了上述内存泄漏外，我们还发现CPU长期不足3%，系统吞吐量不够，针对8core×16G、64bit的Linux服务器来说，是严重的资源浪费。</p>
+<h2 id="三、性能调优"><a href="#三、性能调优" class="headerlink" title="三、性能调优"></a>三、性能调优</h2><p>一切都是为了这一步，调优，在调优之前，我们需要记住下面的原则：</p>
+<p>1、多数的Java应用不需要在服务器上进行GC优化；<br>2、多数导致GC问题的Java应用，都不是因为我们参数设置错误，而是代码问题；<br>3、在应用上线之前，先考虑将机器的JVM参数设置到最优（最适合）<br>4、减少创建对象的数量；<br>5、减少使用全局变量和大对象；<br>6、GC优化是到最后不得已才采用的手段；<br>7、在实际使用中，分析GC情况优化代码比优化GC参数要多得多；</p>
+<p>GC优化的目的有两个：</p>
+<p>1、将转移到老年代的对象数量降低到最小；<br>2、减少full GC的执行时间；</p>
+<p>为了达到上面的目的，一般地，你需要做的事情有：</p>
+<p>1、减少使用全局变量和大对象；<br>2、调整新生代的大小到最合适；<br>3、设置老年代的大小为最合适；<br>4、选择合适的GC收集器。</p>
+<p>除了上述内存泄漏外，我们还发现CPU长期不足3%，系统吞吐量不够，针对8core×16G、64bit的Linux服务器来说，是严重的资源浪费。</p>
 <p>在CPU负载不足的同时，偶尔会有用户反映请求的时间过长，我们意识到必须对程序及JVM进行调优。从以下几个方面进行：</p>
 <ul>
 <li>线程池：解决用户响应时间长的问题</li>
@@ -637,7 +643,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -659,7 +665,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
