@@ -88,20 +88,20 @@
 
 
 
-<meta name="description" content="类装载器ClassLoader类装载器工作机制类装载器就是寻找类的节码文件并构造出类在JVM内部表示对象的组件。在Java中，类装载器把一个类装入JVM中，要经过以下步骤：  [1.] 加载：（loading）通过类的全限定名获取二进制字节流，将二进制字节流转换成方法区中的运行时数据结构，在内存中生成Java.lang.class对象。[2.] 链接：（linking）执行下面的验证、准备和解析步">
+<meta name="description" content="类装载器ClassLoader类装载器工作机制类装载器就是寻找类的节码文件并构造出类在JVM内部表示对象的组件。在Java中，类装载器把一个类装入JVM中，要经过以下步骤：  [1.] 加载：（loading）通过类的全限定名获取二进制字节流（并没有指明要从一个Class文件中获取，可以从其他渠道，譬如：网络、动态生成、数据库等），将二进制字节流转换成方法区中的运行时数据结构，在内存中创建一个代表">
 <meta name="keywords" content="类加载器">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java类加载器">
 <meta property="og:url" content="http://dijia478.cn/blog/2015/01/07/2015-01-07-Java类加载器/index.html">
 <meta property="og:site_name" content="dijia478-刘力源">
-<meta property="og:description" content="类装载器ClassLoader类装载器工作机制类装载器就是寻找类的节码文件并构造出类在JVM内部表示对象的组件。在Java中，类装载器把一个类装入JVM中，要经过以下步骤：  [1.] 加载：（loading）通过类的全限定名获取二进制字节流，将二进制字节流转换成方法区中的运行时数据结构，在内存中生成Java.lang.class对象。[2.] 链接：（linking）执行下面的验证、准备和解析步">
+<meta property="og:description" content="类装载器ClassLoader类装载器工作机制类装载器就是寻找类的节码文件并构造出类在JVM内部表示对象的组件。在Java中，类装载器把一个类装入JVM中，要经过以下步骤：  [1.] 加载：（loading）通过类的全限定名获取二进制字节流（并没有指明要从一个Class文件中获取，可以从其他渠道，譬如：网络、动态生成、数据库等），将二进制字节流转换成方法区中的运行时数据结构，在内存中创建一个代表">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://dijia478.cn/blog/2015/01/07/2015-01-07-Java类加载器/jiazaiqi01.png">
 <meta property="og:image" content="http://dijia478.cn/blog/2015/01/07/2015-01-07-Java类加载器/jiazaiqi02.png">
-<meta property="og:updated_time" content="2018-01-04T02:49:58.050Z">
+<meta property="og:updated_time" content="2018-01-13T04:16:50.776Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java类加载器">
-<meta name="twitter:description" content="类装载器ClassLoader类装载器工作机制类装载器就是寻找类的节码文件并构造出类在JVM内部表示对象的组件。在Java中，类装载器把一个类装入JVM中，要经过以下步骤：  [1.] 加载：（loading）通过类的全限定名获取二进制字节流，将二进制字节流转换成方法区中的运行时数据结构，在内存中生成Java.lang.class对象。[2.] 链接：（linking）执行下面的验证、准备和解析步">
+<meta name="twitter:description" content="类装载器ClassLoader类装载器工作机制类装载器就是寻找类的节码文件并构造出类在JVM内部表示对象的组件。在Java中，类装载器把一个类装入JVM中，要经过以下步骤：  [1.] 加载：（loading）通过类的全限定名获取二进制字节流（并没有指明要从一个Class文件中获取，可以从其他渠道，譬如：网络、动态生成、数据库等），将二进制字节流转换成方法区中的运行时数据结构，在内存中创建一个代表">
 <meta name="twitter:image" content="http://dijia478.cn/blog/2015/01/07/2015-01-07-Java类加载器/jiazaiqi01.png">
 
 
@@ -392,7 +392,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,700
+                  2,213
                 </span>
               
 
@@ -418,16 +418,21 @@
 
       
         <h2 id="类装载器ClassLoader"><a href="#类装载器ClassLoader" class="headerlink" title="类装载器ClassLoader"></a>类装载器ClassLoader</h2><h3 id="类装载器工作机制"><a href="#类装载器工作机制" class="headerlink" title="类装载器工作机制"></a>类装载器工作机制</h3><p>类装载器就是寻找类的节码文件并构造出类在JVM内部表示对象的组件。在Java中，类装载器把一个类装入JVM中，要经过以下步骤： </p>
-<p>[1.] <strong>加载</strong>：（loading）通过类的全限定名获取二进制字节流，将二进制字节流转换成方法区中的运行时数据结构，在内存中生成Java.lang.class对象。<br>[2.] <strong>链接</strong>：（linking）执行下面的验证、准备和解析步骤，其中解析步骤是可以选择的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[2.1]校验：检查导入类或接口的二进制数据的正确性；（文件格式验证，元数据验证，字节码验证，符号引用验证）</span><br><span class="line">[2.2]准备：给类的静态变量分配并初始化存储空间；</span><br><span class="line">[2.3]解析：将常量池中的符号引用转成直接引用；</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>[3.] <strong>初始化</strong>：（initializing）激活类的静态变量的初始化Java代码和静态Java代码块，并初始化程序员设置的变量值。</p>
+<p>[1.] <strong>加载</strong>：（loading）通过类的全限定名获取二进制字节流（并没有指明要从一个Class文件中获取，可以从其他渠道，譬如：网络、动态生成、数据库等），将二进制字节流转换成方法区中的运行时数据结构，在内存中创建一个代表这个类的java.lang.Class对象，作为方法区这个类的各种数据的访问入口。<br><a id="more"></a><br>加载阶段和连接阶段（linking）的部分内容（如一部分字节码文件格式验证动作）是交叉进行的，加载阶段尚未完成，连接阶段可能已经开始，但这些夹在加载阶段之中进行的动作，仍然属于连接阶段的内容，这两个阶段的开始时间仍然保持着固定的先后顺序。</p>
+<p>[2.] <strong>连接</strong>：（linking）执行下面的验证、准备和解析步骤，其中解析步骤是可以选择的。</p>
+<p>&gt;</p>
+<blockquote>
+<p>[2.1]验证：检查导入类或接口的二进制数据的正确性，（文件格式验证，元数据验证，字节码验证，符号引用验证）。这一阶段的目的是为了确保Class文件的字节流中包含的信息符合当前虚拟机的要求，并且不会危害虚拟机自身的安全。验证阶段是非常重要的，但不是必须的，它对程序运行期没有影响，如果所引用的类经过反复验证，那么可以考虑采用-Xverifynone参数来关闭大部分的类验证措施，以缩短虚拟机类加载的时间。</p>
+<p>[2.2]准备：准备阶段是正式为类的静态成员分配内存并设置默认初始值的阶段，这些变量所使用的内存都将在方法区中进行分配。这时候进行内存分配的仅包括类静态成员变量，而不包括实例变量，实例变量将会在对象实例化时随着对象一起分配在堆中。其次，这里所说的初始值“通常情况”下是数据类型的零值。</p>
+<p>[2.3]解析：解析阶段是虚拟机将常量池内的符号引用替换为直接引用的过程。解析动作主要针对类或接口、字段、类方法、接口方法、方法类型、方法句柄和调用点限定符7类符号引用进行。</p>
+</blockquote>
+<p>[3.] <strong>初始化</strong>：（initializing）初始化阶段是类加载过程的最后一步，到了初始化阶段，才真正开始执行类中定义的java程序代码。在准备阶段，变量已经赋过一次系统要求的默认初始值，而在初始化阶段，则根据程序猿通过程序制定的主管计划去初始化类变量和其他资源。</p>
 <img src="/blog/2015/01/07/2015-01-07-Java类加载器/jiazaiqi01.png">
 <p>类装载工作由ClassLoader及其子类负责，ClassLoader是一个重要的Java运行时系统组件，它负责在运行时查找和装入Class字节码文件。JVM在运行时会产生三个ClassLoader：根装载器、ExtClassLoader（扩展类装载器）和AppClassLoader（系统类装载器）。其中，根装载器不是ClassLoader的子类，它使用C++编写，因此我们在Java中看不到它，根装载器负责装载JRE的核心类库，如JRE目标下的rt.jar、charsets.jar等。ExtClassLoader和AppClassLoader都是ClassLoader的子类。其中ExtClassLoader负责装载JRE扩展目录ext中的JAR类包；AppClassLoader负责装载Classpath路径下的类包。 </p>
 <p>这三个类装载器之间存在父子层级关系，即根装载器是ExtClassLoader的父装载器，ExtClassLoader是AppClassLoader的父装载器。默认情况下，使用AppClassLoader装载应用程序的类，我们可以做一个实验： </p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClassLoaderTest</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		ClassLoader loader = Thread.currentThread().getContextClassLoader();</span><br><span class="line">		System.out.println(<span class="string">"current loader:"</span>+loader);</span><br><span class="line">		System.out.println(<span class="string">"parent loader:"</span>+loader.getParent());</span><br><span class="line">		System.out.println(<span class="string">"grandparent loader:"</span>+loader.getParent(). getParent());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>运行以上代码，在控制台上将打出以下信息： </p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">current loader:sun.misc.Launcher<span class="variable">$AppClassLoader</span>@131f71a </span><br><span class="line">parent loader:sun.misc.Launcher<span class="variable">$ExtClassLoader</span>@15601ea </span><br><span class="line">//①根装载器在Java中访问不到，所以返回null </span><br><span class="line">grandparent loader:null</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">current loader:sun.misc.Launcher$AppClassLoader@<span class="number">131f</span>71a </span><br><span class="line">parent loader:sun.misc.Launcher$ExtClassLoader@<span class="number">15601</span>ea </span><br><span class="line"><span class="comment">// 根装载器在Java中访问不到，所以返回null </span></span><br><span class="line">grandparent loader:<span class="keyword">null</span></span><br></pre></td></tr></table></figure>
 <p>通过以上的输出信息，我们知道当前的ClassLoader是AppClassLoader，父ClassLoader是ExtClassLoader，祖父ClassLoader是根类装载器，因为在Java中无法获得它的句柄，所以仅返回null。 </p>
 <p>JVM装载类时使用“全盘负责委托机制”，“全盘负责”是指当一个ClassLoader装载一个类的时，除非显式地使用另一个ClassLoader，该类所依赖及引用的类也由这个ClassLoader载入；“委托机制”是指先委托父装载器寻找目标类，只有在找不到的情况下才从自己的类路径中查找并装载目标类。这一点是从安全角度考虑的，试想如果有人编写了一个恶意的基础类（如java.lang.String）并装载到JVM中将会引起多么可怕的后果。但是由于有了“全盘负责委托机制”，java.lang.String永远是由根装载器来装载的，这样就避免了上述事件的发生。 </p>
 <h3 id="ClassLoader重要方法"><a href="#ClassLoader重要方法" class="headerlink" title="ClassLoader重要方法"></a>ClassLoader重要方法</h3><p>在Java中，ClassLoader是一个抽象类，位于java.lang包中。下面对该类的一些重要接口方法进行介绍： </p>
@@ -435,7 +440,7 @@
 <li><code>Class loadClass(String name)</code><br>name参数指定类装载器需要装载类的名字，必须使用全限定类名，如com.baobaotao. beans.Car。该方法有一个重载方法loadClass(String name ,boolean resolve)，resolve参数告诉类装载器是否需要解析该类。在初始化类之前，应考虑进行类解析的工作，但并不是所有的类都需要解析，如果JVM只需要知道该类是否存在或找出该类的超类，那么就不需要进行解析。 </li>
 <li><code>Class defineClass(String name, byte[] b, int off, int len)</code><br>将类文件的字节数组转换成JVM内部的java.lang.Class对象。字节数组可以从本地文件系统、远程网络获取。name为字节数组对应的全限定类名。 </li>
 <li><code>Class findSystemClass(String name)</code><br>从本地文件系统载入Class文件，如果本地文件系统不存在该Class文件，将抛出ClassNotFoundException异常。该方法是JVM默认使用的装载机制。 </li>
-<li><code>Class findLoadedClass(String name)</code><br>调用该方法来查看ClassLoader是否已装入某个类。如果已装入，那么返回java.lang.Class对象，否则返回null。如果强行装载已存在的类，将会抛出链接错误。 </li>
+<li><code>Class findLoadedClass(String name)</code><br>调用该方法来查看ClassLoader是否已装入某个类。如果已装入，那么返回java.lang.Class对象，否则返回null。如果强行装载已存在的类，将会抛出连接错误。 </li>
 <li><code>ClassLoader getParent()</code><br>获取类装载器的父装载器，除根装载器外，所有的类装载器都有且仅有一个父装载器，ExtClassLoader的父装载器是根装载器，因为根装载器非Java编写，所以无法获得，将返回null。 </li>
 </ul>
 <p>除JVM默认的三个ClassLoader以外，可以编写自己的第三方类装载器，以实现一些特殊的需求。类文件被装载并解析后，在JVM内将拥有一个对应的java.lang.Class类描述对象，该类的实例都拥有指向这个类描述对象的引用，而类描述对象又拥有指向关联ClassLoader的引用，如图所示。 </p>
@@ -453,7 +458,7 @@
 <p>只有这6中情况才会导致类的类的初始化。</p>
 <p>类的初始化步骤：</p>
 <ol>
-<li>如果这个类还没有被加载和链接，那先进行加载和链接</li>
+<li>如果这个类还没有被加载和连接，那先进行加载和连接</li>
 <li>假如这个类存在直接父类，并且这个类还没有被初始化（注意：在一个类加载器中，类只能初始化一次），那就初始化直接的父类（不适用于接口）</li>
 <li>加入类中存在初始化语句（如static变量和static块），那就依次执行这些初始化语句。</li>
 </ol>
@@ -771,7 +776,7 @@ var jiathis_config={
 |
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">全站共151.2k字</span>
+  <span class="post-count">全站共151.8k字</span>
 </div>
         
 

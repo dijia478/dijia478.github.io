@@ -1059,7 +1059,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,700
+                  2,213
                 </span>
               
 
@@ -1086,8 +1086,7 @@
       
         
           <h2 id="类装载器ClassLoader"><a href="#类装载器ClassLoader" class="headerlink" title="类装载器ClassLoader"></a>类装载器ClassLoader</h2><h3 id="类装载器工作机制"><a href="#类装载器工作机制" class="headerlink" title="类装载器工作机制"></a>类装载器工作机制</h3><p>类装载器就是寻找类的节码文件并构造出类在JVM内部表示对象的组件。在Java中，类装载器把一个类装入JVM中，要经过以下步骤： </p>
-<p>[1.] <strong>加载</strong>：（loading）通过类的全限定名获取二进制字节流，将二进制字节流转换成方法区中的运行时数据结构，在内存中生成Java.lang.class对象。<br>[2.] <strong>链接</strong>：（linking）执行下面的验证、准备和解析步骤，其中解析步骤是可以选择的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[2.1]校验：检查导入类或接口的二进制数据的正确性；（文件格式验证，元数据验证，字节码验证，符号引用验证）</span><br><span class="line">[2.2]准备：给类的静态变量分配并初始化存储空间；</span><br><span class="line">[2.3]解析：将常量池中的符号引用转成直接引用；</span><br></pre></td></tr></table></figure>
+<p>[1.] <strong>加载</strong>：（loading）通过类的全限定名获取二进制字节流（并没有指明要从一个Class文件中获取，可以从其他渠道，譬如：网络、动态生成、数据库等），将二进制字节流转换成方法区中的运行时数据结构，在内存中创建一个代表这个类的java.lang.Class对象，作为方法区这个类的各种数据的访问入口。<br>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/blog/2015/01/07/2015-01-07-Java类加载器/#more" rel="contents">
@@ -1632,7 +1631,7 @@
 |
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">全站共151.2k字</span>
+  <span class="post-count">全站共151.8k字</span>
 </div>
         
 
