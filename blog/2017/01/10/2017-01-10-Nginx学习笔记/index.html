@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="类加载器," />
+  <meta name="keywords" content="Nginx," />
 
 
 
@@ -88,21 +88,27 @@
 
 
 
-<meta name="description" content="类加载器工作机制类加载器就是寻找类的节码文件并构造出类在JVM内部表示对象的组件。负责将.class文件加载到内存中，并为之生成对应的Class对象。在Java中，类加载器把一个类装入JVM中，要经过以下步骤： [1.] 加载：（loading）通过类的全限定名获取二进制字节流（并没有指明要从一个Class文件中获取，可以从其他渠道，譬如：网络、动态生成、数据库等），将二进制字节流转换成方法区中的">
-<meta name="keywords" content="类加载器">
+<meta name="description" content="前言Nginx是一款轻量级的Web服务器、反向代理服务器，由于它的内存占用少，启动极快，高并发能力强，在互联网项目中广泛应用。  上图基本上说明了当下流行的技术架构，其中Nginx有点入口网关的味道。">
+<meta name="keywords" content="Nginx">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java类加载器">
-<meta property="og:url" content="http://dijia478.cn/blog/2015/01/07/2015-01-07-Java类加载器/index.html">
+<meta property="og:title" content="Nginx学习笔记">
+<meta property="og:url" content="http://dijia478.cn/blog/2017/01/10/2017-01-10-Nginx学习笔记/index.html">
 <meta property="og:site_name" content="dijia478-刘力源">
-<meta property="og:description" content="类加载器工作机制类加载器就是寻找类的节码文件并构造出类在JVM内部表示对象的组件。负责将.class文件加载到内存中，并为之生成对应的Class对象。在Java中，类加载器把一个类装入JVM中，要经过以下步骤： [1.] 加载：（loading）通过类的全限定名获取二进制字节流（并没有指明要从一个Class文件中获取，可以从其他渠道，譬如：网络、动态生成、数据库等），将二进制字节流转换成方法区中的">
+<meta property="og:description" content="前言Nginx是一款轻量级的Web服务器、反向代理服务器，由于它的内存占用少，启动极快，高并发能力强，在互联网项目中广泛应用。  上图基本上说明了当下流行的技术架构，其中Nginx有点入口网关的味道。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://dijia478.cn/blog/2015/01/07/2015-01-07-Java类加载器/jiazaiqi01.png">
-<meta property="og:image" content="http://dijia478.cn/blog/2015/01/07/2015-01-07-Java类加载器/jiazaiqi02.png">
-<meta property="og:updated_time" content="2018-01-13T06:11:55.575Z">
+<meta property="og:image" content="http://dijia478.cn/blog/2017/01/10/2017-01-10-Nginx学习笔记/nginx01.png">
+<meta property="og:image" content="http://dijia478.cn/blog/2017/01/10/2017-01-10-Nginx学习笔记/nginx02.png">
+<meta property="og:image" content="http://dijia478.cn/blog/2017/01/10/2017-01-10-Nginx学习笔记/nginx03.png">
+<meta property="og:image" content="http://dijia478.cn/blog/2017/01/10/2017-01-10-Nginx学习笔记/nginx04.png">
+<meta property="og:image" content="http://dijia478.cn/blog/2017/01/10/2017-01-10-Nginx学习笔记/nginx05.png">
+<meta property="og:image" content="http://dijia478.cn/blog/2017/01/10/2017-01-10-Nginx学习笔记/nginx06.png">
+<meta property="og:image" content="http://dijia478.cn/blog/2017/01/10/2017-01-10-Nginx学习笔记/nginx07.png">
+<meta property="og:image" content="http://dijia478.cn/blog/2017/01/10/2017-01-10-Nginx学习笔记/nginx08.png">
+<meta property="og:updated_time" content="2018-01-14T14:19:39.684Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java类加载器">
-<meta name="twitter:description" content="类加载器工作机制类加载器就是寻找类的节码文件并构造出类在JVM内部表示对象的组件。负责将.class文件加载到内存中，并为之生成对应的Class对象。在Java中，类加载器把一个类装入JVM中，要经过以下步骤： [1.] 加载：（loading）通过类的全限定名获取二进制字节流（并没有指明要从一个Class文件中获取，可以从其他渠道，譬如：网络、动态生成、数据库等），将二进制字节流转换成方法区中的">
-<meta name="twitter:image" content="http://dijia478.cn/blog/2015/01/07/2015-01-07-Java类加载器/jiazaiqi01.png">
+<meta name="twitter:title" content="Nginx学习笔记">
+<meta name="twitter:description" content="前言Nginx是一款轻量级的Web服务器、反向代理服务器，由于它的内存占用少，启动极快，高并发能力强，在互联网项目中广泛应用。  上图基本上说明了当下流行的技术架构，其中Nginx有点入口网关的味道。">
+<meta name="twitter:image" content="http://dijia478.cn/blog/2017/01/10/2017-01-10-Nginx学习笔记/nginx01.png">
 
 
 
@@ -132,13 +138,13 @@
 
 
 
-  <link rel="canonical" href="http://dijia478.cn/blog/2015/01/07/2015-01-07-Java类加载器/"/>
+  <link rel="canonical" href="http://dijia478.cn/blog/2017/01/10/2017-01-10-Nginx学习笔记/"/>
 
 
 
 
 
-  <title>Java类加载器 | dijia478-刘力源</title>
+  <title>Nginx学习笔记 | dijia478-刘力源</title>
   
 
 
@@ -309,7 +315,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dijia478.cn/blog/2015/01/07/2015-01-07-Java类加载器/">
+    <link itemprop="mainEntityOfPage" href="http://dijia478.cn/blog/2017/01/10/2017-01-10-Nginx学习笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="dijia478">
@@ -326,7 +332,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Java类加载器</h1>
+          <h1 class="post-title" itemprop="name headline">Nginx学习笔记</h1>
         
 
         <div class="post-meta">
@@ -338,8 +344,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-07T15:39:12+08:00">
-                2015-01-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-10T11:08:49+08:00">
+                2017-01-10
               </time>
             
 
@@ -361,8 +367,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
+                  <a href="/categories/Nginx/" itemprop="url" rel="index">
+                    <span itemprop="name">Nginx</span>
                   </a>
                 </span>
 
@@ -392,7 +398,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2,585
+                  1,809
                 </span>
               
 
@@ -417,58 +423,48 @@
       
 
       
-        <h2 id="类加载器工作机制"><a href="#类加载器工作机制" class="headerlink" title="类加载器工作机制"></a>类加载器工作机制</h2><p>类加载器就是寻找类的节码文件并构造出类在JVM内部表示对象的组件。负责将<code>.class</code>文件加载到内存中，并为之生成对应的Class对象。在Java中，类加载器把一个类装入JVM中，要经过以下步骤：</p>
-<p>[1.] <strong>加载</strong>：（loading）通过类的全限定名获取二进制字节流（并没有指明要从一个Class文件中获取，可以从其他渠道，譬如：网络、动态生成、数据库等），将二进制字节流转换成方法区中的运行时数据结构，在内存中创建一个代表这个类的java.lang.Class对象，作为方法区这个类的各种数据的访问入口。<br><a id="more"></a><br>加载阶段和连接阶段（linking）的部分内容（如一部分字节码文件格式验证动作）是交叉进行的，加载阶段尚未完成，连接阶段可能已经开始，但这些夹在加载阶段之中进行的动作，仍然属于连接阶段的内容，这两个阶段的开始时间仍然保持着固定的先后顺序。</p>
-<p>[2.] <strong>连接</strong>：（linking）执行下面的验证、准备和解析步骤，其中解析步骤是可以选择的。</p>
-<p>&gt;</p>
-<blockquote>
-<p>[2.1]验证：检查导入类或接口的二进制数据的正确性，（文件格式验证，元数据验证，字节码验证，符号引用验证）。这一阶段的目的是为了确保Class文件的字节流中包含的信息符合当前虚拟机的要求，并且不会危害虚拟机自身的安全。验证阶段是非常重要的，但不是必须的，它对程序运行期没有影响，如果所引用的类经过反复验证，那么可以考虑采用-Xverifynone参数来关闭大部分的类验证措施，以缩短虚拟机类加载的时间。</p>
-<p>[2.2]准备：准备阶段是正式为类的静态成员分配内存并设置默认初始值的阶段，这些变量所使用的内存都将在方法区中进行分配。这时候进行内存分配的仅包括类静态成员变量，而不包括实例变量，实例变量将会在对象实例化时随着对象一起分配在堆中。其次，这里所说的初始值“通常情况”下是数据类型的零值。</p>
-<p>[2.3]解析：解析阶段是虚拟机将常量池内的符号引用替换为直接引用的过程。解析动作主要针对类或接口、字段、类方法、接口方法、方法类型、方法句柄和调用点限定符7类符号引用进行。</p>
-</blockquote>
-<p>[3.] <strong>初始化</strong>：（initializing）初始化阶段是类加载过程的最后一步，到了初始化阶段，才真正开始执行类中定义的java程序代码。在准备阶段，变量已经赋过一次系统要求的默认初始值，而在初始化阶段，则根据程序猿通过程序制定的主管计划去初始化类变量和其他资源。</p>
-<img src="/blog/2015/01/07/2015-01-07-Java类加载器/jiazaiqi01.png">
-<h2 id="JVM三种预定义类型类加载器"><a href="#JVM三种预定义类型类加载器" class="headerlink" title="JVM三种预定义类型类加载器"></a>JVM三种预定义类型类加载器</h2><p>类装载工作由ClassLoader及其子类负责，ClassLoader是一个重要的Java运行时系统组件，它负责在运行时查找和装入Class字节码文件。JVM在运行时会产生三个ClassLoader：</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Nginx是一款轻量级的Web服务器、反向代理服务器，由于它的内存占用少，启动极快，高并发能力强，在互联网项目中广泛应用。</p>
+<img src="/blog/2017/01/10/2017-01-10-Nginx学习笔记/nginx01.png" title="架构图">
+<p>上图基本上说明了当下流行的技术架构，其中Nginx有点入口网关的味道。<br><a id="more"></a></p>
+<h2 id="反向代理服务器"><a href="#反向代理服务器" class="headerlink" title="反向代理服务器"></a>反向代理服务器</h2><p>经常听人说到一些术语，如反向代理，那么什么是反向代理，什么又是正向代理呢？</p>
+<img src="/blog/2017/01/10/2017-01-10-Nginx学习笔记/nginx02.png" title="正向代理示意图">
+<p>由于防火墙的原因，我们并不能直接访问谷歌，那么我们可以借助VPN来实现，这就是一个简单的正向代理的例子。这里你能够发现，正向代理“代理”的是客户端，而且客户端是知道目标的，而目标是不知道客户端是通过VPN访问的。</p>
+<img src="/blog/2017/01/10/2017-01-10-Nginx学习笔记/nginx03.png" title="反向代理示意图">
+<p>当我们在外网访问百度的时候，其实会进行一个转发，代理到内网去，这就是所谓的反向代理，即反向代理“代理”的是服务器端，而且这一个过程对于客户端而言是透明的。</p>
+<h2 id="Nginx的Master-Worker模式"><a href="#Nginx的Master-Worker模式" class="headerlink" title="Nginx的Master-Worker模式"></a>Nginx的Master-Worker模式</h2><img src="/blog/2017/01/10/2017-01-10-Nginx学习笔记/nginx04.png" title="nginx进程">
+<p>启动Nginx后，其实就是在80端口启动了Socket服务进行监听，如图所示，Nginx涉及Master进程和Worker进程。</p>
+<img src="/blog/2017/01/10/2017-01-10-Nginx学习笔记/nginx05.png" title="Master-Worker模式">
+<img src="/blog/2017/01/10/2017-01-10-Nginx学习笔记/nginx06.png" title="nginx.conf">
+<h3 id="Master进程的作用是？"><a href="#Master进程的作用是？" class="headerlink" title="Master进程的作用是？"></a>Master进程的作用是？</h3><p>读取并验证配置文件nginx.conf；管理worker进程；</p>
+<h3 id="Worker进程的作用是？"><a href="#Worker进程的作用是？" class="headerlink" title="Worker进程的作用是？"></a>Worker进程的作用是？</h3><p>每一个Worker进程都维护一个线程（避免线程切换），处理连接和请求；注意Worker进程的个数由配置文件决定，一般和CPU个数相关（有利于进程切换），配置几个就有几个Worker进程。</p>
+<h3 id="Nginx如何做到热部署？"><a href="#Nginx如何做到热部署？" class="headerlink" title="Nginx如何做到热部署？"></a>Nginx如何做到热部署？</h3><p>所谓热部署，就是配置文件nginx.conf修改后，不需要stop Nginx，不需要中断请求，就能让配置文件生效！（nginx -s reload 重新加载/nginx -t检查配置/nginx -s stop强行停止）<br>通过上文我们已经知道worker进程负责处理具体的请求，那么如果想达到热部署的效果，可以想象：</p>
 <ul>
-<li>Bootstrap ClassLoader（根加载器），也被称为引导类加载器，负责Java核心类或-Xbootclasspath选项指定的jar包加载到内存中，在JDK中JRE的lib目录下rt.jar文件中加载文件，比如System,String等。它不是由java实现的，而是由C++编写，并不继承自 java.lang.ClassLoader 所以无法通过程序获取根加载器。</li>
-<li>Extension ClassLoader（扩展类加载器），负责JRE的扩展目录中jar包的加载。主要将JDK中JRE的lib/ext目录中的类库或者由系统变量-Djava.ext.dir指定位置中的类库加载到内存中。</li>
-<li>System/Application ClassLoader（系统类加载器），也称为应用程序类加载器，负责将JVM启动时来自java命令的class文件，或classpass环境变量所指定的jar包和类路径加载到内存中。可以通过ClassLoader的静态方法getSystemLoader()来获取系统类加载器。</li>
+<li>方案一：<br><strong>修改配置文件nginx.conf后，主进程master负责推送给woker进程更新配置信息，woker进程收到信息后，更新进程内部的线程信息。（有点valatile的味道）</strong></li>
+<li>方案二：<br><strong>修改配置文件nginx.conf后，重新生成新的worker进程，当然会以新的配置进行处理请求，而且新的请求必须都交给新的worker进程，至于老的worker进程，等把那些以前的请求处理完毕后，kill掉即可。</strong></li>
 </ul>
-<p>这三个类加载器之间存在父子层级关系，即Bootstrap ClassLoader是Extension ClassLoader的父加载器，Extension ClassLoader是System ClassLoader的父加载器。默认情况下，使用System ClassLoader装载应用程序的类，我们可以做一个实验： </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClassLoaderTest</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		ClassLoader loader = Thread.currentThread().getContextClassLoader();</span><br><span class="line">		System.out.println(<span class="string">"current loader:"</span>+loader);</span><br><span class="line">		System.out.println(<span class="string">"parent loader:"</span>+loader.getParent());</span><br><span class="line">		System.out.println(<span class="string">"grandparent loader:"</span>+loader.getParent(). getParent());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行以上代码，在控制台上将打出以下信息： </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">current loader:sun.misc.Launcher$AppClassLoader@<span class="number">7</span>b7035c6</span><br><span class="line">parent loader:sun.misc.Launcher$ExtClassLoader@<span class="number">3</span>da997a</span><br><span class="line"><span class="comment">// 根加载器在Java中访问不到，所以返回null </span></span><br><span class="line">grandparent loader:<span class="keyword">null</span></span><br></pre></td></tr></table></figure>
-<p>通过以上的输出信息，我们知道当前的ClassLoader是AppClassLoader(应用程序类加载器)，父ClassLoader是ExtClassLoader(扩展类加载器)，祖父ClassLoader是根类加载器，因为在Java中无法获得它的句柄，所以仅返回null。 </p>
-<h2 id="全盘负责机制"><a href="#全盘负责机制" class="headerlink" title="全盘负责机制"></a>全盘负责机制</h2><p>JVM装载类时使用“全盘负责委托机制”。“全盘负责”是指当一个ClassLoader装载一个类的时，除非显式地使用另一个ClassLoader，该类所依赖及引用的类也由这个ClassLoader载入。”委托机制”见下面的”双亲委派机制“。</p>
-<h2 id="双亲委派机制"><a href="#双亲委派机制" class="headerlink" title="双亲委派机制"></a>双亲委派机制</h2><p>如果一个类加载器收到了一个类加载请求，它不会自己去尝试加载这个类，而是把这个请求转交给父类加载器去完成。每一个层次的类加载器都是如此。因此所有的类加载请求都应该传递到最顶层的根类加载器中，只有到父类加载器反馈自己无法完成这个加载请求（在它的搜索范围没有找到这个类）时，子类加载器才会尝试自己去加载。这一点是从安全角度考虑的，试想如果有人编写了一个恶意的基础类（如java.lang.String）并装载到JVM中将会引起多么可怕的后果。但是由于有了“双亲委派机制”，java.lang.String永远是由根加载器来装载的，这样就避免了上述事件的发生。 </p>
-<p>“双亲委派”机制只是Java推荐的机制，并不是强制的机制。我们可以继承java.lang.ClassLoader类，实现自己的类加载器。如果想保持双亲委派模型，就应该重写findClass(name)方法；如果想破坏双亲委派模型，可以重写loadClass(name)方法。</p>
-<h3 id="ClassLoader重要方法"><a href="#ClassLoader重要方法" class="headerlink" title="ClassLoader重要方法"></a>ClassLoader重要方法</h3><p>在Java中，ClassLoader是一个抽象类，位于java.lang包中。下面对该类的一些重要接口方法进行介绍： </p>
-<ul>
-<li><code>Class loadClass(String name)</code><br>name参数指定类加载器需要装载类的名字，必须使用全限定类名，如com.baobaotao. beans.Car。该方法有一个重载方法loadClass(String name ,boolean resolve)，resolve参数告诉类加载器是否需要解析该类。在初始化类之前，应考虑进行类解析的工作，但并不是所有的类都需要解析，如果JVM只需要知道该类是否存在或找出该类的超类，那么就不需要进行解析。 </li>
-<li><code>Class defineClass(String name, byte[] b, int off, int len)</code><br>将类文件的字节数组转换成JVM内部的java.lang.Class对象。字节数组可以从本地文件系统、远程网络获取。name为字节数组对应的全限定类名。 </li>
-<li><code>Class findSystemClass(String name)</code><br>从本地文件系统载入Class文件，如果本地文件系统不存在该Class文件，将抛出ClassNotFoundException异常。该方法是JVM默认使用的装载机制。 </li>
-<li><code>Class findLoadedClass(String name)</code><br>调用该方法来查看ClassLoader是否已装入某个类。如果已装入，那么返回java.lang.Class对象，否则返回null。如果强行装载已存在的类，将会抛出连接错误。 </li>
-<li><code>ClassLoader getParent()</code><br>获取类加载器的父加载器，除根加载器外，所有的类加载器都有且仅有一个父加载器，ExtClassLoader的父加载器是根加载器，因为根加载器非Java编写，所以无法获得，将返回null。 </li>
-</ul>
-<p>除JVM默认的三个ClassLoader以外，可以编写自己的第三方类加载器，以实现一些特殊的需求。类文件被装载并解析后，在JVM内将拥有一个对应的java.lang.Class类描述对象，该类的实例都拥有指向这个类描述对象的引用，而类描述对象又拥有指向关联ClassLoader的引用，如图所示。 </p>
-<img src="/blog/2015/01/07/2015-01-07-Java类加载器/jiazaiqi02.png">
-<p>每一个类在JVM中都拥有一个对应的java.lang.Class对象，它提供了类结构信息的描述。数组、枚举、注解以及基本Java类型（如int、double等），甚至void都拥有对应的Class对象。Class没有public的构造方法。Class对象是在装载类时由JVM通过调用类加载器中的defineClass()方法自动构造的。 </p>
-<h3 id="类的初始化"><a href="#类的初始化" class="headerlink" title="类的初始化"></a>类的初始化</h3><p>类什么时候才被初始化</p>
-<ol>
-<li>创建类的实例，也就是new一个对象</li>
-<li>访问某个类或接口的静态变量，或者对该静态变量赋值</li>
-<li>调用类的静态方法</li>
-<li>反射（Class.forName(“com.dijia478.load”)）</li>
-<li>初始化一个类的子类（会首先初始化子类的父类）</li>
-<li>JVM启动时标明的启动类，即用java.exe命令来运行文件名和类名相同的那个主类</li>
-</ol>
-<p>只有这6中情况才会导致类的类的初始化。</p>
-<p>类的初始化步骤：</p>
-<ol>
-<li>如果这个类还没有被加载和连接，那先进行加载和连接</li>
-<li>假如这个类存在直接父类，并且这个类还没有被初始化（注意：在一个类加载器中，类只能初始化一次），那就初始化直接的父类（不适用于接口）</li>
-<li>加入类中存在初始化语句（如static变量和static块），那就依次执行这些初始化语句。</li>
-</ol>
+<p>Nginx采用的就是方案二来达到热部署的！</p>
+<h3 id="Nginx如何做到高并发下的高效处理？"><a href="#Nginx如何做到高并发下的高效处理？" class="headerlink" title="Nginx如何做到高并发下的高效处理？"></a>Nginx如何做到高并发下的高效处理？</h3><p>上文已经提及Nginx的worker进程个数与CPU绑定、worker进程内部包含一个线程高效回环处理请求，这的确有助于效率，但这是不够的。作为专业的程序员，我们可以开一下脑洞：BIO/NIO/AIO、异步/同步、阻塞/非阻塞…</p>
+<p>要同时处理那么多的请求，要知道，有的请求需要发生IO，可能需要很长时间，如果等着它，就会拖慢worker的处理速度。</p>
+<p><strong>Nginx采用了Linux的epoll模型，epoll模型基于事件驱动机制，它可以监控多个事件是否准备完毕，如果OK，那么放入epoll队列中，这个过程是异步的。worker只需要从epoll队列循环处理即可</strong></p>
+<h3 id="Nginx挂了怎么办？"><a href="#Nginx挂了怎么办？" class="headerlink" title="Nginx挂了怎么办？"></a>Nginx挂了怎么办？</h3><p>Nginx既然作为入口网关，很重要，如果出现单点问题，显然是不可接受的。</p>
+<p>答案是：<strong>Keepalived+Nginx实现高可用。</strong></p>
+<p>Keepalived是一个高可用解决方案，主要是用来防止服务器单点发生故障，可以通过和Nginx配合来实现Web服务的高可用。（其实，Keepalived不仅仅可以和Nginx配合，还可以和很多其他服务配合）</p>
+<p>Keepalived+Nginx实现高可用的思路：<br>第一：请求不要直接打到Nginx上，应该先通过Keepalived（这就是所谓虚拟IP，VIP）<br>第二：Keepalived应该能监控Nginx的生命状态（提供一个用户自定义的脚本，定期检查Nginx进程状态，进行权重变化,，从而实现Nginx故障切换）</p>
+<img src="/blog/2017/01/10/2017-01-10-Nginx学习笔记/nginx07.png" title="Keepalived+Nginx">
+<h2 id="我们的主战场：nginx-conf"><a href="#我们的主战场：nginx-conf" class="headerlink" title="我们的主战场：nginx.conf"></a>我们的主战场：nginx.conf</h2><p>很多时候，在开发、测试环境下，我们都得自己去配置Nginx，就是去配置nginx.conf。</p>
+<p>nginx.conf是典型的分段配置文件，下面我们来分析下。</p>
+<h3 id="虚拟主机"><a href="#虚拟主机" class="headerlink" title="虚拟主机"></a>虚拟主机</h3><img src="/blog/2017/01/10/2017-01-10-Nginx学习笔记/nginx08.png" title="http的server段">
+<p>其实这是把Nginx作为web server来处理静态资源。</p>
+<p>第一：location可以进行正则匹配，应该注意正则的几种形式以及优先级。从高到低分别为：确切的名字、最长的以*起始的通配符名字、最长的以*结束的通配符名字、第一个匹配的正则表达式名字</p>
+<p>第二：Nginx能够提高速度的其中一个特性就是：动静分离，就是把静态资源放到Nginx上，由Nginx管理，动态请求转发给后端。</p>
+<p><strong>第三：我们可以在Nginx下把静态资源、日志文件归属到不同域名下（也即是目录），这样方便管理维护。</strong></p>
+<p><strong>第四：Nginx可以进行IP访问控制，有些电商平台，就可以在Nginx这一层，做一下处理，内置一个黑名单模块，那么就不必等请求通过Nginx达到后端在进行拦截，而是直接在Nginx这一层就处理掉。</strong></p>
+<h3 id="反向代理【proxy-pass】"><a href="#反向代理【proxy-pass】" class="headerlink" title="反向代理【proxy_pass】"></a>反向代理【proxy_pass】</h3><p>所谓反向代理，很简单，其实就是在location这一段配置中的root替换成proxy_pass即可。root说明是静态资源，可以由Nginx进行返回；而proxy_pass说明是动态请求，需要进行转发，比如代理到Tomcat上。</p>
+<p>反向代理，上面已经说了，过程是透明的，比如说request -&gt; Nginx -&gt; Tomcat，那么对于Tomcat而言，请求的IP地址就是Nginx的地址，而非真实的request地址，这一点需要注意。不过好在Nginx不仅仅可以反向代理请求，还可以由用户自定义设置HTTP HEADER。</p>
+<h3 id="负载均衡【upstream】"><a href="#负载均衡【upstream】" class="headerlink" title="负载均衡【upstream】"></a>负载均衡【upstream】</h3><p>上面的反向代理中，我们通过proxy_pass来指定Tomcat的地址，很显然我们只能指定一台Tomcat地址，那么我们如果想指定多台来达到负载均衡呢？</p>
+<p>第一，通过upstream来定义一组Tomcat，并指定负载策略（IPHASH、加权论调、最少连接），健康检查策略（Nginx可以监控这一组Tomcat的状态）等。<br>第二，将proxy_pass替换成upstream指定的值即可。</p>
+<h3 id="负载均衡可能带来的问题？"><a href="#负载均衡可能带来的问题？" class="headerlink" title="负载均衡可能带来的问题？"></a>负载均衡可能带来的问题？</h3><p>负载均衡所带来的明显的问题是，一个请求，可以到A server，也可以到B server，这完全不受我们的控制，当然这也不是什么问题，只是我们得注意的是：用户状态的保存问题，如Session会话信息，不能在保存到服务器上。</p>
+<h3 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h3><p>缓存，是Nginx提供的，可以加快访问速度的机制，说白了，在配置上就是一个开启，同时指定目录，让缓存可以存储到磁盘上。具体配置，大家可以参考Nginx官方文档，这里就不在展开了。</p>
 
       
     </div>
@@ -515,7 +511,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/类加载器/" rel="tag"><i class="fa fa-tag"></i> 类加载器</a>
+            <a href="/tags/Nginx/" rel="tag"><i class="fa fa-tag"></i> Nginx</a>
           
         </div>
       
@@ -528,8 +524,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/blog/2014/12/19/2014-12-19-request和response中文乱码问题后台处理办法/" rel="next" title="request和response中文乱码问题后台处理办法">
-                <i class="fa fa-chevron-left"></i> request和response中文乱码问题后台处理办法
+              <a href="/blog/2017/01/10/2017-01-10-深入浅出Nginx/" rel="next" title="深入浅出Nginx">
+                <i class="fa fa-chevron-left"></i> 深入浅出Nginx
               </a>
             
           </div>
@@ -538,8 +534,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/blog/2015/03/13/2015-03-13-JDK1-7中HashMap底层实现原理/" rel="prev" title="JDK1.7中HashMap底层实现原理">
-                JDK1.7中HashMap底层实现原理 <i class="fa fa-chevron-right"></i>
+              <a href="/blog/2017/02/02/2017-02-02-关于异常处理的一些建议/" rel="prev" title="关于异常处理的一些建议">
+                关于异常处理的一些建议 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -736,7 +732,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#类加载器工作机制"><span class="nav-number">1.</span> <span class="nav-text">类加载器工作机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JVM三种预定义类型类加载器"><span class="nav-number">2.</span> <span class="nav-text">JVM三种预定义类型类加载器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#全盘负责机制"><span class="nav-number">3.</span> <span class="nav-text">全盘负责机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#双亲委派机制"><span class="nav-number">4.</span> <span class="nav-text">双亲委派机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ClassLoader重要方法"><span class="nav-number">4.1.</span> <span class="nav-text">ClassLoader重要方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类的初始化"><span class="nav-number">4.2.</span> <span class="nav-text">类的初始化</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反向代理服务器"><span class="nav-number">2.</span> <span class="nav-text">反向代理服务器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx的Master-Worker模式"><span class="nav-number">3.</span> <span class="nav-text">Nginx的Master-Worker模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Master进程的作用是？"><span class="nav-number">3.1.</span> <span class="nav-text">Master进程的作用是？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Worker进程的作用是？"><span class="nav-number">3.2.</span> <span class="nav-text">Worker进程的作用是？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx如何做到热部署？"><span class="nav-number">3.3.</span> <span class="nav-text">Nginx如何做到热部署？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx如何做到高并发下的高效处理？"><span class="nav-number">3.4.</span> <span class="nav-text">Nginx如何做到高并发下的高效处理？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx挂了怎么办？"><span class="nav-number">3.5.</span> <span class="nav-text">Nginx挂了怎么办？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#我们的主战场：nginx-conf"><span class="nav-number">4.</span> <span class="nav-text">我们的主战场：nginx.conf</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#虚拟主机"><span class="nav-number">4.1.</span> <span class="nav-text">虚拟主机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#反向代理【proxy-pass】"><span class="nav-number">4.2.</span> <span class="nav-text">反向代理【proxy_pass】</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#负载均衡【upstream】"><span class="nav-number">4.3.</span> <span class="nav-text">负载均衡【upstream】</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#负载均衡可能带来的问题？"><span class="nav-number">4.4.</span> <span class="nav-text">负载均衡可能带来的问题？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存"><span class="nav-number">4.5.</span> <span class="nav-text">缓存</span></a></li></ol></li></ol></div>
             
 
           </div>
