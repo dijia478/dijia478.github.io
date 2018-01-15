@@ -393,7 +393,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  45,932
+                  45,944
                 </span>
               
 
@@ -469,7 +469,8 @@
 <p>HashTable：基于Dictionary类的Map接口的实现，它是线程安全的。</p>
 <p><strong>3.9 LinkedList 和 PriorityQueue 的区别</strong></p>
 <p>它们均是Queue接口的实现。拥有FIFO的特点，它们的区别在于排序行为。LinkedList 支持双向列表操作，<br>PriorityQueue 按优先级组织的队列，元素的出队次序由元素的自然排序或者由Comparator比较器指定。</p>
-<p><strong>3.10 线程安全的集合类。Vector、Hashtable、Properties和Stack、ConcurrentHashMap</strong></p>
+<p><strong>3.10 线程安全的集合类。</strong></p>
+<p>Vector、Hashtable、Properties和Stack、ConcurrentHashMap</p>
 <p><strong>3.11 BlockingQueue</strong></p>
 <p>Java.util.concurrent.BlockingQueue是一个队列，在进行获取元素时，它会等待队列变为非空；当在添加一个元素时，它会等待队列中的可用空间。BlockingQueue接口是Java集合框架的一部分，主要用于实现生产者-消费者模式。我们不需要担心等待生产者有可用的空间，或消费者有可用的对象，因为它都在BlockingQueue的实现类中被处理了。Java提供了集中BlockingQueue的实现，比如ArrayBlockingQueue、LinkedBlockingQueue、PriorityBlockingQueue,、SynchronousQueue等。</p>
 <p>**3.12 如何对一组对象进行排序</p>
@@ -529,7 +530,8 @@
 <p>符号    等价形式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">\d		[0-9]</span><br><span class="line">\D      [^0-9]  </span><br><span class="line">\w 		[a-zA-Z_0-9]</span><br><span class="line">\W 		[^a-zA-Z_0-9]</span><br><span class="line">\s 		[\t\n\r\f]</span><br><span class="line">\S 		[^\t\n\r\f]</span><br><span class="line">. 		任何字符</span><br></pre></td></tr></table></figure></p>
 <p><strong>边界匹配器</strong></p>
 <p>行开头    ^<br>行结尾  $<br>单词边界 \b</p>
-<p><strong>贪婪模式</strong>:最大长度匹配 非贪婪模式:匹配到结果就好,最短匹配</p>
+<p><strong>贪婪模式</strong>:最大长度匹配 </p>
+<p><strong>非贪婪模式</strong>:匹配到结果就好,最短匹配</p>
 <p><strong>环视</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">字符 				描述 					匹配对象</span><br><span class="line">.					单个任意字符			</span><br><span class="line">[...] 				字符组 					列出的任意字符</span><br><span class="line">[^...] 										未列出的任意字符</span><br><span class="line">^ 					caret 					行的起始位置</span><br><span class="line">$     				dollar 					行的结束位置</span><br><span class="line">\&lt;   										单词的起始位置</span><br><span class="line">\&gt; 											单词的结束位置</span><br><span class="line">\b   				单词边界</span><br><span class="line">\B 					非单词边界</span><br><span class="line">(?=Expression)		顺序肯定环视			成功,如果右边能够匹配</span><br><span class="line">(?!Expression)		顺序否定环视			成功,如果右边不能够匹配</span><br><span class="line">(?&lt;=Expression)		逆序肯定环视			成功,如果左边能够匹配</span><br><span class="line">(?&lt;!Expression) 	逆序否定环视			成功,如果左边不能够匹配</span><br></pre></td></tr></table></figure>
 <p>举例:北京市(海淀区)(朝阳区)(西城区)</p>
@@ -568,8 +570,9 @@
 </ol>
 <h3 id="18-null可以被强制转型为任意类型的对象"><a href="#18-null可以被强制转型为任意类型的对象" class="headerlink" title="18. null可以被强制转型为任意类型的对象"></a>18. null可以被强制转型为任意类型的对象</h3><h3 id="19-代码执行次序"><a href="#19-代码执行次序" class="headerlink" title="19.代码执行次序"></a>19.代码执行次序</h3><ol>
 <li>多个静态成员变量, 静态代码块按顺序执行</li>
-<li>单个类中: 静态代码 -&gt; main方法 -&gt; 构造块 -&gt; 构造方法</li>
+<li>单个类中: 静态代码 -&gt; main方法 -&gt; 构造代码块 -&gt; 构造方法</li>
 <li>构造块在每一次创建对象时执行</li>
+<li>静态代码只执行一次</li>
 <li>涉及父类和子类的初始化过程<br>a.初始化父类中的静态成员变量和静态代码块<br>b.初始化子类中的静态成员变量和静态代码块<br>c.初始化父类的普通成员变量和构造代码块(按次序)，再执行父类的构造方法(注意父类构造方法中的子类方法覆盖)<br>d.初始化子类的普通成员变量和构造代码块(按次序)，再执行子类的构造方法</li>
 </ol>
 <h3 id="20-数组复制方法"><a href="#20-数组复制方法" class="headerlink" title="20. 数组复制方法"></a>20. 数组复制方法</h3><ol>
@@ -1649,8 +1652,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/blog/2017/01/10/2017-01-10-深入浅出Nginx/" rel="prev" title="深入浅出Nginx">
-                深入浅出Nginx <i class="fa fa-chevron-right"></i>
+              <a href="/blog/2017/01/10/2017-01-10-Nginx学习笔记/" rel="prev" title="Nginx学习笔记">
+                Nginx学习笔记 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -1755,7 +1758,7 @@ var jiathis_config={
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1894,7 +1897,7 @@ var jiathis_config={
 |
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">全站共153.9k字</span>
+  <span class="post-count">全站共152.6k字</span>
 </div>
         
 
