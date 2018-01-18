@@ -99,7 +99,7 @@
 <meta property="og:image" content="http://dijia478.cn/blog/2016/03/01/2016-03-01-JVM内存区域划分/jvm01.png">
 <meta property="og:image" content="http://dijia478.cn/blog/2016/03/01/2016-03-01-JVM内存区域划分/jvm02.png">
 <meta property="og:image" content="http://dijia478.cn/blog/2016/03/01/2016-03-01-JVM内存区域划分/jvm03.png">
-<meta property="og:updated_time" content="2018-01-15T12:31:50.532Z">
+<meta property="og:updated_time" content="2018-01-18T04:39:06.139Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM内存区域划分">
 <meta name="twitter:description" content="JVM内存由于Java程序是交由JVM执行的，所以我们在谈Java内存区域划分的时候事实上是指JVM内存区域划分。在讨论JVM内存区域划分之前，先来看一下Java程序具体执行的过程：">
@@ -393,7 +393,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2,678
+                  2,764
                 </span>
               
 
@@ -462,56 +462,42 @@
 <p>在方法区中有一个非常重要的部分就是运行时常量池(Runtime Constant Pool)，它是每一个类或接口的常量池的运行时表示形式，在类和接口被加载到JVM后，对应的运行时常量池就被创建出来。运行时常量池相对于Class文件常量池的一个重要特征是具备动态性：并非Class文件常量池中的内容才能进入运行时常量池，在运行期间也可将新的常量放入运行时常量池中，比如String.intern()方法，这个方法的作用就是：先从方法区的运行时常量池中查找看是否有该值，如果有，则返回该值的引用，如果没有，那么就会将该值加入运行时常量池中。</p>
 <p>在JVM规范中，没有强制要求方法区必须实现垃圾回收。很多人习惯将方法区称为“永久代”，是因为HotSpot虚拟机以永久代来实现方法区，从而JVM的垃圾收集器可以像管理堆区一样管理这部分区域，从而不需要专门为这部分设计垃圾回收机制。</p>
 <p>不过自从JDK7之后，Hotspot虚拟机便将运行时常量池从永久代移除了，在Java 堆中开辟了一块区域存放运行时常量池。在Java7之前，HotSpot虚拟机中将GC分代收集扩展到了方法区，使用永久代来实现了方法区。这个区域的内存回收目标主要是针对常量池的回收和对类型的卸载。而在Java8中，已经彻底没有了永久代，将方法区直接放在一个与堆不相连的本地内存区域，这个区域被叫做元空间。</p>
-<h2 id="常用JVM-参数选项："><a href="#常用JVM-参数选项：" class="headerlink" title="常用JVM 参数选项："></a>常用JVM 参数选项：</h2><table>
-<thead>
-<tr>
-<th>参数</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>-Xms</td>
-<td>初始堆大小。如：-Xms256m</td>
-</tr>
-<tr>
-<td>-Xmx</td>
-<td>最大堆大小。如：-Xmx512m 若-Xms=-Xmx,则可避免堆自动扩展</td>
-</tr>
-<tr>
-<td>-Xmn</td>
-<td>新生代大小。通常为 Xmx 的 1/3 或 1/4。新生代 = Eden + 2 个 Survivor 空间。实际可用空间为 = Eden + 1 个 Survivor，即 90%</td>
-</tr>
-<tr>
-<td>-Xss</td>
-<td>JDK1.5+ 每个线程堆栈大小为 1M，一般来说如果栈不是很深的话， 1M 是绝对够用了的。</td>
-</tr>
-<tr>
-<td>-XX:NewRatio</td>
-<td>新生代与老年代的比例，如 –XX:NewRatio=2，则新生代占整个堆空间的1/3，老年代占2/3</td>
-</tr>
-<tr>
-<td>-XX:SurvivorRatio</td>
-<td>新生代中 Eden 与 Survivor 的比值。默认值为 8。即 Eden 占新生代空间的 8/10，另外两个 Survivor 各占 1/10</td>
-</tr>
-<tr>
-<td>-XX:PermSize</td>
-<td>永久代(方法区)的初始大小</td>
-</tr>
-<tr>
-<td>-XX:MaxPermSize</td>
-<td>永久代(方法区)的最大值</td>
-</tr>
-<tr>
-<td>-XX:+PrintGCDetails</td>
-<td>打印 GC 信息</td>
-</tr>
-<tr>
-<td>-XX:+HeapDumpOnOutOfMemoryError</td>
-<td>让虚拟机在发生内存溢出时 Dump 出当前的内存堆转储快照，以便分析用</td>
-</tr>
-</tbody>
-</table>
+<h2 id="常用JVM-参数选项："><a href="#常用JVM-参数选项：" class="headerlink" title="常用JVM 参数选项："></a>常用JVM 参数选项：</h2><ol>
+<li>堆设置<ul>
+<li><strong>-Xms</strong> :初始堆大小</li>
+<li><strong>-Xmx</strong> :最大堆大小</li>
+<li><strong>-XX:NewSize=n</strong> :设置年轻代大小</li>
+<li><strong>-XX:NewRatio=n:</strong> 设置年轻代和年老代的比值。如:为3，表示年轻代与年老代比值为1：3，年轻代占整个年轻代年老代和的1/4</li>
+<li><strong>-XX:SurvivorRatio=n</strong> :年轻代中Eden区与两个Survivor区的比值。注意Survivor区有两个。如：3，表示Eden：Survivor=3：2，一个Survivor区占整个年轻代的1/5</li>
+<li><strong>-XX:MaxPermSize=n</strong> :设置持久代大小</li>
+</ul>
+</li>
+<li>收集器设置<ul>
+<li><strong>-XX:+UseSerialGC</strong> :设置串行收集器</li>
+<li><strong>-XX:+UseParallelGC</strong> :设置并行收集器</li>
+<li><strong>-XX:+UseParalledlOldGC</strong> :设置并行年老代收集器</li>
+<li><strong>-XX:+UseConcMarkSweepGC</strong> :设置并发收集器</li>
+</ul>
+</li>
+<li>垃圾回收统计信息<ul>
+<li><strong>-XX:+PrintGC</strong></li>
+<li><strong>-XX:+PrintGCDetails</strong></li>
+<li><strong>-XX:+PrintGCTimeStamps</strong></li>
+<li><strong>-Xloggc:filename</strong></li>
+</ul>
+</li>
+<li>并行收集器设置<ul>
+<li><strong>-XX:ParallelGCThreads=n</strong> :设置并行收集器收集时使用的CPU数。并行收集线程数。</li>
+<li><strong>-XX:MaxGCPauseMillis=n</strong> :设置并行收集最大暂停时间</li>
+<li><strong>-XX:GCTimeRatio=n</strong> :设置垃圾回收时间占程序运行时间的百分比。公式为1/(1+n)</li>
+</ul>
+</li>
+<li>并发收集器设置<ul>
+<li><strong>-XX:+CMSIncrementalMode</strong> :设置为增量模式。适用于单CPU情况。</li>
+<li><strong>-XX:ParallelGCThreads=n</strong> :设置并发收集器年轻代收集方式为并行收集时，使用的CPU数。并行收集线程数。</li>
+</ul>
+</li>
+</ol>
 
       
     </div>
@@ -826,7 +812,7 @@ var jiathis_config={
 |
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">全站共144.9k字</span>
+  <span class="post-count">全站共143.9k字</span>
 </div>
         
 
