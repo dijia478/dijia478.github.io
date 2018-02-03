@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://dijia478.cn/about/index.html</loc>
+    
+    <lastmod>2018-02-03T16:06:03.176Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://dijia478.cn/blog/2015/12/23/2015-12-23-Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/</loc>
     
     <lastmod>2018-01-21T10:02:13.421Z</lastmod>
@@ -47,13 +54,6 @@
     <loc>http://dijia478.cn/blog/2015/01/07/2015-01-07-Java%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/</loc>
     
     <lastmod>2018-01-13T06:11:55.575Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://dijia478.cn/about/index.html</loc>
-    
-    <lastmod>2018-01-11T12:37:34.701Z</lastmod>
     
   </url>
   
