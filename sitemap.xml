@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://dijia478.cn/blog/2016/02/09/2016-02-09-%E8%AF%A6%E8%A7%A3Spring%E7%9A%84IoC%E5%8E%9F%E7%90%86/</loc>
+    
+    <lastmod>2018-02-09T09:52:56.709Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://dijia478.cn/blog/2017/05/18/2017-05-18-Spring%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E6%95%B4%E7%90%86-ioc%E7%AF%87/</loc>
     
-    <lastmod>2018-02-09T08:33:03.772Z</lastmod>
+    <lastmod>2018-02-09T09:11:47.207Z</lastmod>
     
   </url>
   
@@ -47,13 +54,6 @@
     <loc>http://dijia478.cn/blog/2017/07/17/2017-07-17-Spring%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E6%95%B4%E7%90%86-mvc%E7%AF%87/</loc>
     
     <lastmod>2018-02-09T08:30:02.039Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://dijia478.cn/blog/2018/02/09/2016-02-09-%E8%AF%A6%E8%A7%A3Spring%E7%9A%84IOC%E5%8E%9F%E7%90%86/</loc>
-    
-    <lastmod>2018-02-09T08:20:22.160Z</lastmod>
     
   </url>
   
