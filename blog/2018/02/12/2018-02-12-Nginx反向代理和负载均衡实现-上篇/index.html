@@ -98,7 +98,14 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx01.png">
 <meta property="og:image" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx02.png">
-<meta property="og:updated_time" content="2018-02-12T14:14:37.546Z">
+<meta property="og:image" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx03.png">
+<meta property="og:image" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx04.png">
+<meta property="og:image" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx05.png">
+<meta property="og:image" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx06.png">
+<meta property="og:image" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx07.png">
+<meta property="og:image" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx08.png">
+<meta property="og:image" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx08.png">
+<meta property="og:updated_time" content="2018-02-13T05:31:59.955Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx反向代理和负载均衡实现-上篇">
 <meta name="twitter:description" content="准备纯干活，分上、中、下，三篇来写。总结一下Nginx反向代理和负载均衡实现（上篇），redis的session共享（中篇），keepalived高可用（下篇）。只是停留在使用的层面上，没有深入原理。">
@@ -392,7 +399,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  526
+                  966
                 </span>
               
 
@@ -421,7 +428,7 @@
 <p>nginx主服务器一台，nginx备服务器一台，使用keepalived进行宕机切换，实现高可用。</p>
 <p>tomcat服务器两台，由nginx进行反向代理和负载均衡，此处可搭建服务器集群。</p>
 <p>redis服务器一台，用于session的分离共享。</p>
-<p>因为我的小电脑配置不高，没法开那么多台服务器，所以就全部安装在同一个服务器里了啊，通过不同的端口来区分。实际应用中应该是安装在5台服务器里，ip地址不同。</p>
+<p>因为我的小电脑配置不高，没法开那么多台服务器，所以就全部安装在同一个服务器（192.168.25.128）里了啊，通过不同的端口来区分。实际应用中应该是安装在5台服务器里，ip地址不同。</p>
 <p>注意访问时需要配置防火墙规则，或者关闭防火墙</p>
 <p><strong>环境： </strong></p>
 <p>VMware12 Pro</p>
@@ -432,16 +439,32 @@
 <p>redis-4.0.8</p>
 <h2 id="架构图"><a href="#架构图" class="headerlink" title="架构图"></a>架构图</h2><img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx01.png">
 <p><strong>此时需要用到三台服务器，一台nginx服务器，两台正式部署项目的服务器</strong></p>
-<p>因为条件限制，我就用一台服务器，来部署三个服务了。</p>
-<h2 id="安装tomcat"><a href="#安装tomcat" class="headerlink" title="安装tomcat"></a>安装tomcat</h2><p>这个简单，不多说，上传解压即可使用，tomcat/bin目录下 startup.sh启动，shutdown.sh关闭</p>
+<p>因为条件限制，我就用一台服务器（192.168.25.128），来部署三个服务了。</p>
+<h2 id="一、安装tomcat"><a href="#一、安装tomcat" class="headerlink" title="一、安装tomcat"></a>一、安装tomcat</h2><p>这个简单，不多说，上传解压即可使用，tomcat/bin目录下 startup.sh启动，shutdown.sh关闭</p>
 <p>复制两份出来，放在/usr/local/nginx下</p>
 <img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx02.png">
-<p>分别修改端口为8080和8081</p>
-<p>配置防火墙端口：<code>vim /etc/sysconfig/iptables</code></p>
-<p>开放8080和8081端口，80端口等一些常用端口，当然后边有用到一些端口都是需要配置开放的，不建议关闭防火墙</p>
+<p>在tomcat/conf/server.xml中，修改端口，这里演示tomcat01里的</p>
+<p>用/port命令搜索port字符串，按n搜索下一个，有三个地方要改，原本是8005,8080,8009，依次更改为</p>
+<img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx03.png">
+<img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx04.png">
+<img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx05.png">
+<p>tomcat02里也是修改这三个位置，分别修改为8205,8280,8209。</p>
+<p><strong>修改端口是因为我这里是在同一台服务器上部署了两个tomcat。如果按照原本的架构，是在两台服务器部署，ip不同，那么是不用修改端口的，可省略上面修改端口这步。</strong></p>
+<h2 id="二、修改防火墙规则"><a href="#二、修改防火墙规则" class="headerlink" title="二、修改防火墙规则"></a>二、修改防火墙规则</h2><p>配置防火墙端口：<code>vim /etc/sysconfig/iptables</code></p>
+<p>开放8180和8280端口，80端口等一些常用端口，当然后边有用到一些端口都是需要配置开放的，不建议关闭防火墙</p>
+<img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx06.png">
 <p>编辑好后 <code>service iptables restart</code> 命令，重新加载防火墙配置</p>
-<p><strong>如果是自己测试嫌配置麻烦，可以关闭防火墙： <code>service iptables stop</code> 重启服务器后防火墙打开，即在此次开机状态下有效。完全关闭防火墙： <code>chkconfig iptables off</code> ，即使重启后防火墙也不会打开。注意有时候服务都起了，但访问就是出错，可能就是防火墙问题</strong></p>
-
+<img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx07.png">
+<p><strong>如果是自己测试嫌配置麻烦，可以关闭防火墙： <code>service iptables stop</code> 此命令在重启服务器后，防火墙还会打开，即在此次开机状态下有效。完全关闭防火墙： <code>chkconfig iptables off</code> ，即使重启服务器后防火墙也不会打开。注意有时候服务都起了，但访问就是出错，可能就是防火墙问题</strong></p>
+<p>启动tomcat访问：192.168.25.128:8180，192.168.25.128:8280，打开tomcat首页即成功。</p>
+<h2 id="三、部署项目"><a href="#三、部署项目" class="headerlink" title="三、部署项目"></a>三、部署项目</h2><p>编写测试项目，IDEA新建maven项目，项目名为testproject，在webapp目录下新建一个jsp页面为index.jsp,添加如下内容</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ page contentType=<span class="string">"text/html;charset=UTF-8"</span> language=<span class="string">"java"</span> %&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;Title&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;h1&gt;测试页面&lt;h1/&gt;</span><br><span class="line">    &lt;br&gt;</span><br><span class="line">    &lt;h1&gt;SessionId:&lt;%=session.getId() %&gt;&lt;/h1&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p>将项目中web.xml中的访问顺序<code>&lt;welcome-file&gt;index.jsp&lt;/welcome-file&gt;</code>上移到第一个访问</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">web-app</span> <span class="attr">xmlns</span>=<span class="string">"http://xmlns.jcp.org/xml/ns/javaee"</span></span></span><br><span class="line"><span class="tag"><span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag"><span class="attr">xsi:schemaLocation</span>=<span class="string">"http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"</span></span></span><br><span class="line"><span class="tag"><span class="attr">version</span>=<span class="string">"3.1"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">display-name</span>&gt;</span>testproject<span class="tag">&lt;/<span class="name">display-name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">welcome-file-list</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">welcome-file</span>&gt;</span>index.jsp<span class="tag">&lt;/<span class="name">welcome-file</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">welcome-file</span>&gt;</span>index.html<span class="tag">&lt;/<span class="name">welcome-file</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">welcome-file</span>&gt;</span>index.htm<span class="tag">&lt;/<span class="name">welcome-file</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">welcome-file</span>&gt;</span>default.html<span class="tag">&lt;/<span class="name">welcome-file</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">welcome-file</span>&gt;</span>default.htm<span class="tag">&lt;/<span class="name">welcome-file</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">welcome-file</span>&gt;</span>default.jsp<span class="tag">&lt;/<span class="name">welcome-file</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">welcome-file-list</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">web-app</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在pom.xml中添加<code>&lt;packaging&gt;war&lt;/packaging&gt;</code>标签，然后利用IDEA最右侧maven工具将项目打成war包，testproject.war</p>
+<img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx08.png">
+<p>将该war包上传到两台服务器的tomcat的webapps中</p>
+<img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx08.png">
       
     </div>
     
@@ -708,7 +731,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备"><span class="nav-number">1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#架构图"><span class="nav-number">2.</span> <span class="nav-text">架构图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装tomcat"><span class="nav-number">3.</span> <span class="nav-text">安装tomcat</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备"><span class="nav-number">1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#架构图"><span class="nav-number">2.</span> <span class="nav-text">架构图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一、安装tomcat"><span class="nav-number">3.</span> <span class="nav-text">一、安装tomcat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、修改防火墙规则"><span class="nav-number">4.</span> <span class="nav-text">二、修改防火墙规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、部署项目"><span class="nav-number">5.</span> <span class="nav-text">三、部署项目</span></a></li></ol></div>
             
 
           </div>
@@ -755,7 +778,7 @@ var jiathis_config={
 |
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">全站共155.2k字</span>
+  <span class="post-count">全站共155.6k字</span>
 </div>
         
 
