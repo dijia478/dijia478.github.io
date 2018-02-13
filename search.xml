@@ -51,7 +51,7 @@
 <img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx10.png">
 <p>修改Engine标签，添加jvmRoute属性，用于标识nginx访问的是哪个服务器tomcat，tomcat01服务器标识为8180Server1，tomcat02服务器标识为8280Server2。我这里只演示tomcat01</p>
 <img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx11.png">
-<p>在两台tomcat的server.xml文件，Host标签中添加：<code>&lt;Context path=&quot;&quot; docBase=&quot;testproject&quot;/&gt;</code>，path表示访问路径，docBase为项目名，表示访问项目，这里还是只演示tomcat01</p>
+<p>设置tomcat的虚拟目录，在两台tomcat的server.xml文件，Host标签中添加：<code>&lt;Context path=&quot;&quot; docBase=&quot;testproject&quot;/&gt;</code>，path表示访问路径，为空的话访问就不用输入项目名，docBase为项目路径，我这是相对路径。这里还是只演示tomcat01</p>
 <img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx12.png">
 <p>此时，重新启动两个tomcat，访问两个项目，两台服务器访问显示如下：</p>
 <img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx13.png">
