@@ -57,6 +57,25 @@
 <img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx13.png">
 <img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx14.png">
 <p>至此，两台tomcat服务搭建完成。</p>
+<h2 id="四、安装Nginx"><a href="#四、安装Nginx" class="headerlink" title="四、安装Nginx"></a>四、安装Nginx</h2><p>先使用yum命令安装gcc的环境，安装pcre，zlib，openssl第三方的开发包，依次执行命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum install gcc-c++</span><br><span class="line">yum install -y pcre pcre-devel</span><br><span class="line">yum install -y zlib zlib-devel</span><br><span class="line">yum install -y openssl openssl-devel</span><br></pre></td></tr></table></figure>
+<p>上传nginx-1.12.2.tar.gz，解压</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar zxf nginx-1.12.2.tar.gz</span><br></pre></td></tr></table></figure>
+<p>进入解压后的目录，依次执行命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./configure</span><br><span class="line">make</span><br><span class="line">mkae install</span><br></pre></td></tr></table></figure>
+<p> 此时nginx安装完毕，默认安装目录是/usr/local/nginx，nginx默认占用80端口</p>
+<img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx15.png">
+<p>哎呀，和之前的两个tomcat放在同一目录下了。。。算了，不影响啥，就放这吧。那两个脚本文件是我用来启动和关闭两个tomcat的，懒得进目录去一个一个打开关闭。之前的步骤里没说这两个脚本。其实在上面输入<code>./configure</code> 命令时，可以给后面加上<code>--prefix=安装路径</code> 来指定安装位置的。</p>
+<p>继续说Nginx，其中，sbin目录为nginx执行命令，conf目录下的nginx.conf为默认加载的配置文件</p>
+<p>启动nginx：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./sbin/nginx</span><br></pre></td></tr></table></figure>
+<p>关闭nginx：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./sbin/nginx -s quit</span><br></pre></td></tr></table></figure>
+<p>重启nginx：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">先关闭后启动。</span><br><span class="line">刷新配置文件：</span><br><span class="line">./sbin/nginx -s reload</span><br></pre></td></tr></table></figure>
+<p>启动nginx后访问192.168.25.128:80即可访问nginx：显示nginx欢迎页（注意防火墙是否添加80端口）</p>
+<img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx16.png">
+<p>至此，nginx安装完毕。</p>
 ]]></content>
       
         <categories>

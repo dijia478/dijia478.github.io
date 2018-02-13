@@ -110,7 +110,9 @@
 <meta property="og:image" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx12.png">
 <meta property="og:image" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx13.png">
 <meta property="og:image" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx14.png">
-<meta property="og:updated_time" content="2018-02-13T08:32:47.134Z">
+<meta property="og:image" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx15.png">
+<meta property="og:image" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx16.png">
+<meta property="og:updated_time" content="2018-02-13T10:15:28.912Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx反向代理和负载均衡实现-上篇">
 <meta name="twitter:description" content="准备纯干活，分上、中、下，三篇来写。总结一下Nginx反向代理和负载均衡实现（上篇），redis的session共享（中篇），keepalived高可用（下篇）。只是停留在使用的层面上，没有深入原理。">
@@ -404,7 +406,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,172
+                  1,505
                 </span>
               
 
@@ -481,6 +483,25 @@
 <img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx13.png">
 <img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx14.png">
 <p>至此，两台tomcat服务搭建完成。</p>
+<h2 id="四、安装Nginx"><a href="#四、安装Nginx" class="headerlink" title="四、安装Nginx"></a>四、安装Nginx</h2><p>先使用yum命令安装gcc的环境，安装pcre，zlib，openssl第三方的开发包，依次执行命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum install gcc-c++</span><br><span class="line">yum install -y pcre pcre-devel</span><br><span class="line">yum install -y zlib zlib-devel</span><br><span class="line">yum install -y openssl openssl-devel</span><br></pre></td></tr></table></figure>
+<p>上传nginx-1.12.2.tar.gz，解压</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar zxf nginx-1.12.2.tar.gz</span><br></pre></td></tr></table></figure>
+<p>进入解压后的目录，依次执行命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./configure</span><br><span class="line">make</span><br><span class="line">mkae install</span><br></pre></td></tr></table></figure>
+<p> 此时nginx安装完毕，默认安装目录是/usr/local/nginx，nginx默认占用80端口</p>
+<img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx15.png">
+<p>哎呀，和之前的两个tomcat放在同一目录下了。。。算了，不影响啥，就放这吧。那两个脚本文件是我用来启动和关闭两个tomcat的，懒得进目录去一个一个打开关闭。之前的步骤里没说这两个脚本。其实在上面输入<code>./configure</code> 命令时，可以给后面加上<code>--prefix=安装路径</code> 来指定安装位置的。</p>
+<p>继续说Nginx，其中，sbin目录为nginx执行命令，conf目录下的nginx.conf为默认加载的配置文件</p>
+<p>启动nginx：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./sbin/nginx</span><br></pre></td></tr></table></figure>
+<p>关闭nginx：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./sbin/nginx -s quit</span><br></pre></td></tr></table></figure>
+<p>重启nginx：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">先关闭后启动。</span><br><span class="line">刷新配置文件：</span><br><span class="line">./sbin/nginx -s reload</span><br></pre></td></tr></table></figure>
+<p>启动nginx后访问192.168.25.128:80即可访问nginx：显示nginx欢迎页（注意防火墙是否添加80端口）</p>
+<img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx16.png">
+<p>至此，nginx安装完毕。</p>
 
       
     </div>
@@ -748,7 +769,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备"><span class="nav-number">1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#架构图"><span class="nav-number">2.</span> <span class="nav-text">架构图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一、安装tomcat"><span class="nav-number">3.</span> <span class="nav-text">一、安装tomcat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、修改防火墙规则"><span class="nav-number">4.</span> <span class="nav-text">二、修改防火墙规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、部署项目"><span class="nav-number">5.</span> <span class="nav-text">三、部署项目</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备"><span class="nav-number">1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#架构图"><span class="nav-number">2.</span> <span class="nav-text">架构图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一、安装tomcat"><span class="nav-number">3.</span> <span class="nav-text">一、安装tomcat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、修改防火墙规则"><span class="nav-number">4.</span> <span class="nav-text">二、修改防火墙规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、部署项目"><span class="nav-number">5.</span> <span class="nav-text">三、部署项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、安装Nginx"><span class="nav-number">6.</span> <span class="nav-text">四、安装Nginx</span></a></li></ol></div>
             
 
           </div>
@@ -795,7 +816,7 @@ var jiathis_config={
 |
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">全站共155.8k字</span>
+  <span class="post-count">全站共156.1k字</span>
 </div>
         
 
