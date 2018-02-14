@@ -88,13 +88,13 @@
 
 
 
-<meta name="description" content="准备纯干活，分上、中、下，三篇来写。总结一下Nginx反向代理和负载均衡实现（上篇），redis解决session共享（中篇），keepalived高可用（下篇）。只是停留在使用的层面上，没有深入原理。">
+<meta name="description" content="准备纯干货，分上、中、下，三篇来写。总结一下Nginx反向代理和负载均衡实现（上篇），redis解决session共享（中篇），keepalived高可用（下篇）。只是停留在使用的层面上，没有深入原理。">
 <meta name="keywords" content="Nginx,反向代理,负载均衡">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx反向代理和负载均衡实现-上篇">
 <meta property="og:url" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/index.html">
 <meta property="og:site_name" content="dijia478-刘力源">
-<meta property="og:description" content="准备纯干活，分上、中、下，三篇来写。总结一下Nginx反向代理和负载均衡实现（上篇），redis解决session共享（中篇），keepalived高可用（下篇）。只是停留在使用的层面上，没有深入原理。">
+<meta property="og:description" content="准备纯干货，分上、中、下，三篇来写。总结一下Nginx反向代理和负载均衡实现（上篇），redis解决session共享（中篇），keepalived高可用（下篇）。只是停留在使用的层面上，没有深入原理。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx01.png">
 <meta property="og:image" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx02.png">
@@ -116,10 +116,10 @@
 <meta property="og:image" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx20.png">
 <meta property="og:image" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx18.png">
 <meta property="og:image" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx19.png">
-<meta property="og:updated_time" content="2018-02-13T13:52:37.994Z">
+<meta property="og:updated_time" content="2018-02-14T03:41:16.264Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx反向代理和负载均衡实现-上篇">
-<meta name="twitter:description" content="准备纯干活，分上、中、下，三篇来写。总结一下Nginx反向代理和负载均衡实现（上篇），redis解决session共享（中篇），keepalived高可用（下篇）。只是停留在使用的层面上，没有深入原理。">
+<meta name="twitter:description" content="准备纯干货，分上、中、下，三篇来写。总结一下Nginx反向代理和负载均衡实现（上篇），redis解决session共享（中篇），keepalived高可用（下篇）。只是停留在使用的层面上，没有深入原理。">
 <meta name="twitter:image" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx01.png">
 
 
@@ -410,7 +410,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2,749
+                  2,800
                 </span>
               
 
@@ -435,7 +435,7 @@
       
 
       
-        <h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>纯干活，分上、中、下，三篇来写。总结一下Nginx反向代理和负载均衡实现（上篇），redis解决session共享（中篇），keepalived高可用（下篇）。只是停留在使用的层面上，没有深入原理。<br><a id="more"></a><br><strong>使用的资源：</strong></p>
+        <h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>纯干货，分上、中、下，三篇来写。总结一下Nginx反向代理和负载均衡实现（上篇），redis解决session共享（中篇），keepalived高可用（下篇）。只是停留在使用的层面上，没有深入原理。<br><a id="more"></a><br><strong>使用的资源：</strong></p>
 <p>nginx主服务器一台，nginx备服务器一台，使用keepalived进行宕机切换，实现高可用。</p>
 <p>tomcat服务器两台，由nginx进行反向代理和负载均衡，此处可搭建服务器集群。</p>
 <p>redis服务器一台，用于session的分离共享。</p>
@@ -443,7 +443,7 @@
 <p>注意访问时需要配置防火墙规则，或者关闭防火墙</p>
 <p><strong>环境： </strong></p>
 <p>VMware12 Pro</p>
-<p>CentOS-6.7-i386-bin-DVD1</p>
+<p>CentOS-6.7-i386</p>
 <p>jdk-8u151-linux-i586</p>
 <p>nginx-1.12.2</p>
 <p>apache-tomcat-8.5.24</p>
@@ -461,12 +461,13 @@
 <img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx05.png">
 <p>tomcat02里也是修改这三个位置，分别修改为8205,8280,8209。</p>
 <p><strong>修改端口是因为我这里是在同一台服务器上部署了两个tomcat。如果按照原本的架构，是在两台服务器部署，ip不同，那么是不用修改端口的，可省略上面修改端口这步。</strong></p>
-<h2 id="二、修改防火墙规则"><a href="#二、修改防火墙规则" class="headerlink" title="二、修改防火墙规则"></a>二、修改防火墙规则</h2><p>配置防火墙端口：<code>vim /etc/sysconfig/iptables</code></p>
+<h2 id="二、修改防火墙规则"><a href="#二、修改防火墙规则" class="headerlink" title="二、修改防火墙规则"></a>二、修改防火墙规则</h2><p>配置防火墙拦截规则：<code>vim /etc/sysconfig/iptables</code></p>
 <p>开放8180和8280端口，80端口等一些常用端口，当然后边有用到一些端口都是需要配置开放的，不建议关闭防火墙</p>
 <img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx06.png">
 <p>编辑好后 <code>service iptables restart</code> 命令，重新加载防火墙配置</p>
 <img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx07.png">
-<p><strong>如果是自己测试嫌配置麻烦，可以关闭防火墙： <code>service iptables stop</code> 此命令在重启服务器后，防火墙还会打开，即在此次开机状态下有效。完全关闭防火墙： <code>chkconfig iptables off</code> ，即使重启服务器后防火墙也不会打开。注意有时候服务都起了，但访问就是出错，可能就是防火墙问题</strong></p>
+<p><strong>如果是自己测试嫌配置麻烦，可以关闭防火墙： <code>service iptables stop</code> 此命令在重启服务器后，防火墙还会打开，即在此次开机状态下有效。完全关闭防火墙： <code>chkconfig iptables off</code> ，即使重启服务器后防火墙也不会打开。</strong></p>
+<p><strong>注意有时候服务都起了，但访问就是出错，可能就是防火墙问题</strong></p>
 <p>启动tomcat访问：192.168.25.128:8180，192.168.25.128:8280，打开tomcat首页即成功。</p>
 <h2 id="三、部署项目"><a href="#三、部署项目" class="headerlink" title="三、部署项目"></a>三、部署项目</h2><p>编写测试项目，IDEA新建maven项目，项目名为testproject，在webapp目录下新建一个jsp页面为index.jsp,添加如下内容</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ page contentType=<span class="string">"text/html;charset=UTF-8"</span> language=<span class="string">"java"</span> %&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;Title&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;h1&gt;测试页面&lt;h1/&gt;</span><br><span class="line">    &lt;br&gt;</span><br><span class="line">    &lt;h1&gt;SessionId:&lt;%=session.getId() %&gt;&lt;/h1&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
@@ -481,13 +482,13 @@
 <img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx10.png">
 <p>修改Engine标签，添加jvmRoute属性，用于标识nginx访问的是哪个服务器tomcat，tomcat01服务器标识为8180Server1，tomcat02服务器标识为8280Server2。我这里只演示tomcat01</p>
 <img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx11.png">
-<p>设置tomcat的虚拟目录，在两台tomcat的server.xml文件，Host标签中添加：<code>&lt;Context path=&quot;&quot; docBase=&quot;testproject&quot;/&gt;</code>，path表示访问路径，为空的话访问就不用输入项目名，docBase为项目路径，我这是相对路径。这里还是只演示tomcat01</p>
+<p>设置tomcat的虚拟目录，在两台tomcat的server.xml文件，Host标签中添加：<code>&lt;Context path=&quot;&quot; docBase=&quot;testproject&quot;/&gt;</code>，path表示访问路径，为空的话访问地址就不用输入项目名，docBase为项目路径，我这是相对路径。这里还是只演示tomcat01</p>
 <img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx12.png">
 <p>此时，重新启动两个tomcat，访问两个项目，两台服务器访问显示如下：</p>
 <img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx13.png">
 <img src="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx14.png">
 <p>至此，两台tomcat服务搭建完成。</p>
-<h2 id="四、安装Nginx"><a href="#四、安装Nginx" class="headerlink" title="四、安装Nginx"></a>四、安装Nginx</h2><p>先使用yum命令安装gcc的环境，安装pcre，zlib，openssl第三方的开发包，依次执行命令：</p>
+<h2 id="四、安装Nginx"><a href="#四、安装Nginx" class="headerlink" title="四、安装Nginx"></a>四、安装Nginx</h2><p>先使用yum命令安装gcc的环境，然后安装pcre，zlib，openssl第三方的开发包，依次执行命令：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum install gcc-c++</span><br><span class="line">yum install -y pcre pcre-devel</span><br><span class="line">yum install -y zlib zlib-devel</span><br><span class="line">yum install -y openssl openssl-devel</span><br></pre></td></tr></table></figure>
 <p>上传nginx-1.12.2.tar.gz，解压</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar zxf nginx-1.12.2.tar.gz</span><br></pre></td></tr></table></figure>
@@ -531,6 +532,7 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">upstream blank &#123;</span><br><span class="line">    ip_hash;</span><br><span class="line">    server <span class="number">192.168</span><span class="number">.25</span><span class="number">.128</span>:<span class="number">8180</span>;</span><br><span class="line">    server <span class="number">192.168</span><span class="number">.25</span><span class="number">.128</span>:<span class="number">8280</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>其他策略可以自行查询学习，nginx还有很多其他可配置项，静态资源缓存，重定向等，想深入的童鞋请自行学习</p>
 <p>nginx配置详解：<a href="http://blog.csdn.net/tjcyjd/article/details/50695922" target="_blank" rel="noopener">http://blog.csdn.net/tjcyjd/article/details/50695922</a></p>
+<p>《Nginx反向代理和负载均衡实现（上篇）》就先写到这里，过几天会再整理出来《redis解决session共享（中篇）》，快过年了，祝大家新年快乐！</p>
 
       
     </div>
