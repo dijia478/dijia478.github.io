@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Nginx," />
+  <meta name="keywords" content="学习笔记,Nginx," />
 
 
 
@@ -88,13 +88,13 @@
 
 
 
-<meta name="description" content="前言Nginx是一款轻量级的Web服务器、反向代理服务器，由于它的内存占用少，启动极快，高并发能力强，在互联网项目中广泛应用。  上图基本上说明了当下流行的技术架构，其中Nginx有点入口网关的味道。">
-<meta name="keywords" content="Nginx">
+<meta name="description" content="前言Nginx是一款轻量级的Web服务器、反向代理服务器，由于它的内存占用少，启动极快，高并发能力强，访问静态资源速度快，在互联网项目中广泛应用。  上图基本上说明了当下流行的技术架构，其中Nginx有点入口网关的味道。">
+<meta name="keywords" content="学习笔记,Nginx">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx学习笔记">
 <meta property="og:url" content="http://dijia478.cn/blog/2017/01/10/2017-01-10-Nginx学习笔记/index.html">
 <meta property="og:site_name" content="dijia478-刘力源">
-<meta property="og:description" content="前言Nginx是一款轻量级的Web服务器、反向代理服务器，由于它的内存占用少，启动极快，高并发能力强，在互联网项目中广泛应用。  上图基本上说明了当下流行的技术架构，其中Nginx有点入口网关的味道。">
+<meta property="og:description" content="前言Nginx是一款轻量级的Web服务器、反向代理服务器，由于它的内存占用少，启动极快，高并发能力强，访问静态资源速度快，在互联网项目中广泛应用。  上图基本上说明了当下流行的技术架构，其中Nginx有点入口网关的味道。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://dijia478.cn/blog/2017/01/10/2017-01-10-Nginx学习笔记/nginx01.png">
 <meta property="og:image" content="http://dijia478.cn/blog/2017/01/10/2017-01-10-Nginx学习笔记/nginx02.png">
@@ -104,10 +104,10 @@
 <meta property="og:image" content="http://dijia478.cn/blog/2017/01/10/2017-01-10-Nginx学习笔记/nginx06.png">
 <meta property="og:image" content="http://dijia478.cn/blog/2017/01/10/2017-01-10-Nginx学习笔记/nginx07.png">
 <meta property="og:image" content="http://dijia478.cn/blog/2017/01/10/2017-01-10-Nginx学习笔记/nginx08.png">
-<meta property="og:updated_time" content="2018-01-14T14:19:39.684Z">
+<meta property="og:updated_time" content="2018-02-15T02:22:12.323Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx学习笔记">
-<meta name="twitter:description" content="前言Nginx是一款轻量级的Web服务器、反向代理服务器，由于它的内存占用少，启动极快，高并发能力强，在互联网项目中广泛应用。  上图基本上说明了当下流行的技术架构，其中Nginx有点入口网关的味道。">
+<meta name="twitter:description" content="前言Nginx是一款轻量级的Web服务器、反向代理服务器，由于它的内存占用少，启动极快，高并发能力强，访问静态资源速度快，在互联网项目中广泛应用。  上图基本上说明了当下流行的技术架构，其中Nginx有点入口网关的味道。">
 <meta name="twitter:image" content="http://dijia478.cn/blog/2017/01/10/2017-01-10-Nginx学习笔记/nginx01.png">
 
 
@@ -398,7 +398,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,809
+                  1,828
                 </span>
               
 
@@ -423,7 +423,7 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Nginx是一款轻量级的Web服务器、反向代理服务器，由于它的内存占用少，启动极快，高并发能力强，在互联网项目中广泛应用。</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Nginx是一款轻量级的Web服务器、反向代理服务器，由于它的内存占用少，启动极快，高并发能力强，访问静态资源速度快，在互联网项目中广泛应用。</p>
 <img src="/blog/2017/01/10/2017-01-10-Nginx学习笔记/nginx01.png" title="架构图">
 <p>上图基本上说明了当下流行的技术架构，其中Nginx有点入口网关的味道。<br><a id="more"></a></p>
 <h2 id="反向代理服务器"><a href="#反向代理服务器" class="headerlink" title="反向代理服务器"></a>反向代理服务器</h2><p>经常听人说到一些术语，如反向代理，那么什么是反向代理，什么又是正向代理呢？</p>
@@ -463,7 +463,7 @@
 <p>反向代理，上面已经说了，过程是透明的，比如说request -&gt; Nginx -&gt; Tomcat，那么对于Tomcat而言，请求的IP地址就是Nginx的地址，而非真实的request地址，这一点需要注意。不过好在Nginx不仅仅可以反向代理请求，还可以由用户自定义设置HTTP HEADER。</p>
 <h3 id="负载均衡【upstream】"><a href="#负载均衡【upstream】" class="headerlink" title="负载均衡【upstream】"></a>负载均衡【upstream】</h3><p>上面的反向代理中，我们通过proxy_pass来指定Tomcat的地址，很显然我们只能指定一台Tomcat地址，那么我们如果想指定多台来达到负载均衡呢？</p>
 <p>第一，通过upstream来定义一组Tomcat，并指定负载策略（IPHASH、加权论调、最少连接），健康检查策略（Nginx可以监控这一组Tomcat的状态）等。<br>第二，将proxy_pass替换成upstream指定的值即可。</p>
-<h3 id="负载均衡可能带来的问题？"><a href="#负载均衡可能带来的问题？" class="headerlink" title="负载均衡可能带来的问题？"></a>负载均衡可能带来的问题？</h3><p>负载均衡所带来的明显的问题是，一个请求，可以到A server，也可以到B server，这完全不受我们的控制，当然这也不是什么问题，只是我们得注意的是：用户状态的保存问题，如Session会话信息，不能在保存到服务器上。</p>
+<h3 id="负载均衡可能带来的问题？"><a href="#负载均衡可能带来的问题？" class="headerlink" title="负载均衡可能带来的问题？"></a>负载均衡可能带来的问题？</h3><p>负载均衡所带来的明显的问题是，一个请求，可以到A server，也可以到B server，这完全不受我们的控制，当然这也不是什么问题，只是我们得注意的是：用户状态的保存问题，如Session会话信息，不能在保存到服务器上。一般是通过redis进行session共享。</p>
 <h3 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h3><p>缓存，是Nginx提供的，可以加快访问速度的机制，说白了，在配置上就是一个开启，同时指定目录，让缓存可以存储到磁盘上。具体配置，大家可以参考Nginx官方文档，这里就不在展开了。</p>
 
       
@@ -510,6 +510,8 @@
     <footer class="post-footer">
       
         <div class="post-tags">
+          
+            <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
           
             <a href="/tags/Nginx/" rel="tag"><i class="fa fa-tag"></i> Nginx</a>
           
@@ -779,7 +781,7 @@ var jiathis_config={
 |
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">全站共157.4k字</span>
+  <span class="post-count">全站共157.5k字</span>
 </div>
         
 
