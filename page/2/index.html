@@ -132,7 +132,16 @@
 
 
 
-
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
   <title>dijia478-刘力源</title>
   
 
@@ -1963,52 +1972,16 @@
 
       
         
-          
-            <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><strong>定义</strong>：</p>
+          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><strong>定义</strong>：</p>
 <p>​    工厂模式是 Java 中最常用的设计模式之一。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。</p>
-<p>​    工厂模式主要是为创建对象提供过渡接口，以便将创建对象的具体过程屏蔽隔离起来，达到提高灵活性的目的。</p>
-<p><strong>工厂模式根据抽象程度的不同分为三种：</strong></p>
-<ul>
-<li>简单工厂模式（也叫静态工厂模式）</li>
-<li>工厂方法模式（也叫多形性工厂）</li>
-<li>抽象工厂模式（也叫工具箱）</li>
-</ul>
-<p><strong>简单工厂模式</strong></p>
-<p>​        实质是由一个工厂类根据传入的参数，动态决定应该创建哪一个产品类（这些产品类继承自一个父类或接口）的实例。它定义一个具体的工厂类负责创建一些类的实例。<br>​    优点：客户端不需要在负责对象的创建，从而明确了各个类的职责<br>​    缺点：这个静态工厂类负责所有对象的创建，如果有新的对象增加，或者某些对象的创建方式不同，就需要不断的修改工厂类，不利于后期的维护</p>
-<p><strong>工厂方法模式</strong></p>
-<p>​        工厂方法是粒度很小的设计模式，因为模式的表现只是一个抽象的方法。工厂方法模式中抽象工厂类负责定义创建对象的接口，具体对象的创建工作由继承抽象工厂的具体类实现。即在工厂和产品中间增加接口，工厂不再负责产品的创建，由接口针对不同条件返回具体的类实例，由具体类实例去实现。<br>​    优点：客户端不需要在负责对象的创建，从而明确了各个类的职责，如果有新的对象增加，只需要增加一个具体的类和具体的工厂类即可，不影响已有的代码，后期维护容易，增强了系统的扩展性<br>​    缺点：需要额外的编写代码，增加了工作量</p>
-<p><strong>抽象工厂模式</strong></p>
-<p>​        当有多个抽象角色时使用的一种工厂模式。抽象工厂模式可以向客户端提供一个接口，使客户端在不必指定产品的具体的情况下，创建多个产品对象。它有多个抽象产品类，每个抽象产品类可以派生出多个具体产品类，一个抽象工厂类，可以派生出多个具体工厂类，每个具体工厂类可以创建多个具体产品类的实例。</p>
-<h2 id="工厂方法模式举例"><a href="#工厂方法模式举例" class="headerlink" title="工厂方法模式举例"></a>工厂方法模式举例</h2><p> 抽象的产品类：定义car  交通工具类</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Car</span> </span>&#123;    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">gotowork</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>定义实际的产品类，总共定义两个，bike 和bus 分别表示不同的交通工具类</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Bike</span> <span class="keyword">implements</span> <span class="title">Car</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">gotowork</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"骑自行车去上班！"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Bus</span> <span class="keyword">implements</span> <span class="title">Car</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">gotowork</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"坐公交车去上班！"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>定义抽象的工厂接口</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ICarFactory</span> </span>&#123;</span><br><span class="line">    <span class="function">Car <span class="title">getCar</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>具体的工厂子类，分别为每个具体的产品类创建不同的工厂子类</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BikeFactory</span> <span class="keyword">implements</span> <span class="title">ICarFactory</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Car <span class="title">getCar</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Bike();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BusFactory</span> <span class="keyword">implements</span> <span class="title">ICarFactory</span> </span>&#123;    </span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Car <span class="title">getCar</span><span class="params">()</span> </span>&#123;        </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Bus();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>简单的测试类，来验证不同的工厂能够产生不同的产品对象</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestFactory</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        ICarFactory factory = <span class="keyword">null</span>;</span><br><span class="line">        <span class="comment">// bike</span></span><br><span class="line">        factory = <span class="keyword">new</span> BikeFactory();</span><br><span class="line">        Car bike = factory.getCar();</span><br><span class="line">        bike.gotowork();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// bus</span></span><br><span class="line">        factory = <span class="keyword">new</span> BusFactory();</span><br><span class="line">        Car bus = factory.getCar();</span><br><span class="line">        bus.gotowork();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="关于Java中的工厂模式的一些常见问题："><a href="#关于Java中的工厂模式的一些常见问题：" class="headerlink" title="关于Java中的工厂模式的一些常见问题："></a>关于Java中的工厂模式的一些常见问题：</h2><p><strong>利用父类的向下转型（使用父类类型的引用指向子类的对象）是可以达到类似于工厂模式的效果的，那为什么还要用工厂模式呢？</strong></p>
-<p>把指向子类对象的父类引用赋给子类引用叫做向下转型，如： </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Class Student extends Person     </span><br><span class="line">Person s = <span class="keyword">new</span> Student();    </span><br><span class="line">s = (Student)person ;</span><br></pre></td></tr></table></figure>
-<p>​        使用向下转型在客户端实例化子类的时候，严重依赖具体的子类的名字。当我们需要更改子类的构造方法的时候，比如增加一个参数，或者更改了子类的类名，所有的new出来的子类都需要跟着更改。    </p>
-<p>​        但如果我们使用工厂模式，我们仅仅需要在工厂中修改一下new的代码，其余项目中用到此实例的都会跟着改，而不需要我们手动去操作。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>无论是简单工厂模式、工厂模式还是抽象工厂模式，它们本质上都是将不变的部分提取出来，将可变的部分留作接口，以达到最大程度上的复用。究竟用哪种设计模式更适合，这要根据具体的业务需求来决定。</p>
-<p><strong>工厂模式的优点：</strong></p>
-<p>​        1、一个调用者想创建一个对象，只要知道其名称就可以了，降低了耦合度。</p>
-<p>​        2、扩展性高，如果想增加一个产品，只要扩展一个工厂类就可以。使得代码结构更加清晰。</p>
-<p>​        3、屏蔽产品的具体实现，调用者只关心产品的接口。</p>
-<p><strong>工厂模式的缺点：</strong></p>
-<p>​        每次增加一个产品时，都需要增加一个具体类和对象实现工厂（这里可以使用反射机制来避免），使得系统中类的个数成倍增加，在一定程度上增加了系统的复杂度，同时也增加了系统具体类的依赖。所以对于简单对象来说，使用工厂模式反而增加了复杂度。</p>
-<p><strong>工厂模式的适用场景：</strong></p>
-<p>​        1，  一个对象拥有很多子类。</p>
-<p>​        2，  创建某个对象时需要进行许多额外的操作。</p>
-<p>​        3，  系统后期需要经常扩展，它把对象实例化的任务交由实现类完成，扩展性好。</p>
-
-          
+<p>​    工厂模式主要是为创建对象提供过渡接口，以便将创建对象的具体过程屏蔽隔离起来，达到提高灵活性的目的。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/blog/2016/10/20/2016-10-20-23种设计模式-工厂模式/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2213,7 +2186,7 @@
 <div class="powered-by">
 <i class="fa fa-user-md"></i>
 <span id="busuanzi_container_site_pv">
-    本月总访问量<span id="busuanzi_value_site_pv"></span>次
+    本年度总访问量<span id="busuanzi_value_site_pv"></span>次
 </span>
 </div>
 |

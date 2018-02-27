@@ -134,7 +134,16 @@
 
 
 
-
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
   <title>MySQL在Linux上修改root密码 | dijia478-刘力源</title>
   
 
@@ -744,7 +753,7 @@ var jiathis_config={
 <div class="powered-by">
 <i class="fa fa-user-md"></i>
 <span id="busuanzi_container_site_pv">
-    本月总访问量<span id="busuanzi_value_site_pv"></span>次
+    本年度总访问量<span id="busuanzi_value_site_pv"></span>次
 </span>
 </div>
 |
