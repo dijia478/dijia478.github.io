@@ -96,15 +96,16 @@
 <meta property="og:site_name" content="dijia478-刘力源">
 <meta property="og:description" content="一、redis的安装这里演示的版本是Redis4.0，Linux系统是CentOS6.7，Jdk1.7，Jedis2.8 这是官方文档介绍的安装方式 下载，解压，编译: 1234$ wget http://download.redis.io/releases/redis-4.0.0.tar.gz$ tar xzf redis-4.0.0.tar.gz$ cd redis-4.0.0$ make">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://dijia478.cn/blog/2017/03/18/2017-03-18-Redis在Linux上的部署和Jedis简单使用/redis05.png">
 <meta property="og:image" content="http://dijia478.cn/blog/2017/03/18/2017-03-18-Redis在Linux上的部署和Jedis简单使用/redis01.png">
 <meta property="og:image" content="http://dijia478.cn/blog/2017/03/18/2017-03-18-Redis在Linux上的部署和Jedis简单使用/redis02.png">
 <meta property="og:image" content="http://dijia478.cn/blog/2017/03/18/2017-03-18-Redis在Linux上的部署和Jedis简单使用/redis03.png">
 <meta property="og:image" content="http://dijia478.cn/blog/2017/03/18/2017-03-18-Redis在Linux上的部署和Jedis简单使用/redis04.png">
-<meta property="og:updated_time" content="2018-02-12T13:57:08.772Z">
+<meta property="og:updated_time" content="2018-04-18T16:24:31.267Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis在Linux上的部署和Jedis简单使用">
 <meta name="twitter:description" content="一、redis的安装这里演示的版本是Redis4.0，Linux系统是CentOS6.7，Jdk1.7，Jedis2.8 这是官方文档介绍的安装方式 下载，解压，编译: 1234$ wget http://download.redis.io/releases/redis-4.0.0.tar.gz$ tar xzf redis-4.0.0.tar.gz$ cd redis-4.0.0$ make">
-<meta name="twitter:image" content="http://dijia478.cn/blog/2017/03/18/2017-03-18-Redis在Linux上的部署和Jedis简单使用/redis01.png">
+<meta name="twitter:image" content="http://dijia478.cn/blog/2017/03/18/2017-03-18-Redis在Linux上的部署和Jedis简单使用/redis05.png">
 
 
 
@@ -394,7 +395,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2,919
+                  2,929
                 </span>
               
 
@@ -430,8 +431,9 @@
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ src/redis-cli</span><br><span class="line">redis&gt; <span class="built_in">set</span> foo bar</span><br><span class="line">OK</span><br><span class="line">redis&gt; get foo</span><br><span class="line"><span class="string">"bar"</span></span><br></pre></td></tr></table></figure>
 <p>本人不建议直接使用源码文件中的服务，make编译完成后，可以安装到指定目录：</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make PREFIX=/usr/<span class="built_in">local</span>/redis install</span><br></pre></td></tr></table></figure>
-<p> 现在去刚刚tar包解压出来的源码目录中，拷贝一个redis.conf配置文件，放到/usr/local/redis/bin/目录下，以后在这个目录下使用就好了。</p>
-<p>启动服务端（暂时不使用自己刚才复制过来的redis.conf配置文件）</p>
+<p>现在去刚刚tar包解压出来的源码目录中，拷贝一个redis.conf配置文件，放到/usr/local/redis/bin/目录下，以后在这个目录下使用就好了。</p>
+<img src="/blog/2017/03/18/2017-03-18-Redis在Linux上的部署和Jedis简单使用/redis05.png">
+<p>启动服务端（暂时不使用自己刚才复制过来的redis.conf配置文件，配置文件是可以指定的）</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./redis-server</span><br></pre></td></tr></table></figure>
 <p>复制一个会话窗口，启动客户端（暂时不设置ip，端口号和密码）</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./redis-cli</span><br></pre></td></tr></table></figure>
@@ -862,7 +864,7 @@ var jiathis_config={
 |
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">全站共157.7k字</span>
+  <span class="post-count">全站共158.2k字</span>
 </div>
         
 

@@ -88,18 +88,21 @@
 
 
 
-<meta name="description" content="过了个年，换了份工作，来到一家通讯行业的公司，之前的技术感觉好多都有点用不上了，没办法，新学吧。继续更新年前写的这个博客。分上、中、下，三篇来写，总结一下Nginx反向代理和负载均衡实现（上篇），redis解决session共享（中篇），keepalived高可用（下篇）。本文是第二篇。">
+<meta name="description" content="过了个年，换了份工作，来到一家通讯行业的公司，之前的技术感觉好多都有点用不上了，需要学习很多新的东西，而且还有了女朋友，所以最近跟新可能会很慢，大家见谅。现在继续更新年前写的那篇博客。分上、中、下，三篇来写，总结一下Nginx反向代理和负载均衡实现（上篇），redis解决session共享（中篇），keepalived高可用（下篇）。本文是第二篇。">
 <meta name="keywords" content="session共享">
 <meta property="og:type" content="article">
-<meta property="og:title" content="2018-03-18-session共享问题-中篇">
+<meta property="og:title" content="session共享问题-中篇">
 <meta property="og:url" content="http://dijia478.cn/blog/2018/03/18/2018-03-18-session共享问题-中篇/index.html">
 <meta property="og:site_name" content="dijia478-刘力源">
-<meta property="og:description" content="过了个年，换了份工作，来到一家通讯行业的公司，之前的技术感觉好多都有点用不上了，没办法，新学吧。继续更新年前写的这个博客。分上、中、下，三篇来写，总结一下Nginx反向代理和负载均衡实现（上篇），redis解决session共享（中篇），keepalived高可用（下篇）。本文是第二篇。">
+<meta property="og:description" content="过了个年，换了份工作，来到一家通讯行业的公司，之前的技术感觉好多都有点用不上了，需要学习很多新的东西，而且还有了女朋友，所以最近跟新可能会很慢，大家见谅。现在继续更新年前写的那篇博客。分上、中、下，三篇来写，总结一下Nginx反向代理和负载均衡实现（上篇），redis解决session共享（中篇），keepalived高可用（下篇）。本文是第二篇。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-18T14:44:20.638Z">
+<meta property="og:image" content="http://dijia478.cn/blog/2018/03/18/2018-03-18-session共享问题-中篇/nginx01.png">
+<meta property="og:image" content="http://dijia478.cn/blog/2018/03/18/2018-03-18-session共享问题-中篇/nginx02.png">
+<meta property="og:updated_time" content="2018-04-18T16:31:49.634Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="2018-03-18-session共享问题-中篇">
-<meta name="twitter:description" content="过了个年，换了份工作，来到一家通讯行业的公司，之前的技术感觉好多都有点用不上了，没办法，新学吧。继续更新年前写的这个博客。分上、中、下，三篇来写，总结一下Nginx反向代理和负载均衡实现（上篇），redis解决session共享（中篇），keepalived高可用（下篇）。本文是第二篇。">
+<meta name="twitter:title" content="session共享问题-中篇">
+<meta name="twitter:description" content="过了个年，换了份工作，来到一家通讯行业的公司，之前的技术感觉好多都有点用不上了，需要学习很多新的东西，而且还有了女朋友，所以最近跟新可能会很慢，大家见谅。现在继续更新年前写的那篇博客。分上、中、下，三篇来写，总结一下Nginx反向代理和负载均衡实现（上篇），redis解决session共享（中篇），keepalived高可用（下篇）。本文是第二篇。">
+<meta name="twitter:image" content="http://dijia478.cn/blog/2018/03/18/2018-03-18-session共享问题-中篇/nginx01.png">
 
 
 
@@ -135,7 +138,7 @@
 
 
 
-  <title>2018-03-18-session共享问题-中篇 | dijia478-刘力源</title>
+  <title>session共享问题-中篇 | dijia478-刘力源</title>
   
 
 
@@ -323,7 +326,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">2018-03-18-session共享问题-中篇</h1>
+          <h1 class="post-title" itemprop="name headline">session共享问题-中篇</h1>
         
 
         <div class="post-meta">
@@ -389,7 +392,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  241
+                  703
                 </span>
               
 
@@ -414,8 +417,24 @@
       
 
       
-        <p>过了个年，换了份工作，来到一家通讯行业的公司，之前的技术感觉好多都有点用不上了，没办法，新学吧。继续更新年前写的这个博客。分上、中、下，三篇来写，总结一下Nginx反向代理和负载均衡实现（上篇），redis解决session共享（中篇），keepalived高可用（下篇）。本文是第二篇。<br><a id="more"></a></p>
+        <p>过了个年，换了份工作，来到一家通讯行业的公司，之前的技术感觉好多都有点用不上了，需要学习很多新的东西，而且还有了女朋友，所以最近跟新可能会很慢，大家见谅。现在继续更新年前写的那篇博客。分上、中、下，三篇来写，总结一下Nginx反向代理和负载均衡实现（上篇），redis解决session共享（中篇），keepalived高可用（下篇）。本文是第二篇。<br><a id="more"></a></p>
 <p>由于nginx是随机分配请求，假设一个用户登录时访问网站登录时被分配到192.168.25.128:8080上，然后进行了登录操作，此时该服务器上就会有该用户登录的session信息，然后登陆后重定向到网站首页或个人中心时，此时如果被分配到192.168.25.128:8081上，那么这台服务器上没有该用户session信息，于是又会变成未登录状态，所以由于nginx的负载均衡会导致session共享的问题。</p>
+<p><strong>解决方法：</strong></p>
+<p>1.nginx提供了ip_hash的分配策略（还有轮询策略和权重策略），可以保持用户ip进行hash值计算固定分配到某台服务器上，然后只要是该ip则会保持分配到该服务器上，保证用户访问的是同一台服务器，那么session问题就不存在了。这也是解决session共享的一种方式，也称为黏性session。但是假设一台tomcat服务器挂了的话，那么session也会丢失。所以比较好的方案是抽取session。</p>
+<p>2.将session存到memcache或者redis中，以这种方式来同步session，把session抽取出来，放到内存级数据库里面，解决了session共享问题，同时读取速度也是非常之快。</p>
+<img src="/blog/2018/03/18/2018-03-18-session共享问题-中篇/nginx01.png">
+<p><strong>Redis解决session共享：</strong></p>
+<p>在redis服务器192.168.25.128上搭建redis（我这里还是在同一台上搭建），redis默认端口为6379</p>
+<p>redis的部署步骤我这里就不详细讲了，可以去看我之前写的<a href="http://dijia478.cn/blog/2017/03/18/2017-03-18-Redis%E5%9C%A8Linux%E4%B8%8A%E7%9A%84%E9%83%A8%E7%BD%B2%E5%92%8CJedis%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/">《Redis在Linux上的部署和Jedis简单使用》</a></p>
+<p>不过我之前写的那个，没有指定配置文件启动，会采用redis默认的配置文件。这个配置文件其实是可以指定的，启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./redis-server ./redis.conf</span><br></pre></td></tr></table></figure>
+<p>这种启动方式叫做前端启动，必须保持在当前窗口，如果ctrl + c 退出，那么redis也就退出了，实际工作中不建议使用</p>
+<p>那么后端启动：</p>
+<p>首先修改redis.conf中daemonize的值，打开可以看到默认是no，修改为daemonize yes，启动即可。也可以在该配置文件中修改redis默认端口6379为其他值。</p>
+<img src="/blog/2018/03/18/2018-03-18-session共享问题-中篇/nginx02.png">
+<p>关闭redis：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./redis-cli shutdown</span><br></pre></td></tr></table></figure>
+<p>至此，redis服务器搭建完成。</p>
 
       
     </div>
@@ -701,7 +720,7 @@ var jiathis_config={
 |
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">全站共157.7k字</span>
+  <span class="post-count">全站共158.2k字</span>
 </div>
         
 
