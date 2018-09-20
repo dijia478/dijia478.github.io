@@ -81,13 +81,13 @@
 
 
 
-<meta name="description" content="准备纯干货，分上、中、下，三篇来写。总结一下Nginx反向代理和负载均衡实现（上篇），redis解决session共享（中篇），keepalived高可用（下篇）。但只是停留在使用的层面上，没有深入原理。">
+<meta name="description" content="准备纯干货，分上、下，两篇来写。总结一下Nginx反向代理和负载均衡实现（上篇），redis解决session共享（下篇），但只是停留在使用的层面上，没有深入原理。">
 <meta name="keywords" content="Nginx,反向代理,负载均衡">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx反向代理和负载均衡实现-上篇">
 <meta property="og:url" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/index.html">
 <meta property="og:site_name" content="dijia478-刘力源">
-<meta property="og:description" content="准备纯干货，分上、中、下，三篇来写。总结一下Nginx反向代理和负载均衡实现（上篇），redis解决session共享（中篇），keepalived高可用（下篇）。但只是停留在使用的层面上，没有深入原理。">
+<meta property="og:description" content="准备纯干货，分上、下，两篇来写。总结一下Nginx反向代理和负载均衡实现（上篇），redis解决session共享（下篇），但只是停留在使用的层面上，没有深入原理。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx01.png">
 <meta property="og:image" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx02.png">
@@ -109,10 +109,10 @@
 <meta property="og:image" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx20.png">
 <meta property="og:image" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx18.png">
 <meta property="og:image" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx19.png">
-<meta property="og:updated_time" content="2018-02-16T15:00:23.388Z">
+<meta property="og:updated_time" content="2018-09-09T04:01:54.676Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx反向代理和负载均衡实现-上篇">
-<meta name="twitter:description" content="准备纯干货，分上、中、下，三篇来写。总结一下Nginx反向代理和负载均衡实现（上篇），redis解决session共享（中篇），keepalived高可用（下篇）。但只是停留在使用的层面上，没有深入原理。">
+<meta name="twitter:description" content="准备纯干货，分上、下，两篇来写。总结一下Nginx反向代理和负载均衡实现（上篇），redis解决session共享（下篇），但只是停留在使用的层面上，没有深入原理。">
 <meta name="twitter:image" content="http://dijia478.cn/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/nginx01.png">
 
 
@@ -375,7 +375,7 @@
       
 
       
-        <h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>纯干货，分上、中、下，三篇来写。总结一下Nginx反向代理和负载均衡实现（上篇），redis解决session共享（中篇），keepalived高可用（下篇）。但只是停留在使用的层面上，没有深入原理。<br><a id="more"></a><br><strong>使用的资源：</strong></p>
+        <h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>纯干货，分上、下，两篇来写。总结一下Nginx反向代理和负载均衡实现（上篇），redis解决session共享（下篇），但只是停留在使用的层面上，没有深入原理。<br><a id="more"></a><br><strong>使用的资源：</strong></p>
 <p>nginx主服务器一台，nginx备服务器一台，使用keepalived进行宕机切换，实现高可用。</p>
 <p>tomcat服务器两台，由nginx进行反向代理和负载均衡，此处可搭建服务器集群。</p>
 <p>redis服务器一台，用于session的分离共享。</p>
@@ -546,8 +546,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/blog/2018/03/18/2018-03-18-session共享问题-中篇/" rel="prev" title="session共享问题-中篇">
-                session共享问题-中篇 <i class="fa fa-chevron-right"></i>
+              <a href="/blog/2018/03/18/2018-03-18-session共享问题-下篇/" rel="prev" title="session共享问题-下篇">
+                session共享问题-下篇 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -629,7 +629,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -651,7 +651,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

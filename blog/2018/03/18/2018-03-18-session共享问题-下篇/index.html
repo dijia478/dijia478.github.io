@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="session共享," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="dijia478-刘力源" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="过了个年，换了份工作，来到一家通讯行业的公司，之前的技术感觉好多都有点用不上了，需要学习很多新的东西，而且还有了女朋友，所以最近跟新可能会很慢，大家见谅。现在继续更新年前写的那篇博客。本文是第二篇。">
+<meta name="keywords" content="session共享">
+<meta property="og:type" content="article">
+<meta property="og:title" content="session共享问题-下篇">
+<meta property="og:url" content="http://dijia478.cn/blog/2018/03/18/2018-03-18-session共享问题-下篇/index.html">
+<meta property="og:site_name" content="dijia478-刘力源">
+<meta property="og:description" content="过了个年，换了份工作，来到一家通讯行业的公司，之前的技术感觉好多都有点用不上了，需要学习很多新的东西，而且还有了女朋友，所以最近跟新可能会很慢，大家见谅。现在继续更新年前写的那篇博客。本文是第二篇。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://dijia478.cn/blog/2018/03/18/2018-03-18-session共享问题-下篇/nginx01.png">
+<meta property="og:image" content="http://dijia478.cn/blog/2018/03/18/2018-03-18-session共享问题-下篇/nginx02.png">
+<meta property="og:image" content="http://dijia478.cn/blog/2018/03/18/2018-03-18-session共享问题-下篇/nginx03.png">
+<meta property="og:image" content="http://dijia478.cn/blog/2018/03/18/2018-03-18-session共享问题-下篇/nginx04.png">
+<meta property="og:image" content="http://dijia478.cn/blog/2018/03/18/2018-03-18-session共享问题-下篇/nginx05.png">
+<meta property="og:image" content="http://dijia478.cn/blog/2018/03/18/2018-03-18-session共享问题-下篇/nginx06.png">
+<meta property="og:updated_time" content="2018-09-09T04:02:40.128Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="session共享问题-下篇">
+<meta name="twitter:description" content="过了个年，换了份工作，来到一家通讯行业的公司，之前的技术感觉好多都有点用不上了，需要学习很多新的东西，而且还有了女朋友，所以最近跟新可能会很慢，大家见谅。现在继续更新年前写的那篇博客。本文是第二篇。">
+<meta name="twitter:image" content="http://dijia478.cn/blog/2018/03/18/2018-03-18-session共享问题-下篇/nginx01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://dijia478.cn/blog/2018/03/18/2018-03-18-session共享问题-下篇/"/>
+
+
+
+
+
+  <title>session共享问题-下篇 | dijia478-刘力源</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">dijia478-刘力源</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dijia478.cn/blog/2018/03/18/2018-03-18-session共享问题-下篇/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="dijia478">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="dijia478-刘力源">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">session共享问题-下篇</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-18T22:17:19+08:00">
+                2018-03-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Nginx/" itemprop="url" rel="index">
+                    <span itemprop="name">Nginx</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>过了个年，换了份工作，来到一家通讯行业的公司，之前的技术感觉好多都有点用不上了，需要学习很多新的东西，而且还有了女朋友，所以最近跟新可能会很慢，大家见谅。现在继续更新年前写的那篇博客。本文是第二篇。<br><a id="more"></a></p>
+<p>由于nginx是随机分配请求，假设一个用户登录时访问网站登录时被分配到192.168.25.128:8080上，然后进行了登录操作，此时该服务器上就会有该用户登录的session信息，然后登陆后重定向到网站首页或个人中心时，此时如果被分配到192.168.25.128:8081上，那么这台服务器上没有该用户session信息，于是又会变成未登录状态，所以由于nginx的负载均衡会导致session共享的问题。</p>
+<h2 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h2><p>1.nginx提供了ip_hash的分配策略（还有轮询策略和权重策略），可以保持用户ip进行hash值计算固定分配到某台服务器上，然后只要是该ip则会保持分配到该服务器上，保证用户访问的是同一台服务器，那么session问题就不存在了。这也是解决session共享的一种方式，也称为黏性session。但是假设一台tomcat服务器挂了的话，那么session也会丢失。所以比较好的方案是抽取session。</p>
+<p>2.将session存到memcache或者redis中，以这种方式来同步session，把session抽取出来，放到内存级数据库里面，解决了session共享问题，同时读取速度也是非常之快。</p>
+<img src="/blog/2018/03/18/2018-03-18-session共享问题-下篇/nginx01.png">
+<h2 id="Redis解决session共享："><a href="#Redis解决session共享：" class="headerlink" title="Redis解决session共享："></a>Redis解决session共享：</h2><p>在redis服务器192.168.25.128上搭建redis（我这里还是在同一台上搭建），redis默认端口为6379</p>
+<p>redis的部署步骤我这里就不详细讲了，可以去看我之前写的<a href="http://dijia478.cn/blog/2017/03/18/2017-03-18-Redis%E5%9C%A8Linux%E4%B8%8A%E7%9A%84%E9%83%A8%E7%BD%B2%E5%92%8CJedis%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/">《Redis在Linux上的部署和Jedis简单使用》</a></p>
+<p>不过我之前写的那个，没有指定配置文件启动，会采用redis默认的配置文件。这个配置文件其实是可以指定的，启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./redis-server ./redis.conf</span><br></pre></td></tr></table></figure>
+<p>这种启动方式叫做前端启动，必须保持在当前窗口，如果ctrl + c 退出，那么redis也就退出了，实际工作中不建议使用</p>
+<p>那么后端启动：</p>
+<p>首先修改redis的配置文件redis.conf中daemonize的值，打开可以看到默认是no，修改为daemonize yes，启动即可。也可以在该配置文件中修改redis默认端口6379为其他值。</p>
+<img src="/blog/2018/03/18/2018-03-18-session共享问题-下篇/nginx02.png">
+<p>关闭redis：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./redis-cli shutdown</span><br></pre></td></tr></table></figure>
+<p>至此，redis服务器搭建完成。</p>
+<h2 id="tomcat与redis集成实现session共享："><a href="#tomcat与redis集成实现session共享：" class="headerlink" title="tomcat与redis集成实现session共享："></a>tomcat与redis集成实现session共享：</h2><ol>
+<li><p>在所有需要共享session的服务器的tomcat的lib目录中添加如下ar包：</p>
+<img src="/blog/2018/03/18/2018-03-18-session共享问题-下篇/nginx03.png">
+<p>这些jar包，主要起作用的是第4个，tomcat-cluster-redis-session-manager-2.0.4。</p>
+<p>这些jar包都可以在这里下载到，下载zip压缩包的那个，里面会有需要的所有依赖和文件（一共需要5个）：</p>
+<p><a href="https://github.com/ran-jit/tomcat-cluster-redis-session-manager/wiki" target="_blank" rel="noopener">https://github.com/ran-jit/tomcat-cluster-redis-session-manager/wiki</a></p>
+</li>
+<li><p>接下来，在所有需要共享session的服务器的tomcat的conf目录下，添加redis-data-cache.properties文件，这个文件也在刚才下的压缩包里有。</p>
+<p>修改每个redis-data-cache.properties文件如下：</p>
+<img src="/blog/2018/03/18/2018-03-18-session共享问题-下篇/nginx04.png">
+<p>这个应该很好看懂吧，我只用了一台redis，所以就配一个地址，如果有redis集群，那就配多个。redis如果设置了密码，下面第二个参数把密码也要设好。</p>
+</li>
+<li><p>然后，需要在两个tomcat/conf/context.xml文件中增加以下两行：</p>
+<img src="/blog/2018/03/18/2018-03-18-session共享问题-下篇/nginx05.png">
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Valve</span> <span class="attr">className</span>=<span class="string">"tomcat.request.session.redis.SessionHandlerValve"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Manager</span> <span class="attr">className</span>=<span class="string">"tomcat.request.session.redis.SessionManager"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置tomcat/conf/web.xml中，session有效期（这个不配的话，也是默认有的，30分钟，可以省略此步骤）</p>
+<img src="/blog/2018/03/18/2018-03-18-session共享问题-下篇/nginx06.png">
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">session-config</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">session-timeout</span>&gt;</span>60<span class="tag">&lt;<span class="name">session-timeout</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">session-config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>如果项目里也配置了session有效期，则以项目中为准。</p>
+</li>
+</ol>
+<p><strong>先启动redis服务，再重新启动所有tomcat，再启动nginx，刷新nginx页面,两台tomcat页面可以看到sessionid值不变，关闭某台tomcat，nginx中sessionid不变，说明session是共享的。</strong></p>
+<blockquote>
+<p><strong>问题：</strong></p>
+<p>有可能此时访问会报错，redis无法访问，这是由于redis的安全机制，默认只有127.0.0.1才能访问，在redis.conf中可以找到bind 127.0.0.1，你可以将此ip改为访问者ip，</p>
+<p>如果有多个访问者，也可以把bind 127.0.0.1注释掉，然后在配置文件中找到protected-mode，修改protected-mode yes改为protected-mode no 关闭redis保护模式即可</p>
+</blockquote>
+<h2 id="注意："><a href="#注意：" class="headerlink" title="注意："></a>注意：</h2><p>按照如上配置，使用redis数据库，放入session中的对象必须要实现java.io.Serializable接口，而使用memcache实现session共享的可以不用实现Serializable接口</p>
+<p>原因是：因为tomcat里使用的将session放置redis使用的工具类：是使用的jdk序列化模式存储的，这一点也是很容易理解的，session.setAttribute(String key, Object value)，存储Object类型</p>
+<p>object放入redis中又要能取出来，只能是序列化进行存储了，然后取出的时候进行反序列化。</p>
+<p>所以我们在session中存储的任何对象，都必须实现序列化接口。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您的支持将鼓励我继续创作</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="dijia478 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="dijia478 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/session共享/" rel="tag"># session共享</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/02/12/2018-02-12-Nginx反向代理和负载均衡实现-上篇/" rel="next" title="Nginx反向代理和负载均衡实现-上篇">
+                <i class="fa fa-chevron-left"></i> Nginx反向代理和负载均衡实现-上篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/09/20/2018-09-20-MySQL8-0安装步骤/" rel="prev" title="2018-09-20-MySQL8.0安装步骤">
+                2018-09-20-MySQL8.0安装步骤 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.gif"
+                alt="dijia478" />
+            
+              <p class="site-author-name" itemprop="name">dijia478</p>
+              <p class="site-description motion-element" itemprop="description">写写代码，发发感悟，聊聊人生</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方法："><span class="nav-number">1.</span> <span class="nav-text">解决方法：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis解决session共享："><span class="nav-number">2.</span> <span class="nav-text">Redis解决session共享：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tomcat与redis集成实现session共享："><span class="nav-number">3.</span> <span class="nav-text">tomcat与redis集成实现session共享：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注意："><span class="nav-number">4.</span> <span class="nav-text">注意：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dijia478</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
