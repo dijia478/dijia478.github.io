@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[SpringBoot的使用]]></title>
+    <url>%2Fblog%2F2018%2F10%2F06%2F2018-10-06-SpringBoot%E7%9A%84%E4%BD%BF%E7%94%A8%2F</url>
+    <content type="text"><![CDATA[来新公司半年多了，在这里第一次接触到Spring Boot，期间从各种网上资料，同事的指教，还有书籍中，积累了一些使用的心得，后面陆陆续续会整理一下，温故而知新。（我每次都会使用最新的Spring Boot稳定版作为演示，目前是2.0.5） 在刚开始学习Spring这个框架的时候，印象最深刻的就是其繁杂的配置。而Spring Boot最大的特点呢，就是自动配置。Spring Boot让我们的Spring应用变的更轻量化。比如：你可以仅仅依靠一个Java注解来自动配置一项功能。你也可以打包你的应用为jar，并通过使用java -jar来运行你的Spring Web应用。 快速入门废话不多说，直接上实践，在这里，我来搭建一个基础的Spring Boot项目，并实现简单的Http请求处理，通过这个例子对Spring Boot有一个初步的了解，并体验其结构简单、开发快速的特性。 构建项目你可以使用IDEA自带的Spring Boot模板创建，但我这里推荐使用Spring官方提供的快速构建方式 打开https://start.spring.io/ 在里面选择你要构建的项目信息（maven项目，使用java语言，Spring Boot版本是2.0.5） 填写项目名称（cn.dijia478.hello） 选择需要的依赖（web） 创建 基本就是这个样子： 会自动下载下来一个项目包，解压，导入到IDEA里，静静的等maven把Spring Boot的相关依赖下载好，第一次构建会有些慢 其实到这里，项目，已经构建好了，并且可以运行 通过上面步骤完成了Spring Boot基础项目的创建，如上图所示，Spring Boot的基础结构共三个文件（具体路径根据用户生成项目时填写的Group所有差异）： src/main/java下的程序入口：HelloApplication src/main/resources下的配置文件：application.properties src/test/下的测试入口：HelloApplicationTests 是不是很不可思议！！一个Spring项目，居然1分钟就搭建好了！！！ 引入web模块这一步，其实在上面构建Spring Boot的时候，已经在第4步勾选过了，生成的项目里，自动就会引入web模块的依赖。上面第4部没有勾选的，在这里手动添加一下 这下，所有的web相关的配置，Sping Boot已经全部自动配置好了！！哪里还用管什么web.xml的配置啊，通通不需要了。神奇不？ 编写接口创建目录cn.dijia478.hello.controller 这里说一下，为了spring boot的自动扫描注解，请将HelloApplication启动类，放置在所有类的最顶层目录。也就是说，你创建所有的类，都请在HelloApplication启动类的同级目录或子目录下创建。否则你需要在启动类上使用@ComponentScan()声明注解扫描路径。 在该目录下创建类HelloWorld 123456789@RestControllerpublic class HelloWorld &#123; @RequestMapping("/hello") public String hello() &#123; return "Hello World"; &#125;&#125; 启动主程序，打开浏览器访问http://localhost:8080/hello，就可以看到页面输出Hello World 至此已通过Maven构建了一个空白的Spring Boot项目，再通过引入web模块实现了一个简单的请求处理。是不是很省事，全程没有一个配置，就构建好了一个Spring框架下的web项目。]]></content>
+      <categories>
+        <category>Spring Boot</category>
+      </categories>
+      <tags>
+        <tag>Spring Boot</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[MySQL8.0安装步骤]]></title>
     <url>%2Fblog%2F2018%2F09%2F20%2F2018-09-20-MySQL8-0%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4%2F</url>
     <content type="text"><![CDATA[半年没有更新了，因为谈了个恋爱吧，女友把电脑借走了，又不想在公司电脑更新博客。现在分手后就比较闲啦。在新公司里学了好多新知识，慢慢的会把新学的一些知识都整理一番。 这次先说说mysql，话说从5.7，直接升8.0，不用惊讶，其实5.6版本就相当于6.0版本，5.7就相当于7.0版本。Oracle 公司这次没有用5.8，而是直接命名为了8.0，所以以为自己没用过6.0和7.0的同学们不用介意啦。下面直接说正题，如何在windows上安装mysql8.0 一、下载MySQL这个没啥好说的了吧，去官网下好，下下来解压 二、设置环境变量不知道怎么设置环境变量的话，去百度吧。我是win10的系统，设置好之后是这样的 三、在解压目录下，添加my.ini文件12345678910111213141516[mysql]#设置mysql客户端默认字符集default-character-set=utf8[mysqld]#设置3306端口port = 3306 #设置mysql的安装目录basedir=D:\develop\mysql-8.0.12-winx64#设置mysql数据库的数据的存放目录datadir=D:\develop\mysql-8.0.12-winx64\data#允许最大连接数max_connections=200#服务端使用的字符集默认为8比特编码的latin1字符集character-set-server=utf8#创建新表时将使用的默认存储引擎default-storage-engine=INNODB 四、数据库初始化按键盘的win+R，输入cmd，打开命令窗口 切换到刚才解压mysql的bin目录下（别问我怎么切换。。） 输入命令，自动生成root用户，这个地方会有点慢，大概两三分钟 1mysqld --initialize-insecure 五、安装还在上面的目录下安装服务： 1mysqld -install 报错了，是因为没有用管理员权限启动cmd命令窗口 重新用管理员身份打开cmd，运行安装命令（怎么用管理员什么打开？自行百度） 启动服务： 1net start mysql 连接mysql 1mysql -u root OK！到这里就已经启动好了 停止服务 1net stop mysql 注意一下，如果需要卸载服务，重新安装，需要将mysql解压目录里的data文件夹里的东西清空 然后输入 1mysqld -remove 六、更换密码刚才安装完，进入mysql是不需要密码的，实际中肯定是不行的，现在要登录mysql后设置密码 1ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '123456'; #更新一下用户的密码为123456 以后登录就需要输入密码了]]></content>
